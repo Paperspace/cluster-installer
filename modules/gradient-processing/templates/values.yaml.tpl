@@ -145,6 +145,7 @@ fluent-bit:
       valueFrom:
         secretKeyRef:
           name: gradient-processing
+          key: PS_CLUSTER_AUTHORIZATION_TOKEN
 
 gradient-operator:
   config:
