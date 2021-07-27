@@ -172,6 +172,16 @@ gradient-operator:
     abuseWatcher:
       enabled: ${anti_crypto_miner_regex != ""}
       antiCryptoMinerRegex: ${anti_crypto_miner_regex}
+  
+      %{ if is_public_cluster }
+      resources:
+        requests:
+          cpu: 250m
+          memory: 1Gi
+        limits:
+          cpu: 250m
+          memory: 1Gi
+      %{ endif }
 
     %{ if label_selector_cpu != "" && label_selector_gpu != "" }
     modelDeploymentConfig:
