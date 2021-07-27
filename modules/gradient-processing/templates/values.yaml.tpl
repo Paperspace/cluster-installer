@@ -136,15 +136,22 @@ efs-provisioner:
     paperspace.com/pool-name: ${service_pool_name}
 
 fluent-bit:
-  rawConfig: |-
-    # used to trigger changes
-    ${elastic_search_sha}
+  env:
+    - name: PS_LOGS_HOST
+      value: ${logs_host}
+    - name: PS_CLUSTER_HANDLE
+      value: ${cluster_handle}
+    - name: PS_CLUSTER_AUTHORIZATION_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: gradient-processing
+          key: PS_CLUSTER_AUTHORIZATION_TOKEN
 
 gradient-operator:
   config:
     ingressHost: ${domain}
     usePodAntiAffinity: ${use_pod_anti_affinity}
- 
+
     %{ if is_public_cluster }
     controller:
       resources:
