@@ -63,7 +63,10 @@ variable "machine_template_id_main" {
 }
 variable "machine_type_main" {
   description = "Main machine type"
-  default     = "C5"
+  default     = {
+    singlenode = "C5"
+    multinode = "C7"
+  }
 }
 
 variable "machine_storage_lb" {
