@@ -103,6 +103,7 @@ locals {
 
   local_storage_path       = var.local_storage_path == "" ? "/srv/gradient" : var.local_storage_path
   local_storage_type       = var.local_storage_type == "" ? "nfs" : var.local_storage_type
+  machine_type_main        = var.kind == "multinode" ? var.machine_type_main["multinode"] : var.machine_type_main["singlenode"]
   shared_storage_path      = var.shared_storage_path == "/" ? "/srv/gradient" : var.shared_storage_path
   shared_storage_type      = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
   legacy_datasets_pvc_name = var.gradient_machine_config == "paperspace-public" ? "gradient-processing-shared" : ""
@@ -197,7 +198,7 @@ resource "paperspace_machine" "gradient_main" {
 
   region           = var.region
   name             = "${var.name}-main${format("%02s", count.index + 1)}"
-  machine_type     = var.machine_type_main
+  machine_type     = local.machine_type_main
   size             = var.machine_storage_main
   billing_type     = "hourly"
   assign_public_ip = true
