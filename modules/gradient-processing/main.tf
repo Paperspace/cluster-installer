@@ -137,7 +137,7 @@ resource "helm_release" "gradient_processing" {
       cluster_autoscaler_delay_after_add    = var.cluster_autoscaler_delay_after_add
       cluster_autoscaler_unneeded_time      = var.cluster_autoscaler_unneeded_time
       cluster_handle                        = var.cluster_handle
-      cluster_secret_checksum               = sha256("${var.cluster_handle}${var.cluster_apikey}")
+      cluster_secret_checksum               = sha256("${var.cluster_handle}${var.cluster_apikey}${var.cluster_authorization_token}")
       default_storage_name                  = local.local_storage_name
       efs_provisioner_enabled               = var.shared_storage_type == "efs" || var.local_storage_type == "efs"
       elastic_search_enabled                = false
