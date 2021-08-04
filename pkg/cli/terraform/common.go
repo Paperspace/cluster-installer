@@ -14,6 +14,7 @@ type Common struct {
 	ArtifactsRegion                string            `json:"artifacts_region,omitempty"`
 	ArtifactsSecretAccessKey       string            `json:"artifacts_secret_access_key"`
 	ClusterAPIKey                  string            `json:"cluster_apikey"`
+	ClusterSecret                  string            `json:"cluster_authorization_token"` // TODO: modify the terraform module to use the string cluster_secret
 	ClusterHandle                  string            `json:"cluster_handle"`
 	Domain                         string            `json:"domain"`
 	LetsEncryptDNSName             string            `json:"letsencrypt_dns_name,omitempty"`
@@ -134,6 +135,7 @@ func (c *Common) UpdateFromCluster(cluster *paperspace.Cluster) {
 	c.ArtifactsSecretAccessKey = cluster.S3Credential.SecretKey
 
 	c.ClusterAPIKey = cluster.APIToken.Key
+	c.ClusterSecret = cluster.ClusterSecret
 	c.ClusterHandle = cluster.ID
 	c.Domain = cluster.Domain
 	c.Name = strings.ReplaceAll(cluster.Name, " ", "-")
