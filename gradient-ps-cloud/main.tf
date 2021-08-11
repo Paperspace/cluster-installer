@@ -29,6 +29,9 @@ locals {
   }) : local.base_asg_types
 
   base_asg_types = {
+    "C3" = {
+      type = "cpu"
+    },
     "C5" = {
       type = "cpu"
     },
@@ -61,6 +64,7 @@ locals {
     "Free-P5000" = 10,
   }) : local.base_asg_max_sizes
   base_asg_max_sizes = merge({
+    "C3"    = 10,
     "C5"    = 10,
     "C7"    = 10,
     "P4000" = 10,
@@ -75,6 +79,7 @@ locals {
     "Free-P5000" = 0,
   }) : local.base_asg_min_sizes
   base_asg_min_sizes = merge({
+    "C3"    = 0,
     "C5"    = 0,
     "C7"    = 0,
     "P4000" = 0,
