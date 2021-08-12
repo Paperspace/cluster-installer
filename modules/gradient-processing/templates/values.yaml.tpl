@@ -111,6 +111,17 @@ cluster-autoscaler:
       name: gradient-processing
       key: PS_API_KEY
 
+  %{ if is_public_cluster }
+  resources:
+    requests:
+      cpu: 200m
+      memory: 1024Mi
+    limits:
+      cpu: 200m
+      memory: 1024Mi
+  %{ endif }
+
+
   %{ endif }
 
   awsRegion: ${aws_region}
