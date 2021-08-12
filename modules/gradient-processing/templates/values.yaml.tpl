@@ -111,6 +111,7 @@ cluster-autoscaler:
       name: gradient-processing
       key: PS_API_KEY
 
+  %{ endif }
   %{ if is_public_cluster }
   resources:
     requests:
@@ -119,9 +120,14 @@ cluster-autoscaler:
     limits:
       cpu: 200m
       memory: 1024Mi
-  %{ endif }
-
-
+  %{ else }
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
   %{ endif }
 
   awsRegion: ${aws_region}
@@ -132,10 +138,7 @@ cluster-autoscaler:
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
 
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
+
 
 efs-provisioner:
   enabled: ${efs_provisioner_enabled}
