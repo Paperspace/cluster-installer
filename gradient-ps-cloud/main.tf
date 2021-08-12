@@ -23,6 +23,9 @@ locals {
     "Free-GPU" = {
       type = "gpu"
     }
+    "Free-RTX4000" = {
+      type = "gpu"
+    }
     "Free-P5000" = {
       type = "gpu"
     }
@@ -61,6 +64,7 @@ locals {
   asg_max_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_max_sizes, {
     "Free-CPU"   = 10,
     "Free-GPU"   = 10,
+    "Free-RTX4000" = 10,
     "Free-P5000" = 10,
   }) : local.base_asg_max_sizes
   base_asg_max_sizes = merge({
@@ -76,6 +80,7 @@ locals {
   asg_min_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_min_sizes, {
     "Free-CPU"   = 0,
     "Free-GPU"   = 0,
+    "Free-RTX4000" = 0,
     "Free-P5000" = 0,
   }) : local.base_asg_min_sizes
   base_asg_min_sizes = merge({
