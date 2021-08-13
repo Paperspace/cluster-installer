@@ -424,5 +424,5 @@ volumeController:
     requests:
       cpu: 250m
       memory: 512Mi
-  %{ else }
+  %{ endif }
 
