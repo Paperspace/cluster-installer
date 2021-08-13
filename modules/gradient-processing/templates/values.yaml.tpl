@@ -20,9 +20,15 @@ global:
   serviceNodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
   serviceResources:
+    %{ if is_public_cluster }
+    requests:
+      cpu: 250m
+      memory: 512Mi
+   %{ else }
     requests:
       cpu: 100m
       memory: 128Mi
+   %{ endif }
 
   api: ${paperspace_base_url}
 
@@ -410,3 +416,13 @@ imageCacher:
     maxParallelism: 20
     images: ${image_cache_list}
 %{ endif }
+
+
+volumeController:
+  %{ if is_public_cluster }
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+  %{ else }
+
