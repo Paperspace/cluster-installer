@@ -115,11 +115,11 @@ cluster-autoscaler:
   %{ if is_public_cluster }
   resources:
     requests:
-      cpu: 200m
-      memory: 1024Mi
+      cpu: 500m
+      memory: 2048Mi
     limits:
-      cpu: 200m
-      memory: 1024Mi
+      cpu: 500m
+      memory: 2048Mi
   %{ else }
   resources:
     limits:
