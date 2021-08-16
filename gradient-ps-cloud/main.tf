@@ -97,7 +97,7 @@ locals {
 
   cluster_autoscaler_cloudprovider = "paperspace"
   cluster_autoscaler_enabled       = true
-  dns_node_selector                = var.kind == "multinode" ? { "paperspace.com/pool-name" = var.service_pool_name } : { "paperspace.com/pool-name" = "services-small" }
+  dns_node_selector                = { "paperspace.com/pool-name" = var.service_pool_name }
   enable_gradient_service          = var.kind == "multinode" ? 1 : 0
   enable_gradient_lb               = var.kind == "multinode" ? 1 : 0
   enable_gradient_prometheus_pool  = local.is_public_cluster ? 1 : 0
