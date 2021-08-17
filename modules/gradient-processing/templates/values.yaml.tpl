@@ -419,6 +419,7 @@ imageCacher:
 
 
 volumeController:
+  enabled: true
   %{ if is_public_cluster }
   resources:
     requests:
