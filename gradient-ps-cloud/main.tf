@@ -10,7 +10,7 @@ terraform {
     }
     rancher2 = {
       source  = "rancher/rancher2"
-      version = "1.10.6"
+      version = "1.11.0"
     }
   }
 }
@@ -340,6 +340,12 @@ resource "rancher2_cluster" "main" {
 
     dns {
       node_selector = local.dns_node_selector
+      update_strategy {
+        rolling_update {
+          max_surge = 3
+          max_unavailable = 3
+        }
+      }
     }
 
     ingress {
