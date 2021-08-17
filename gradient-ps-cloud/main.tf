@@ -342,11 +342,9 @@ resource "rancher2_cluster" "main" {
       node_selector = local.dns_node_selector
       update_strategy {
         rolling_update {
-          max_unavailable = "25%"
+          max_surge = 3
+          max_unavailable = 3
         }
-      }
-      linear_autoscaler_params {
-        node_selector = local.dns_node_selector
       }
     }
 
