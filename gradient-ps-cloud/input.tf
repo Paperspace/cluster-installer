@@ -175,8 +175,3 @@ variable "machine_type_prometheus" {
   description = "Prometheus machine type"
   default     = "C8"
 }
-
-variable "service_pool_name" {
-  description = "Service pool node selector"
-  default     = "services-small"
-}
