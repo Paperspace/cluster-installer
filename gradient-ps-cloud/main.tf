@@ -340,11 +340,14 @@ resource "rancher2_cluster" "main" {
 
     dns {
       node_selector = local.dns_node_selector
+      update_strategy {
+        strategy = "RollingUpdate"
+      }
       linear_autoscaler_params {
         # default counts in https://kubernetes.io/docs/tasks/administer-cluster/dns-horizontal-autoscaling/
         cores_per_replica = 256
         nodes_per_replica = 16
-        min = 1
+        min = 2
         # A single 100MB memory instance can support 50k total pods+services
         # https://github.com/coredns/deployment/blob/master/kubernetes/Scaling_CoreDNS.md
         max = 4
