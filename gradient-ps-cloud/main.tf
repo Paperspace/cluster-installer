@@ -97,7 +97,7 @@ locals {
 
   cluster_autoscaler_cloudprovider = "paperspace"
   cluster_autoscaler_enabled       = true
-  dns_node_selector                = var.kind == "multinode" ? {} : { "paperspace.com/pool-name" = "services-small" }
+  dns_node_selector                = { "paperspace.com/pool-name" = var.service_pool_name }
   enable_gradient_service          = var.kind == "multinode" ? 1 : 0
   enable_gradient_lb               = var.kind == "multinode" ? 1 : 0
   enable_gradient_prometheus_pool  = local.is_public_cluster ? 1 : 0
@@ -302,6 +302,7 @@ module "gradient_processing" {
   name                        = var.name
   paperspace_base_url         = var.api_host
   sentry_dsn                  = var.sentry_dsn
+  service_pool_name           = var.service_pool_name
   shared_storage_config       = var.shared_storage_config
   shared_storage_server       = local.storage_server
   shared_storage_path         = local.shared_storage_path
@@ -344,6 +345,13 @@ resource "rancher2_cluster" "main" {
           max_surge = 3
           max_unavailable = 3
         }
+      }
+      linear_autoscaler_params {
+        # default counts in https://kubernetes.io/docs/tasks/administer-cluster/dns-horizontal-autoscaling/
+        cores_per_replica = 256
+        nodes_per_replica = 16
+        min = 1
+        prevent_single_point_failure = true
       }
     }
 
