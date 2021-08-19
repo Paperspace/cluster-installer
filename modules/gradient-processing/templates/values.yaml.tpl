@@ -122,10 +122,10 @@ cluster-autoscaler:
   resources:
     requests:
       cpu: 500m
-      memory: 2048Mi
+      memory: 3072Mi
     limits:
       cpu: 500m
-      memory: 2048Mi
+      memory: 3072Mi
   %{ else }
   resources:
     limits:
