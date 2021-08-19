@@ -35,8 +35,7 @@ if [ "$TERRAFORM_COMMAND" = "destroy" ]; then
 elif [ "$TERRAFORM_COMMAND" = "plan" ]; then
   terraform plan
 else
-  terraform plan
-  #terraform apply -auto-approve
+  terraform apply -auto-approve
 fi
 
 popd
