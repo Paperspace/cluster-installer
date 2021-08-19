@@ -32,7 +32,7 @@ if [ "$TERRAFORM_COMMAND" = "destroy" ]; then
   terraform state rm module.gradient_processing || true
   terraform state rm module.kubernetes || true
   terraform destroy -auto-approve
-elif [ "$TERRAFORM_COMMAND" = "destroy" ]; then
+elif [ "$TERRAFORM_COMMAND" = "plan" ]; then
   terraform plan
 else
   terraform apply -auto-approve
