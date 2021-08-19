@@ -62,10 +62,10 @@ locals {
   }
 
   asg_max_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_max_sizes, {
-    "Free-CPU"   = 10,
-    "Free-GPU"   = 10,
+    "Free-CPU"     = 10,
+    "Free-GPU"     = 10,
     "Free-RTX4000" = 10,
-    "Free-P5000" = 10,
+    "Free-P5000"   = 10,
   }) : local.base_asg_max_sizes
   base_asg_max_sizes = merge({
     "C3"    = 10,
@@ -78,10 +78,10 @@ locals {
   }, var.asg_min_sizes)
 
   asg_min_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_min_sizes, {
-    "Free-CPU"   = 0,
-    "Free-GPU"   = 0,
+    "Free-CPU"     = 0,
+    "Free-GPU"     = 0,
     "Free-RTX4000" = 0,
-    "Free-P5000" = 0,
+    "Free-P5000"   = 0,
   }) : local.base_asg_min_sizes
   base_asg_min_sizes = merge({
     "C3"    = 0,
@@ -347,10 +347,10 @@ resource "rancher2_cluster" "main" {
         # default counts in https://kubernetes.io/docs/tasks/administer-cluster/dns-horizontal-autoscaling/
         cores_per_replica = 256
         nodes_per_replica = 16
-        min = 2
+        min               = 2
         # A single 100MB memory instance can support 50k total pods+services
         # https://github.com/coredns/deployment/blob/master/kubernetes/Scaling_CoreDNS.md
-        max = 4
+        max                          = 4
         prevent_single_point_failure = true
       }
     }
@@ -372,9 +372,6 @@ resource "rancher2_cluster" "main" {
           "kube-reserved-cgroup" = "/podruntime.slice"
           "kube-reserved"        = "cpu=500m,memory=256Mi,ephemeral-storage=10Gi"
         }
-      }
-      etcd = {
-          "quota-backend-bytes"  = local.is_public_cluster ? "5368709120" : "2147483648"
       }
     }
   }
