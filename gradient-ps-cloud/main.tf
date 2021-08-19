@@ -371,8 +371,10 @@ resource "rancher2_cluster" "main" {
           "system-reserved"      = "cpu=500m,memory=256Mi,ephemeral-storage=5Gi"
           "kube-reserved-cgroup" = "/podruntime.slice"
           "kube-reserved"        = "cpu=500m,memory=256Mi,ephemeral-storage=10Gi"
-          "quota-backend-bytes"  = local.is_public_cluster ? "5368709120" : "2147483648"
         }
+      }
+      etcd = {
+          "quota-backend-bytes"  = local.is_public_cluster ? "5368709120" : "2147483648"
       }
     }
   }
