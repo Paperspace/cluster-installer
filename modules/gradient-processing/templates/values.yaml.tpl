@@ -343,6 +343,11 @@ kube-prometheus-stack:
       paths:
         - /prometheus
   kube-state-metrics:
+  %{ if is_public_cluster }
+    requests:
+      cpu: 500m
+      memory: 2Gi
+  %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
   prometheusOperator:
