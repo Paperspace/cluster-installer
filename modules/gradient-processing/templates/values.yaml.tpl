@@ -24,8 +24,14 @@ global:
     requests:
       cpu: 250m
       memory: 512Mi
+    limits:
+      cpu: 250m
+      memory: 512Mi
    %{ else }
     requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
       cpu: 100m
       memory: 128Mi
    %{ endif }
@@ -344,9 +350,13 @@ kube-prometheus-stack:
         - /prometheus
   kube-state-metrics:
   %{ if is_public_cluster }
-    requests:
-      cpu: 500m
-      memory: 2Gi
+    resources:
+      requests:
+        cpu: 500m
+        memory: 2Gi
+      limits:
+        cpu: 500m
+        memory: 2Gi
   %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
@@ -428,6 +438,9 @@ volumeController:
   %{ if is_public_cluster }
   resources:
     requests:
+      cpu: 500m
+      memory: 1024Mi
+    limits:
       cpu: 500m
       memory: 1024Mi
   %{ endif }
