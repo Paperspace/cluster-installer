@@ -182,8 +182,8 @@ gradient-operator:
     controller:
       resources:
         requests:
-          cpu: 500m
-          memory: 512Mi
+          cpu: 1000m
+          memory: 1024Mi
         limits:
           cpu: 1000m
           memory: 1024Mi
