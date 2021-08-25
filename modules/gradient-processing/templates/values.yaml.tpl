@@ -207,10 +207,10 @@ gradient-operator:
       resources:
         requests:
           cpu: 250m
-          memory: 512Gi
+          memory: 512Mi
         limits:
           cpu: 250m
-          memory: 512Gi
+          memory: 512Mi
     %{ endif }
       
     abuseWatcher:
