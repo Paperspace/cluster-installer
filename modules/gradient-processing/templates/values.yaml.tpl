@@ -202,6 +202,17 @@ gradient-operator:
     legacyDatasetsSubPath: ${legacy_datasets_sub_path}
     %{ endif }
 
+    %{ if is_public_cluster }
+    stateWatcher:
+      resources:
+        requests:
+          cpu: 250m
+          memory: 512Gi
+        limits:
+          cpu: 250m
+          memory: 512Gi
+    %{ endif }
+      
     abuseWatcher:
       enabled: ${anti_crypto_miner_regex != ""}
       antiCryptoMinerRegex: ${anti_crypto_miner_regex}
