@@ -332,7 +332,7 @@ gradient-operator-dispatcher:
     sentryEnvironment: ${name}
     sentryDSN: ${sentry_dsn}
 
-nfs-client-provisioner:
+nfs-subdir-external-provisioner:
   enabled: ${nfs_client_provisioner_enabled}
   nfs:
     path: ${shared_storage_path}
