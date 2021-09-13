@@ -453,9 +453,9 @@ volumeController:
   resources:
     requests:
       cpu: 500m
-      memory: 1024Mi
+      memory: 1536Mi
     limits:
       cpu: 500m
-      memory: 1024Mi
+      memory: 1536Mi
   %{ endif }
 
