@@ -76,6 +76,11 @@ variable "cluster_handle" {
   description = "Gradient cluster handle"
 }
 
+
+variable "dispatcher_host" {
+  description = "Dispatcher host"
+}
+
 variable "domain" {
   description = "domain"
 }

@@ -150,6 +150,9 @@ cluster-autoscaler:
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
 
+dispatcher:
+  config:
+    apiAddress: ${dispatcher_host}
 
 
 efs-provisioner:

@@ -87,6 +87,7 @@ module "gradient_processing" {
     cluster_autoscaler_cloudprovider = var.cluster_autoscaler_cloudprovider
     cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
     cluster_handle = var.cluster_handle
+    dispatcher_host = var.dispatcher_host
     domain = var.domain
 
     helm_repo_username = var.helm_repo_username

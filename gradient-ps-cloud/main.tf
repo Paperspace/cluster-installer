@@ -279,6 +279,7 @@ module "gradient_processing" {
   cluster_autoscaler_delay_after_add = "2m"
   cluster_autoscaler_unneeded_time   = "8m"
   cluster_handle                     = var.cluster_handle
+  dispatcher_host                    = var.dispatcher_host
   domain                             = var.domain
 
   helm_repo_username      = var.helm_repo_username
