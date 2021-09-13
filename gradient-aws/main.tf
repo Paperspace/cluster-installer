@@ -145,6 +145,7 @@ module "gradient_processing" {
     cluster_authorization_token = var.cluster_authorization_token
     cluster_autoscaler_enabled = true
     cluster_handle = var.cluster_handle
+    dispatcher_host = var.dispatcher_host
     domain = var.domain
     elastic_search_host = var.elastic_search_host
     elastic_search_index = var.elastic_search_index

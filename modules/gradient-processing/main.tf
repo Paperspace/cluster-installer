@@ -139,6 +139,7 @@ resource "helm_release" "gradient_processing" {
       cluster_handle                        = var.cluster_handle
       cluster_secret_checksum               = sha256("${var.cluster_handle}${var.cluster_apikey}${var.cluster_authorization_token}")
       default_storage_name                  = local.local_storage_name
+      dispatcher_host                       = var.dispatcher_host
       efs_provisioner_enabled               = var.shared_storage_type == "efs" || var.local_storage_type == "efs"
       elastic_search_enabled                = var.elastic_search_password != ""
       elastic_search_host                   = var.elastic_search_host
