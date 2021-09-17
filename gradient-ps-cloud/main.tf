@@ -12,6 +12,14 @@ terraform {
       source  = "rancher/rancher2"
       version = "1.17.0"
     }
+    helm = {
+      source = "hashicorp/helm"
+      version = "2.3.0"
+    }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.5.0"
+    }
   }
 }
 
@@ -309,8 +317,6 @@ provider "rancher2" {
 }
 
 provider "helm" {
-  debug   = true
-  version = "1.2.1"
   kubernetes {
     host  = local.kubeconfig["clusters"][0]["cluster"]["server"]
     token = local.kubeconfig["users"][0]["user"]["token"]
@@ -319,7 +325,6 @@ provider "helm" {
   }
 }
 provider "kubernetes" {
-  version = "1.13.3"
 
   host  = local.kubeconfig["clusters"][0]["cluster"]["server"]
   token = local.kubeconfig["users"][0]["user"]["token"]
