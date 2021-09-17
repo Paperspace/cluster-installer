@@ -196,5 +196,5 @@ module "gradient_processing" {
 }
 
 output "elb_hostname" {
-    value = module.gradient_processing.traefik.load_balancer_ingress[0].hostname
+    value = module.gradient_processing.kubernetes_service.traefik.load_balancer_ingress[0].hostname
 }
