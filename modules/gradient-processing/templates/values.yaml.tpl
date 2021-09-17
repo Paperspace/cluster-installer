@@ -360,8 +360,6 @@ victoria-metrics-k8s-stack:
     ingress:
       hosts:
         - ${domain}
-      paths:
-        - /prometheus
 
   kube-state-metrics:
   %{ if is_public_cluster }
