@@ -344,9 +344,6 @@ nfs-subdir-external-provisioner:
     paperspace.com/pool-name: ${service_pool_name}
 
 victoria-metrics-k8s-stack:
-
-
-kube-prometheus-stack:
   vmsingle:
     spec:
       nodeSelector:
