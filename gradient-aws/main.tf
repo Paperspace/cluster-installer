@@ -80,6 +80,9 @@ module "network" {
 // Kubernetes
 module "kubernetes" {
     source = "./modules/kubernetes"
+    providers = {
+        kubernetes = kubernetes.gradient
+    }
     enable = !local.has_k8s
 
     name = var.name
