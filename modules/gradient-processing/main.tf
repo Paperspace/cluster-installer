@@ -1,13 +1,5 @@
-terraform {
-  required_providers {
-    helm = {
-      source = "hashicorp/helm"
-    }
-    kubernetes = {
-      source = "hashicorp/kubernetes"
-    }
-  }
-}
+provider "helm" {}
+provider "kubernetes" {}
 
 locals {
   helm_repo_url       = var.helm_repo_url == "" ? "https://infrastructure-public-chart-museum-repository.storage.googleapis.com" : var.helm_repo_url
