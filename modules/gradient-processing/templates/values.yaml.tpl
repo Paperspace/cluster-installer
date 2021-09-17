@@ -362,6 +362,7 @@ victoria-metrics-k8s-stack:
         - ${domain}
 
   kube-state-metrics:
+    createCRD: true
   %{ if is_public_cluster }
     resources:
       requests:
