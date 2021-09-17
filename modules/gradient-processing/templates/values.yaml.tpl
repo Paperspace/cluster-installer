@@ -343,9 +343,9 @@ nfs-subdir-external-provisioner:
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
 
-kube-prometheus-stack:
-  prometheus:
-    prometheusSpec:
+victoria-metrics-k8s-stack:
+  vmsingle:
+    spec:
       nodeSelector:
         paperspace.com/pool-name: ${prometheus_pool_name}
       %{ if prometheus_resources != null }
@@ -360,8 +360,7 @@ kube-prometheus-stack:
     ingress:
       hosts:
         - ${domain}
-      paths:
-        - /prometheus
+
   kube-state-metrics:
   %{ if is_public_cluster }
     resources:
@@ -374,20 +373,14 @@ kube-prometheus-stack:
   %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
-  prometheusOperator:
-  %{ if is_public_cluster }
-    prometheusSpec:
-      storageSpec:
-        volumeClaimTemplate:
-          spec:
-            accessModes: ["ReadWriteOnce"]
-            storageClassName: gradient-processing-shared
-            resources:
-               requests:
-                 storage: 400Gi
-  %{ endif }
+  victoria-metrics-operator:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
+
+  vmagent:
+    spec:
+      nodeSelector:
+        paperspace.com/pool-name: ${service_pool_name}
 
 traefik:
   replicas: ${lb_count}
