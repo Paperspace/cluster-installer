@@ -1,3 +1,20 @@
+terraform {
+  required_providers {
+    rancher2 = {
+      source  = "rancher/rancher2"
+      version = "1.17.0"
+    }
+    helm = {
+      source = "hashicorp/helm"
+      version = "2.3.0"
+    }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.5.0"
+    }
+  }
+}
+
 locals {
     has_k8s = var.k8s_endpoint == "" ? false : true
     has_shared_storage = var.shared_storage_path == "" ? false : true
@@ -44,7 +61,6 @@ module "storage" {
 
 provider "helm" {
     debug = true
-    version = "1.2.1"
     kubernetes {
         host     = module.kubernetes.k8s_host
         username = module.kubernetes.k8s_username
@@ -57,8 +73,6 @@ provider "helm" {
 }
 
 provider "kubernetes" {
-    version = "1.13.3"
-
     host     = module.kubernetes.k8s_host
     username = module.kubernetes.k8s_username
 

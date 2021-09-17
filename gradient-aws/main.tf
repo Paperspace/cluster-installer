@@ -1,3 +1,20 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "3.59.0"
+    }
+    helm = {
+      source = "hashicorp/helm"
+      version = "2.3.0"
+    }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.5.0"
+    }
+  }
+}
+
 provider "aws" {
   region = var.aws_region
 }
@@ -106,7 +123,6 @@ data "aws_eks_cluster_auth" "cluster" {
 provider "helm" {
     alias = "gradient"
     debug = true
-    version = "1.2.1"
     kubernetes {
         host                   = element(concat(data.aws_eks_cluster.cluster[*].endpoint,tolist([])), 0)
         cluster_ca_certificate = base64decode(element(concat(data.aws_eks_cluster.cluster[*].certificate_authority.0.data,tolist([])), 0))
