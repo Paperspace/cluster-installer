@@ -68,7 +68,6 @@ provider "helm" {
         client_certificate     = module.kubernetes.k8s_client_certificate
         client_key             = module.kubernetes.k8s_client_key
         cluster_ca_certificate = module.kubernetes.k8s_cluster_ca_certificate
-        load_config_file = false
     }
 }
 
@@ -79,7 +78,6 @@ provider "kubernetes" {
     client_certificate     = module.kubernetes.k8s_client_certificate
     client_key             = module.kubernetes.k8s_client_key
     cluster_ca_certificate = module.kubernetes.k8s_cluster_ca_certificate
-    load_config_file = false
 }
 
 // Gradient
