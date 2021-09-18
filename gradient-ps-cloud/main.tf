@@ -29,6 +29,21 @@ locals {
     "Free-P5000" = {
       type = "gpu"
     }
+    "Free-P4000" = {
+      type = "gpu"
+    }
+    "Free-RTX5000" = {
+      type = "gpu"
+    }
+    "Free-A4000" = {
+      type = "gpu"
+    }
+    "Free-A5000" = {
+      type = "gpu"
+    }
+    "Free-A6000" = {
+      type = "gpu"
+    }
   }) : local.base_asg_types
 
   base_asg_types = {
@@ -53,6 +68,81 @@ locals {
     "V100" = {
       type = "gpu"
     },
+    "RTX4000" = {
+      type = "gpu"
+    },
+    "RTX5000" = {
+      type = "gpu"
+    },
+    "A4000" = {
+      type = "gpu"
+    },
+    "A5000" = {
+      type = "gpu"
+    },
+    "A6000" = {
+      type = "gpu"
+    },
+    "A100" = {
+      type = "gpu"
+    },
+    "P4000x2" = {
+      type = "gpu"
+    },
+    "P4000x4" = {
+      type = "gpu"
+    },
+    "P5000x2" = {
+      type = "gpu"
+    },
+    "P5000x4" = {
+      type = "gpu"
+    },
+    "P6000x2" = {
+      type = "gpu"
+    },
+    "P6000x4" = {
+      type = "gpu"
+    },
+    "RTX4000x2" = {
+      type = "gpu"
+    },
+    "RTX4000x4" = {
+      type = "gpu"
+    },
+    "RTX5000x2" = {
+      type = "gpu"
+    },
+    "RTX5000x4" = {
+      type = "gpu"
+    },
+    "A4000x2" = {
+      type = "gpu"
+    },
+    "A4000x4" = {
+      type = "gpu"
+    },
+    "A5000x2" = {
+      type = "gpu"
+    },
+    "A5000x4" = {
+      type = "gpu"
+    },
+    "A6000x2" = {
+      type = "gpu"
+    },
+    "A6000x4" = {
+      type = "gpu"
+    },
+    "A100x2" = {
+      type = "gpu"
+    },
+    "A100x4" = {
+      type = "gpu"
+    },
+    "A100x8" = {
+      type = "gpu"
+    },
   }
 
   region_to_mirror = {
@@ -66,15 +156,45 @@ locals {
     "Free-GPU"     = 10,
     "Free-RTX4000" = 10,
     "Free-P5000"   = 10,
+    "Free-P4000"   = 0,
+    "Free-RTX5000" = 0,
+    "Free-A4000"   = 0,
+    "Free-A5000"   = 0,
+    "Free-A6000"   = 0,
   }) : local.base_asg_max_sizes
   base_asg_max_sizes = merge({
-    "C3"    = 10,
-    "C5"    = 10,
-    "C7"    = 10,
-    "P4000" = 10,
-    "P5000" = 10,
-    "P6000" = 10,
-    "V100"  = 10,
+    "C3"        = 10,
+    "C5"        = 10,
+    "C7"        = 10,
+    "P4000"     = 10,
+    "P5000"     = 10,
+    "P6000"     = 10,
+    "V100"      = 10,
+    "RTX4000"   = 0,
+    "RTX5000"   = 0,
+    "A4000"     = 0,
+    "A5000"     = 0,
+    "A6000"     = 0,
+    "A100"      = 0,
+    "P4000x2"   = 0,
+    "P4000x4"   = 0,
+    "P5000x2"   = 0,
+    "P5000x4"   = 0,
+    "P6000x2"   = 0,
+    "P6000x4"   = 0,
+    "RTX4000x2" = 0,
+    "RTX4000x4" = 0,
+    "RTX5000x2" = 0,
+    "RTX5000x4" = 0,
+    "A4000x2"   = 0,
+    "A4000x4"   = 0,
+    "A5000x2"   = 0,
+    "A5000x4"   = 0,
+    "A6000x2"   = 0,
+    "A6000x4"   = 0,
+    "A100x2"    = 0,
+    "A100x4"    = 0,
+    "A100x8"    = 0,
   }, var.asg_min_sizes)
 
   asg_min_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_min_sizes, {
@@ -82,15 +202,45 @@ locals {
     "Free-GPU"     = 0,
     "Free-RTX4000" = 0,
     "Free-P5000"   = 0,
+    "Free-P4000"   = 0,
+    "Free-RTX5000" = 0,
+    "Free-A4000"   = 0,
+    "Free-A5000"   = 0,
+    "Free-A6000"   = 0,
   }) : local.base_asg_min_sizes
   base_asg_min_sizes = merge({
-    "C3"    = 0,
-    "C5"    = 0,
-    "C7"    = 0,
-    "P4000" = 0,
-    "P5000" = 0,
-    "P6000" = 0,
-    "V100"  = 0,
+    "C3"        = 0,
+    "C5"        = 0,
+    "C7"        = 0,
+    "P4000"     = 0,
+    "P5000"     = 0,
+    "P6000"     = 0,
+    "V100"      = 0,
+    "RTX4000"   = 0,
+    "RTX5000"   = 0,
+    "A4000"     = 0,
+    "A5000"     = 0,
+    "A6000"     = 0,
+    "A100"      = 0,
+    "P4000x2"   = 0,
+    "P4000x4"   = 0,
+    "P5000x2"   = 0,
+    "P5000x4"   = 0,
+    "P6000x2"   = 0,
+    "P6000x4"   = 0,
+    "RTX4000x2" = 0,
+    "RTX4000x4" = 0,
+    "RTX5000x2" = 0,
+    "RTX5000x4" = 0,
+    "A4000x2"   = 0,
+    "A4000x4"   = 0,
+    "A5000x2"   = 0,
+    "A5000x4"   = 0,
+    "A6000x2"   = 0,
+    "A6000x4"   = 0,
+    "A100x2"    = 0,
+    "A100x4"    = 0,
+    "A100x8"    = 0,
   }, var.asg_min_sizes)
 
   is_public_cluster = var.gradient_machine_config == "paperspace-public"
