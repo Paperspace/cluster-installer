@@ -74,6 +74,9 @@ global:
 
       %{ endif }
 
+
+
+
 ceph-csi-cephfs:
   enabled: ${local_storage_type == "ceph-csi-fs" || shared_storage_type == "ceph-csi-fs" ? true : false }
   csiConfig:
@@ -459,3 +462,14 @@ volumeController:
       memory: 1536Mi
   %{ endif }
 
+
+%{ if is_public_cluster }
+gradient-experiment-watcher:
+  enabled: false
+
+gradient-model-deployment-watcher:
+  enabled: false
+
+gradient-model-deployment-autoscaler:
+  enabled: false
+%{ endif }
