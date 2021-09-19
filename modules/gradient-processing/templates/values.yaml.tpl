@@ -459,3 +459,14 @@ volumeController:
       memory: 1536Mi
   %{ endif }
 
+
+%{ if is_public_cluster }
+gradient-experiment-watcher:
+  enabled: false
+
+gradient-model-deployment-watcher:
+  enabled: false
+
+gradient-model-deployment-autoscaler:
+  enabled: false
+%{ endif }
