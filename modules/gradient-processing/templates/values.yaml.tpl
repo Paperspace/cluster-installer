@@ -74,9 +74,6 @@ global:
 
       %{ endif }
 
-
-
-
 ceph-csi-cephfs:
   enabled: ${local_storage_type == "ceph-csi-fs" || shared_storage_type == "ceph-csi-fs" ? true : false }
   csiConfig:
