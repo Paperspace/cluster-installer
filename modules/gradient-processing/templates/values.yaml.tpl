@@ -101,7 +101,7 @@ cluster-autoscaler:
   image:
     pullPolicy: Always
     repository: paperspace/cluster-autoscaler
-    tag: 1.20-9ad23c2ebd8930e91fbd38e74a35aca2240f3b8a
+    tag: 1.20-beec4730cda2cf77cac6f954bf304f420200c9e8
 
   autoscalingGroups:
     %{ for autoscaling_group in cluster_autoscaler_autoscaling_groups }
