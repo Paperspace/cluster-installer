@@ -44,6 +44,9 @@ locals {
     "Free-A6000" = {
       type = "gpu"
     }
+    "Free-A100" = {
+      type = "gpu"
+    }
   }) : local.base_asg_types
 
   base_asg_types = {
@@ -161,6 +164,7 @@ locals {
     "Free-A4000"   = 0,
     "Free-A5000"   = 0,
     "Free-A6000"   = 0,
+    "Free-A100"    = 0,
   }) : local.base_asg_max_sizes
   base_asg_max_sizes = merge({
     "C3"        = 10,
@@ -207,6 +211,7 @@ locals {
     "Free-A4000"   = 0,
     "Free-A5000"   = 0,
     "Free-A6000"   = 0,
+    "Free-A100"    = 0,
   }) : local.base_asg_min_sizes
   base_asg_min_sizes = merge({
     "C3"        = 0,
