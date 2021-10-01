@@ -215,11 +215,11 @@ gradient-operator:
           cpu: 250m
           memory: 512Mi
     %{ endif }
-      
+
     abuseWatcher:
       enabled: ${anti_crypto_miner_regex != ""}
       antiCryptoMinerRegex: ${anti_crypto_miner_regex}
-  
+
       %{ if is_public_cluster }
       resources:
         requests:
