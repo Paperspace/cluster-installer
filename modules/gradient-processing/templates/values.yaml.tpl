@@ -358,7 +358,6 @@ nfs-subdir-external-provisioner:
     server: ${ephemeral_hack_storage_server}
     mountOptions:
       - nfsvers=4.2
-      - port=2049
     %{ else }
     path: ${shared_storage_path}
     server: ${shared_storage_server}
