@@ -274,9 +274,6 @@ locals {
   legacy_datasets_pvc_name = var.gradient_machine_config == "paperspace-public" ? "gradient-processing-shared" : ""
   legacy_datasets_sub_path = var.gradient_machine_config == "paperspace-public" ? "datasets" : ""
 
-  ephemeral_hack_storage_path   = var.ephemeral_hack_storage_path
-  ephemeral_hack_storage_server = var.ephemeral_hack_storage_server
-
   ssh_key_path   = "${path.module}/ssh_key"
   storage_server = paperspace_machine.gradient_main[0].private_ip_address
 
@@ -490,6 +487,8 @@ module "gradient_processing" {
     "jupyter/datascience-notebook",
     "jalfaizy/cv_docker:latest",
   ]
+  ephemeral_hack_storage_path   = var.ephemeral_hack_storage_path
+  ephemeral_hack_storage_server = var.ephemeral_hack_storage_server
 }
 
 resource "rancher2_cluster" "main" {
