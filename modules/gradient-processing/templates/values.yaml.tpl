@@ -354,8 +354,10 @@ nfs-subdir-external-provisioner:
   enabled: ${nfs_client_provisioner_enabled}
   nfs:
     %{ if is_public_cluster }
-      path: ${ephemeral_hack_storage_path}
-      server: ${ephemeral_hack_storage_server}
+    path: ${ephemeral_hack_storage_path}
+    server: ${ephemeral_hack_storage_server}
+    mountOptions:
+      - nfsvers=4
     %{ else }
     path: ${shared_storage_path}
     server: ${shared_storage_server}
