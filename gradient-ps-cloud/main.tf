@@ -274,11 +274,14 @@ locals {
   legacy_datasets_pvc_name = var.gradient_machine_config == "paperspace-public" ? "gradient-processing-shared" : ""
   legacy_datasets_sub_path = var.gradient_machine_config == "paperspace-public" ? "datasets" : ""
 
+  ephemeral_hack_storage_path   = var.ephemeral_hack_storage_path
+  ephemeral_hack_storage_server = var.ephemeral_hack_storage_server
+
   ssh_key_path   = "${path.module}/ssh_key"
   storage_server = paperspace_machine.gradient_main[0].private_ip_address
 
   k8s_version_to_rke_version = {
-    "1.20.9" =  "v1.20.9-rancher1-1",
+    "1.20.9"  = "v1.20.9-rancher1-1",
     "1.16.15" = "v1.16.15-rancher1-4",
     "1.15.12" = "v1.15.12-rancher2-7",
   }

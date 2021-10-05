@@ -73,6 +73,15 @@ global:
         %{ endfor }
 
       %{ endif }
+    %{ if is_public_cluster }
+    gradient-processing-ephemeral-hack:
+      class: gradient-processing-ephemeral-hack
+      path: ${ephemeral_hack_storage_path}
+      server: ${ephemeral_hack_storage_server}
+      reclaimPolicy: Delete
+      type: "nfs"
+
+    %{ endif }
 
 ceph-csi-cephfs:
   enabled: ${local_storage_type == "ceph-csi-fs" || shared_storage_type == "ceph-csi-fs" ? true : false }
@@ -181,6 +190,12 @@ gradient-operator:
     ingressHost: ${domain}
     usePodAntiAffinity: ${use_pod_anti_affinity}
 
+    # remove after ephemeral hack is removed
+    %{ if is_public_cluster }
+    mountGlobalPaths: false
+    defaultStorageClass: gradient-processing-ephemeral-hack
+    %{ endif }
+
     %{ if is_public_cluster }
     controller:
       resources:
@@ -215,11 +230,11 @@ gradient-operator:
           cpu: 250m
           memory: 512Mi
     %{ endif }
-      
+
     abuseWatcher:
       enabled: ${anti_crypto_miner_regex != ""}
       antiCryptoMinerRegex: ${anti_crypto_miner_regex}
-  
+
       %{ if is_public_cluster }
       resources:
         requests:
@@ -338,8 +353,13 @@ gradient-operator-dispatcher:
 nfs-subdir-external-provisioner:
   enabled: ${nfs_client_provisioner_enabled}
   nfs:
+    %{ if is_public_cluster }
+      path: ${ephemeral_hack_storage_path}
+      server: ${ephemeral_hack_storage_server}
+    %{ else }
     path: ${shared_storage_path}
     server: ${shared_storage_server}
+    %{ endif }
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
 

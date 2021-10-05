@@ -63,9 +63,9 @@ variable "machine_template_id_main" {
 }
 variable "machine_type_main" {
   description = "Main machine type"
-  default     = {
+  default = {
     singlenode = "C5"
-    multinode = "C7"
+    multinode  = "C7"
   }
 }
 
@@ -179,4 +179,13 @@ variable "machine_type_prometheus" {
 variable "service_pool_name" {
   description = "Service pool node selector"
   default     = "services-small"
+}
+
+variable "ephemeral_hack_storage_path" {
+  description = "Ephemeral hack storage path"
+  default     = "/"
+}
+variable "ephemeral_hack_storage_server" {
+  description = "Ephemeral hack storage server"
+  default     = ""
 }

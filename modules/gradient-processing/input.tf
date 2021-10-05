@@ -46,7 +46,7 @@ variable "cluster_apikey" {
 }
 
 variable "cluster_authorization_token" {
-    description = "Cluster auth token to facilitate secure internal communication between API and processing site"
+  description = "Cluster auth token to facilitate secure internal communication between API and processing site"
 }
 
 variable "cluster_autoscaler_autoscaling_groups" {
@@ -323,5 +323,14 @@ variable "image_cache_list" {
 variable "prometheus_pool_name" {
   description = "paperspace.com/pool-name for prometheus"
   type        = string
+  default     = ""
+}
+
+variable "ephemeral_hack_storage_path" {
+  description = "Ephemeral hack storage path"
+  default     = "/"
+}
+variable "ephemeral_hack_storage_server" {
+  description = "Ephemeral hack storage server"
   default     = ""
 }

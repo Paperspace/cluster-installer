@@ -162,7 +162,7 @@ resource "helm_release" "gradient_processing" {
       local_storage_type                    = var.local_storage_type
       logs_host                             = var.logs_host
       name                                  = var.name
-      nfs_client_provisioner_enabled        = var.shared_storage_type == "nfs" || var.local_storage_type == "nfs"
+      nfs_client_provisioner_enabled        = var.shared_storage_type == "nfs" || var.local_storage_type == "nfs" || var.ephemeral_hack_storage_server != ""
       paperspace_base_url                   = var.paperspace_base_url
       sentry_dsn                            = var.sentry_dsn
       service_pool_name                     = var.service_pool_name
@@ -184,6 +184,8 @@ resource "helm_release" "gradient_processing" {
       prometheus_pool_name                  = local.prometheus_pool_name
       image_cache_enabled                   = var.image_cache_enabled
       image_cache_list                      = jsonencode(var.image_cache_list)
+      ephemeral_hack_storage_path           = var.ephemeral_hack_storage_path
+      ephemeral_hack_storage_server         = var.ephemeral_hack_storage_server
     })
   ]
 }
