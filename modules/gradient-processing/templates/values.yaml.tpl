@@ -357,7 +357,7 @@ nfs-subdir-external-provisioner:
     path: ${ephemeral_hack_storage_path}
     server: ${ephemeral_hack_storage_server}
     mountOptions:
-      - nfsvers=4
+      - nfsvers=4.2
     %{ else }
     path: ${shared_storage_path}
     server: ${shared_storage_server}
