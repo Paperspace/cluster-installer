@@ -375,6 +375,17 @@ kube-prometheus-stack:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
   prometheusOperator:
+  %{ if is_public_cluster }
+    prometheusSpec:
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            accessModes: ["ReadWriteOnce"]
+            storageClassName: gradient-processing-shared
+            resources:
+               requests:
+                 storage: 400Gi
+  %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
