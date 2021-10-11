@@ -379,6 +379,8 @@ victoria-metrics-k8s-stack:
 
   vmagent:
     spec:
+      externalLabels:
+        cluster: ${cluster_handle}
       nodeSelector:
         paperspace.com/pool-name: ${service_pool_name}
 
