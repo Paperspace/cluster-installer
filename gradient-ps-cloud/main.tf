@@ -448,7 +448,7 @@ resource "paperspace_machine" "gradient_controlplane" {
   template_id      = var.machine_template_id_main
   user_id          = data.paperspace_user.admin.id
   team_id          = data.paperspace_user.admin.team_id
-  script_id        = paperspace_script.gradient_main.id
+  script_id        = paperspace_script.gradient_controlplane.id
   network_id       = paperspace_network.network.handle
   live_forever     = true
   is_managed       = true
