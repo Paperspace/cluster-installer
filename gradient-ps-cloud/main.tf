@@ -431,11 +431,11 @@ resource "paperspace_machine" "gradient_main" {
   }
 }
 
-resource "paperspace_machine" "gradient_control_plane" {
+resource "paperspace_machine" "gradient_controlplane" {
   count = local.gradient_controlplane_count
 
   depends_on = [
-    paperspace_script.gradient_control_plane,
+    paperspace_script.gradient_controlplane,
     tls_private_key.ssh_key,
   ]
 
