@@ -53,6 +53,20 @@ ${rancher_command} \
     --internal-address $MACHINE_PRIVATE_IP
 %{ endif ~}
 
+%{ if kind == "etcd" ~}
+${rancher_command} \
+    --etcd \
+    --address $MACHINE_PUBLIC_IP \
+    --internal-address $MACHINE_PRIVATE_IP
+%{ endif ~}
+
+%{ if kind == "controlplane" ~}
+${rancher_command} \
+    --controlplane \
+    --address $MACHINE_PUBLIC_IP \
+    --internal-address $MACHINE_PRIVATE_IP
+%{ endif ~}
+
 %{ if kind == "main_single" ~}
 ${rancher_command} \
     --etcd --controlplane --worker \

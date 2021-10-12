@@ -259,12 +259,14 @@ locals {
   gradient_prometheus_pool_count   = local.enable_gradient_prometheus_pool == 1 ? 1 : 0
   prometheus_pool_name             = local.enable_gradient_prometheus_pool == 1 ? "prometheus" : "services-small"
   gradient_lb_count                = var.kind == "multinode" ? 1 : 0
-  gradient_main_count              = var.kind == "multinode" ? 3 : 1
-  gradient_service_count           = var.kind == "multinode" ? 8 : 0
-  k8s_version                      = var.k8s_version == "" ? "1.20.9" : var.k8s_version
-  kubeconfig                       = yamldecode(rancher2_cluster_sync.main.kube_config)
-  lb_ips                           = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
-  lb_pool_name                     = var.kind == "multinode" ? "lb" : "services-small"
+  gradient_main_count              = local.is_public_cluster ? 5 : var.kind == "multinode" ? 3 : 1
+
+  gradient_controlplane_count = local.is_public_cluster ? 3 : 0
+  gradient_service_count      = var.kind == "multinode" ? 8 : 0
+  k8s_version                 = var.k8s_version == "" ? "1.20.9" : var.k8s_version
+  kubeconfig                  = yamldecode(rancher2_cluster_sync.main.kube_config)
+  lb_ips                      = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
+  lb_pool_name                = var.kind == "multinode" ? "lb" : "services-small"
 
   local_storage_path       = var.local_storage_path == "" ? "/srv/gradient" : var.local_storage_path
   local_storage_type       = var.local_storage_type == "" ? "nfs" : var.local_storage_type
@@ -273,12 +275,17 @@ locals {
   shared_storage_type      = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
   legacy_datasets_pvc_name = var.gradient_machine_config == "paperspace-public" ? "gradient-processing-shared" : ""
   legacy_datasets_sub_path = var.gradient_machine_config == "paperspace-public" ? "datasets" : ""
+  gradient_main_kind = (
+    var.gradient_machine_config == "paperspace-public" ?
+    "etcd"
+    : var.kind == "multinode" ? "main" : "main_single"
+  )
 
   ssh_key_path   = "${path.module}/ssh_key"
   storage_server = paperspace_machine.gradient_main[0].private_ip_address
 
   k8s_version_to_rke_version = {
-    "1.20.9" =  "v1.20.9-rancher1-1",
+    "1.20.9"  = "v1.20.9-rancher1-1",
     "1.16.15" = "v1.16.15-rancher1-4",
     "1.15.12" = "v1.15.12-rancher2-7",
   }
@@ -333,10 +340,10 @@ resource "paperspace_network" "network" {
 }
 
 resource "paperspace_script" "gradient_main" {
-  name        = "Main setup"
+  name        = "etcd and optionally controlplane setup"
   description = "Add public SSH key on machine create"
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
-    kind            = var.kind == "multinode" ? "main" : "main_single"
+    kind            = local.gradient_main_kind
     gpu_enabled     = false
     pool_name       = "main"
     pool_type       = "cpu"
@@ -354,6 +361,30 @@ resource "paperspace_script" "gradient_main" {
         EOF
   }
 }
+
+resource "paperspace_script" "gradient_controlplane" {
+  name        = "Controlplane setup"
+  description = "Add public SSH key on machine create"
+  script_text = templatefile("${path.module}/templates/setup-script.tpl", {
+    kind            = "controlplane"
+    gpu_enabled     = false
+    pool_name       = "main"
+    pool_type       = "cpu"
+    rancher_command = rancher2_cluster.main.cluster_registration_token[0].node_command
+    ssh_public_key  = tls_private_key.ssh_key.public_key_openssh
+    registry_mirror = local.region_to_mirror[var.region]
+  })
+
+  is_enabled = true
+  run_once   = true
+
+  provisioner "local-exec" {
+    command = <<EOF
+            sleep 20
+        EOF
+  }
+}
+
 resource "paperspace_machine" "gradient_main" {
   count = local.gradient_main_count
 
@@ -394,6 +425,52 @@ resource "paperspace_machine" "gradient_main" {
             --key-file ${local.ssh_key_path} \
             -i '${self.public_ip_address},' \
             -e "install_nfs_server=true" \
+            -e "nfs_subnet_host_with_netmask=${paperspace_network.network.network}/${paperspace_network.network.netmask}" \
+            ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
+        EOF
+  }
+}
+
+resource "paperspace_machine" "gradient_control_plane" {
+  count = local.gradient_controlplane_count
+
+  depends_on = [
+    paperspace_script.gradient_control_plane,
+    tls_private_key.ssh_key,
+  ]
+
+  region           = var.region
+  name             = "${var.name}-controlplane${format("%02s", count.index + 1)}"
+  machine_type     = local.machine_type_main
+  size             = var.machine_storage_main
+  billing_type     = "hourly"
+  assign_public_ip = true
+  template_id      = var.machine_template_id_main
+  user_id          = data.paperspace_user.admin.id
+  team_id          = data.paperspace_user.admin.team_id
+  script_id        = paperspace_script.gradient_main.id
+  network_id       = paperspace_network.network.handle
+  live_forever     = true
+  is_managed       = true
+
+  provisioner "remote-exec" {
+    inline = ["/bin/true"]
+    connection {
+      timeout     = "10m"
+      type        = "ssh"
+      user        = "paperspace"
+      host        = self.public_ip_address
+      private_key = tls_private_key.ssh_key.private_key_pem
+    }
+  }
+
+  provisioner "local-exec" {
+    command = <<EOF
+            echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
+            ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
+            --key-file ${local.ssh_key_path} \
+            -i '${self.public_ip_address},' \
+            -e "install_nfs_server=false" \
             -e "nfs_subnet_host_with_netmask=${paperspace_network.network.network}/${paperspace_network.network.netmask}" \
             ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
         EOF
