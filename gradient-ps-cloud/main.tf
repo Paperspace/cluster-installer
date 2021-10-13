@@ -584,7 +584,7 @@ resource "rancher2_cluster" "main" {
         min               = 2
         # A single 100MB memory instance can support 50k total pods+services
         # https://github.com/coredns/deployment/blob/master/kubernetes/Scaling_CoreDNS.md
-        max                          = 4
+        max                          = 3
         prevent_single_point_failure = true
       }
     }
