@@ -342,6 +342,8 @@ resource "paperspace_network" "network" {
 resource "paperspace_script" "gradient_main" {
   name        = "etcd and optionally controlplane setup"
   description = "Add public SSH key on machine create"
+  depends_on  = [rancher2_cluster.main]
+
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
     kind            = local.gradient_main_kind
     gpu_enabled     = false
@@ -365,6 +367,8 @@ resource "paperspace_script" "gradient_main" {
 resource "paperspace_script" "gradient_controlplane" {
   name        = "Controlplane setup"
   description = "Add public SSH key on machine create"
+  depends_on  = [rancher2_cluster.main]
+
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
     kind            = "controlplane"
     gpu_enabled     = false
