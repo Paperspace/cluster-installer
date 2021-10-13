@@ -23,6 +23,7 @@
             line: AllowTcpForwarding yes
         - name: Reload ssh service
           service:
+            name: ssh
             state: reloaded
     - name: Install & configure nfs server
       block:
