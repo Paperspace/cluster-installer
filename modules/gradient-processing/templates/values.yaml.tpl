@@ -186,10 +186,10 @@ gradient-operator:
       resources:
         requests:
           cpu: 1000m
-          memory: 1024Mi
+          memory: 2048Mi
         limits:
           cpu: 1000m
-          memory: 1024Mi
+          memory: 2048Mi
     %{ endif }
 
     %{ if pod_assignment_label_name != "" }
@@ -215,11 +215,11 @@ gradient-operator:
           cpu: 250m
           memory: 512Mi
     %{ endif }
-      
+
     abuseWatcher:
       enabled: ${anti_crypto_miner_regex != ""}
       antiCryptoMinerRegex: ${anti_crypto_miner_regex}
-  
+
       %{ if is_public_cluster }
       resources:
         requests:
@@ -362,7 +362,7 @@ victoria-metrics-k8s-stack:
         - ${domain}
 
   kube-state-metrics:
-  %{ if is_public_cluster }
+    %{ if is_public_cluster }
     resources:
       requests:
         cpu: 500m
@@ -370,10 +370,20 @@ victoria-metrics-k8s-stack:
       limits:
         cpu: 500m
         memory: 2Gi
-  %{ endif }
+    %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
+
   victoria-metrics-operator:
+    %{ if is_public_cluster }
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
@@ -386,10 +396,10 @@ victoria-metrics-k8s-stack:
       %{ if is_public_cluster }
       resources:
         requests:
-          cpu: 500m
+          cpu: 1000m
           memory: 2Gi
         limits:
-          cpu: 500m
+          cpu: 1000m
           memory: 2Gi
       %{ endif }
 
