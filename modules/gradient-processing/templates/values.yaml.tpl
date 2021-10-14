@@ -383,6 +383,15 @@ victoria-metrics-k8s-stack:
         cluster: ${cluster_handle}
       nodeSelector:
         paperspace.com/pool-name: ${service_pool_name}
+      %{ if is_public_cluster }
+      resources:
+        requests:
+          cpu: 500m
+          memory: 2Gi
+        limits:
+          cpu: 500m
+          memory: 2Gi
+      %{ endif }
 
 traefik:
   replicas: ${lb_count}
