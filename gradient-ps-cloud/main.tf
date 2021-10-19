@@ -700,3 +700,14 @@ output "main_node_public_ip_address" {
 output "network_handle" {
   value = paperspace_network.network.handle
 }
+
+// Cloud Controller Manager
+module "cloud_controller_manager" {
+  source = "../modules/cloud-controller-manager"
+
+  helm_repo_username = var.helm_repo_username
+  helm_repo_password = var.helm_repo_password
+  chart_version      = var.ccm_chart_version
+  image_tag          = var.ccm_image_tag
+  cluster_apikey     = var.cluster_apikey
+}
