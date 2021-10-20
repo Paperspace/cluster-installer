@@ -609,6 +609,7 @@ resource "rancher2_cluster" "main" {
           "system-reserved"      = "cpu=500m,memory=256Mi,ephemeral-storage=5Gi"
           "kube-reserved-cgroup" = "/podruntime.slice"
           "kube-reserved"        = "cpu=500m,memory=256Mi,ephemeral-storage=10Gi"
+          "cloud-provider"       = "external"
         }
       }
     }
@@ -699,4 +700,16 @@ output "main_node_public_ip_address" {
 
 output "network_handle" {
   value = paperspace_network.network.handle
+}
+
+// Cloud Controller Manager
+module "cloud_controller_manager" {
+  source = "../modules/cloud-controller-manager"
+
+  helm_repo_url      = var.helm_repo_url == "" ? "https://infrastructure-public-chart-museum-repository.storage.googleapis.com" : var.helm_repo_url
+  helm_repo_username = var.helm_repo_username
+  helm_repo_password = var.helm_repo_password
+  chart_version      = var.ccm_chart_version
+  image_tag          = var.ccm_image_tag
+  cluster_apikey     = var.cluster_apikey
 }
