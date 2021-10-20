@@ -21,7 +21,6 @@ locals {
 
   tls_secret_name      = "gradient-processing-tls"
   prometheus_pool_name = var.prometheus_pool_name != "" ? var.prometheus_pool_name : var.service_pool_name
-  rbd_storage_config   = var.rbd_storage_config
 }
 
 resource "helm_release" "cert_manager" {
@@ -185,6 +184,7 @@ resource "helm_release" "gradient_processing" {
       prometheus_pool_name                  = local.prometheus_pool_name
       image_cache_enabled                   = var.image_cache_enabled
       image_cache_list                      = jsonencode(var.image_cache_list)
+      rbd_storage_config                    = var.rbd_storage_config
     })
   ]
 }
