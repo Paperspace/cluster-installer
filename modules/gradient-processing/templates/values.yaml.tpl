@@ -100,10 +100,10 @@ ceph-csi-cephfs:
   enabled: true
   storageClass:
     clusterId: ${cluster_handle}
-    pool: ${rbd_storage_config["pool"]}
+    pool: ${rbd_storage_config["rbdPool"]}
   csiConfig:
     - clusterID: ${cluster_handle}
-      radosNamespace: ${rbd_storage_config["poolName"]}
+      radosNamespace: ${rbd_storage_config["rdbPool"]}
       monitors:
       %{ for monitor in split(",", lookup(rbd_storage_config, "monitors")) }
         - ${ monitor }
