@@ -39,7 +39,7 @@ variable "cluster_apikey" {
 }
 
 variable "cluster_authorization_token" {
-    description = "Cluster auth token to facilitate secure internal communication between API and processing site"
+  description = "Cluster auth token to facilitate secure internal communication between API and processing site"
 }
 
 variable "cluster_handle" {
@@ -48,7 +48,7 @@ variable "cluster_handle" {
 
 variable "dispatcher_host" {
   description = "Dispatcher host"
-  default = "dispatcher.paperspace.com"
+  default     = "dispatcher.paperspace.com"
 }
 
 variable "domain" {
@@ -215,12 +215,12 @@ variable "cert_manager_enabled" {
 
 variable "image_cache_enabled" {
   description = "enable installation of the kubefledged operator to cache basic workload images on your nodes"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "image_cache_list" {
   description = "list of containers to cache on your worker nodes"
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }

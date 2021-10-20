@@ -63,9 +63,9 @@ variable "machine_template_id_main" {
 }
 variable "machine_type_main" {
   description = "Main machine type"
-  default     = {
+  default = {
     singlenode = "C5"
-    multinode = "C7"
+    multinode  = "C7"
   }
 }
 
@@ -179,4 +179,9 @@ variable "machine_type_prometheus" {
 variable "service_pool_name" {
   description = "Service pool node selector"
   default     = "services-small"
+}
+
+variable "rbd_storage_config" {
+  description = "Local storage config json"
+  default     = ""
 }

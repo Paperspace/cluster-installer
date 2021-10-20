@@ -13,11 +13,11 @@ terraform {
       version = "1.17.0"
     }
     helm = {
-      source = "hashicorp/helm"
+      source  = "hashicorp/helm"
       version = "2.3.0"
     }
     kubernetes = {
-      source = "hashicorp/kubernetes"
+      source  = "hashicorp/kubernetes"
       version = "2.5.0"
     }
   }
@@ -283,6 +283,7 @@ locals {
   shared_storage_type      = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
   legacy_datasets_pvc_name = var.gradient_machine_config == "paperspace-public" ? "gradient-processing-shared" : ""
   legacy_datasets_sub_path = var.gradient_machine_config == "paperspace-public" ? "datasets" : ""
+  prometheus_storage_class = local.is_public_cluster ? "gradient-processing-rbd" : "gradient-processing-local"
   gradient_main_kind = (
     var.gradient_machine_config == "paperspace-public" ?
     "etcd"
@@ -553,6 +554,8 @@ module "gradient_processing" {
   anti_crypto_miner_regex     = var.anti_crypto_miner_regex
   prometheus_resources        = var.prometheus_resources
   prometheus_pool_name        = local.prometheus_pool_name
+  prometheus_storage_class    = local.prometheus_storage_class
+  rbd_config                  = var.rbd_config
   cert_manager_enabled        = true
   image_cache_enabled         = true
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [

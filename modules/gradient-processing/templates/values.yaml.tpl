@@ -95,6 +95,28 @@ ceph-csi-cephfs:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
+%{ if rbd_storage_config != "" }
+ceph-csi-cephfs:
+  enabled: true
+  storageClass:
+    clusterId: ${cluster_handle}
+    pool: ${rbd_storage_config["pool"]}
+  csiConfig:
+    - clusterID: ${cluster_handle}
+      radosNamespace: ${rbd_storage_config["poolName"]}
+      monitors:
+      %{ for monitor in split(",", lookup(rbd_storage_config, "monitors")) }
+        - ${ monitor }
+      %{ endfor }
+  secret:
+    create: true
+    userId: ${rbd_storage_config["user"]}
+    userId: ${rbd_storage_config["password"]}
+  provisioner:
+    nodeSelector:
+      paperspace.com/pool-name: ${service_pool_name}
+%{ endif }
+
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}
   %{ if cluster_autoscaler_cloudprovider == "paperspace" }
@@ -346,6 +368,8 @@ nfs-subdir-external-provisioner:
 victoria-metrics-k8s-stack:
   vmsingle:
     spec:
+      storage:
+        storageClassName: ${prometheus_storage_class}
       nodeSelector:
         paperspace.com/pool-name: ${prometheus_pool_name}
       %{ if prometheus_resources != null }
