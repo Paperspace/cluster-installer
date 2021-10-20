@@ -185,3 +185,13 @@ variable "rbd_storage_config" {
   description = "Local storage config json"
   default     = ""
 }
+
+variable "ccm_chart_version" {
+  description = "Cloud Controller Manager chart version"
+  default     = "v3.4.0-dev"
+}
+
+variable "ccm_image_tag" {
+  description = "Cloud Controller Manager image tag"
+  default     = "v0.20.0-dev"
+}
