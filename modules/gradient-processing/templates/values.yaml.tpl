@@ -111,7 +111,7 @@ ceph-csi-cephfs:
   secret:
     create: true
     userId: ${rbd_storage_config["user"]}
-    userId: ${rbd_storage_config["password"]}
+    password: ${rbd_storage_config["password"]}
   provisioner:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
@@ -369,7 +369,7 @@ victoria-metrics-k8s-stack:
   vmsingle:
     spec:
       storage:
-        storageClassName: ${prometheus_storage_class}
+        storageClassName: ${metrics_storage_class}
       nodeSelector:
         paperspace.com/pool-name: ${prometheus_pool_name}
       %{ if prometheus_resources != null }

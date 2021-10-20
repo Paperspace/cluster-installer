@@ -184,6 +184,7 @@ resource "helm_release" "gradient_processing" {
       prometheus_pool_name                  = local.prometheus_pool_name
       image_cache_enabled                   = var.image_cache_enabled
       image_cache_list                      = jsonencode(var.image_cache_list)
+      metrics_storage_class                 = var.metrics_storage_class
       rbd_storage_config                    = var.rbd_storage_config
     })
   ]

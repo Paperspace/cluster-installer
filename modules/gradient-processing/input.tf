@@ -296,8 +296,8 @@ variable "prometheus_resources" {
   default     = null
 }
 
-variable "prometheus_storage_class" {
-  description = "Name of the storage class for prometheus"
+variable "metrics_storage_class" {
+  description = "Name of the storage class for the metrics server"
   type        = string
   default     = "gradient-processing-local"
 }
