@@ -481,11 +481,13 @@ module "gradient_processing" {
     "paperspace/gradient-base:tf115-py36-0.10",
     "paperspace/fastai:2.0-CUDA9.2-fastbook-v0.1.0",
     "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
-    "rapidsai/rapidsai:0.19-cuda11.0-runtime-ubuntu18.04-py3.7",
+    "rapidsai/rapidsai-core:21.08-cuda11.0-runtime-ubuntu18.04-py3.7",
     "nvcr.io/nvidia/pytorch:21.02-py3",
     "jupyter/r-notebook",
     "jupyter/datascience-notebook",
     "jalfaizy/cv_docker:latest",
+    "nvcr.io/nvidia/tensorflow:21.09-tf1-py3",
+    "nvcr.io/nvidia/pytorch:21.09-py3",
   ]
 }
 
