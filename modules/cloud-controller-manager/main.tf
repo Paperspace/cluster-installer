@@ -11,8 +11,13 @@ resource "helm_release" "cloud_controller_manager" {
     value = var.image_tag
   }
 
+  set {
+    name  = "paperspace.baseURL"
+    value = var.paperspace_base_url
+  }
+
   set_sensitive {
-    name  = "secrets.apiKey"
+    name  = "paperspace.apiKey"
     value = var.cluster_apikey
   }
 }
