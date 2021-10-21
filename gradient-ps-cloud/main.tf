@@ -706,10 +706,11 @@ output "network_handle" {
 module "cloud_controller_manager" {
   source = "../modules/cloud-controller-manager"
 
-  helm_repo_url      = var.helm_repo_url == "" ? "https://infrastructure-public-chart-museum-repository.storage.googleapis.com" : var.helm_repo_url
-  helm_repo_username = var.helm_repo_username
-  helm_repo_password = var.helm_repo_password
-  chart_version      = var.ccm_chart_version
-  image_tag          = var.ccm_image_tag
-  cluster_apikey     = var.cluster_apikey
+  helm_repo_url       = var.helm_repo_url == "" ? "https://infrastructure-public-chart-museum-repository.storage.googleapis.com" : var.helm_repo_url
+  helm_repo_username  = var.helm_repo_username
+  helm_repo_password  = var.helm_repo_password
+  chart_version       = var.ccm_chart_version
+  image_tag           = var.ccm_image_tag
+  paperspace_base_url = var.api_host
+  cluster_apikey      = var.cluster_apikey
 }
