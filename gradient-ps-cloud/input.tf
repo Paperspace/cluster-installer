@@ -183,7 +183,7 @@ variable "service_pool_name" {
 
 variable "ccm_chart_version" {
   description = "Cloud Controller Manager chart version"
-  default     = "v3.4.0-dev"
+  default     = "v0.1.0"
 }
 
 variable "ccm_image_tag" {
