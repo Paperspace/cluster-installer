@@ -567,7 +567,7 @@ module "gradient_processing" {
     "jupyter/r-notebook",
     "jupyter/datascience-notebook",
     "jalfaizy/cv_docker:latest",
-    "nvcr.io/nvidia/tensorflow:21.09-tf1-py3",
+    "nvcr.io/nvidia/tensorflow:21.09-tf2-py3",
     "nvcr.io/nvidia/pytorch:21.09-py3",
   ]
 }
