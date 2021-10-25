@@ -555,7 +555,7 @@ module "gradient_processing" {
   prometheus_resources        = var.prometheus_resources
   prometheus_pool_name        = local.prometheus_pool_name
   metrics_storage_class       = local.metrics_storage_class
-  rbd_config                  = var.rbd_config
+  rbd_storage_config          = var.rbd_storage_config
   cert_manager_enabled        = true
   image_cache_enabled         = true
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
