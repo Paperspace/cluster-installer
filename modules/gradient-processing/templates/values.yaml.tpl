@@ -96,7 +96,7 @@ ceph-csi-cephfs:
       paperspace.com/pool-name: ${service_pool_name}
 
 %{ if length(rbd_storage_config) != 0 }
-ceph-csi-cephfs:
+ceph-csi-rbd:
   enabled: true
   storageClass:
     clusterId: ${cluster_handle}
