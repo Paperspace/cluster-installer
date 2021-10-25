@@ -188,5 +188,5 @@ variable "ccm_chart_version" {
 
 variable "ccm_image_tag" {
   description = "Cloud Controller Manager image tag"
-  default     = "v0.20.0-dev"
+  default     = "v0.20.0"
 }
