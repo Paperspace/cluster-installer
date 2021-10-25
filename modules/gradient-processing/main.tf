@@ -18,6 +18,7 @@ locals {
       "global.storage.gradient-processing-shared.password" = lookup(local.shared_storage_config, "password", "")
     }
   }
+  rbd_storage_config = var.rbd_storage_config == "" ? {} : jsondecode(var.rbd_storage_config)
 
   tls_secret_name      = "gradient-processing-tls"
   prometheus_pool_name = var.prometheus_pool_name != "" ? var.prometheus_pool_name : var.service_pool_name
@@ -185,7 +186,7 @@ resource "helm_release" "gradient_processing" {
       image_cache_enabled                   = var.image_cache_enabled
       image_cache_list                      = jsonencode(var.image_cache_list)
       metrics_storage_class                 = var.metrics_storage_class
-      rbd_storage_config                    = var.rbd_storage_config
+      rbd_storage_config                    = local.rbd_storage_config
     })
   ]
 }
