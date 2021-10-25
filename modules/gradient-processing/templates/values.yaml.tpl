@@ -103,7 +103,7 @@ ceph-csi-rbd:
     pool: ${rbd_storage_config["rbdPool"]}
   csiConfig:
     - clusterID: ${cluster_handle}
-      radosNamespace: ${rbd_storage_config["rdbPool"]}
+      radosNamespace: ${rbd_storage_config["rbdPool"]}
       monitors:
       %{ for monitor in split(",", lookup(rbd_storage_config, "monitors")) }
         - ${ monitor }
