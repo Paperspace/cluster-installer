@@ -110,8 +110,8 @@ ceph-csi-rbd:
       %{ endfor }
   secret:
     create: true
-    userId: ${rbd_storage_config["user"]}
-    password: ${rbd_storage_config["password"]}
+    userID: ${rbd_storage_config["user"]}
+    userKey: ${rbd_storage_config["password"]}
   provisioner:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
