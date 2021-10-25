@@ -99,7 +99,7 @@ ceph-csi-cephfs:
 ceph-csi-rbd:
   enabled: true
   storageClass:
-    clusterId: ${cluster_handle}
+    clusterID: ${cluster_handle}
     pool: ${rbd_storage_config["rbdPool"]}
   csiConfig:
     - clusterID: ${cluster_handle}
