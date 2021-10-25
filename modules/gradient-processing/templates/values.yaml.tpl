@@ -95,7 +95,7 @@ ceph-csi-cephfs:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
-%{ if rbd_storage_config != "" }
+%{ if length(rbd_storage_config) != 0 }
 ceph-csi-cephfs:
   enabled: true
   storageClass:
