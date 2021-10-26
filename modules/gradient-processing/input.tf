@@ -46,7 +46,7 @@ variable "cluster_apikey" {
 }
 
 variable "cluster_authorization_token" {
-    description = "Cluster auth token to facilitate secure internal communication between API and processing site"
+  description = "Cluster auth token to facilitate secure internal communication between API and processing site"
 }
 
 variable "cluster_autoscaler_autoscaling_groups" {
@@ -296,6 +296,12 @@ variable "prometheus_resources" {
   default     = null
 }
 
+variable "metrics_storage_class" {
+  description = "Name of the storage class for the metrics server"
+  type        = string
+  default     = "gradient-processing-local"
+}
+
 variable "cert_manager_enabled" {
   description = "enable installation of the cert-manager operator"
   type        = bool
@@ -323,5 +329,10 @@ variable "image_cache_list" {
 variable "prometheus_pool_name" {
   description = "paperspace.com/pool-name for prometheus"
   type        = string
+  default     = ""
+}
+
+variable "rbd_storage_config" {
+  description = "Local storage config json"
   default     = ""
 }
