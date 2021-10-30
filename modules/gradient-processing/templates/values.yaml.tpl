@@ -131,6 +131,7 @@ cluster-autoscaler:
       maxSize: ${autoscaling_group["max"]}
     %{ endfor }
   extraArgs:
+    ignore-daemonsets-utilization: true
     skip-nodes-with-system-pods: false
     %{ if cluster_autoscaler_unneeded_time != "" }
     scale-down-delay-after-add: ${cluster_autoscaler_delay_after_add}
