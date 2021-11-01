@@ -61,6 +61,9 @@ locals {
     "C3" = {
       type = "cpu"
     },
+    "C4" = {
+      type = "cpu"
+    },
     "C5" = {
       type = "cpu"
     },
@@ -163,6 +166,7 @@ locals {
   }
 
   asg_max_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_max_sizes, {
+    "Free-CPU-OLD" = 10,
     "Free-CPU"     = 10,
     "Free-GPU"     = 10,
     "Free-RTX4000" = 10,
@@ -176,6 +180,7 @@ locals {
   }) : local.base_asg_max_sizes
   base_asg_max_sizes = merge({
     "C3"        = 10,
+    "C4"        = 10,
     "C5"        = 10,
     "C7"        = 10,
     "P4000"     = 10,
@@ -210,6 +215,7 @@ locals {
   }, var.asg_min_sizes)
 
   asg_min_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_min_sizes, {
+    "Free-CPU-OLD"     = 0,
     "Free-CPU"     = 0,
     "Free-GPU"     = 0,
     "Free-RTX4000" = 0,
@@ -223,6 +229,7 @@ locals {
   }) : local.base_asg_min_sizes
   base_asg_min_sizes = merge({
     "C3"        = 0,
+    "C4"        = 0,
     "C5"        = 0,
     "C7"        = 0,
     "P4000"     = 0,
