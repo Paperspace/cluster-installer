@@ -166,7 +166,6 @@ locals {
   }
 
   asg_max_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_max_sizes, {
-    "Free-CPU-OLD" = 10,
     "Free-CPU"     = 10,
     "Free-GPU"     = 10,
     "Free-RTX4000" = 10,
@@ -215,7 +214,6 @@ locals {
   }, var.asg_min_sizes)
 
   asg_min_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_min_sizes, {
-    "Free-CPU-OLD"     = 0,
     "Free-CPU"     = 0,
     "Free-GPU"     = 0,
     "Free-RTX4000" = 0,
