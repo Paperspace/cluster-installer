@@ -18,7 +18,7 @@ import (
 
 var setupURL = "https://raw.githubusercontent.com/Paperspace/gradient-installer/master/bin/setup"
 var terraformURLPrefix = "https://releases.hashicorp.com/terraform"
-var terraformVersion = "0.13.1"
+var terraformVersion = "1.0.10"
 
 func ApplyCommand(configDir string, autoApprove bool) error {
 	if err := InstallCommand(false); err != nil {
