@@ -170,7 +170,11 @@ cluster-autoscaler:
   cloudProvider: ${cluster_autoscaler_cloudprovider}
 
   nodeSelector:
-    paperspace.com/pool-name: ${service_pool_name}
+    node-role.kubernetes.io/controlplane: "true"
+  tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/controlplane
+    value: "true"
 
 dispatcher:
   config:
