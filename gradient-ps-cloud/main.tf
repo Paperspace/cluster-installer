@@ -564,20 +564,20 @@ module "gradient_processing" {
   cert_manager_enabled        = true
   image_cache_enabled         = true
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
-    "tensorflow/tensorflow:2.4.1-gpu-jupyter",
-    "paperspace/transformers-gpu:0.4.0",
-    "paperspace/gradient-base:tf24-py36-0.10",
-    "paperspace/gradient-base:tf115-py36-0.10",
-    "paperspace/fastai:2.0-fastbook-2021-11-12",
-    "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
-    "rapidsai/rapidsai-core:21.08-cuda11.0-runtime-ubuntu18.04-py3.7",
-    "nvcr.io/nvidia/pytorch:21.02-py3",
-    "jupyter/r-notebook",
-    "jupyter/datascience-notebook",
-    "jalfaizy/cv_docker:latest",
-    "nvcr.io/nvidia/tensorflow:21.09-tf2-py3",
-    "nvcr.io/nvidia/pytorch:21.10-py3",
-  ]
+    "tensorflow/tensorflow:2.4.1-gpu-jupyter",   # 5.71GB
+    "paperspace/transformers-gpu:0.4.0",         # 8.35GB
+    "paperspace/gradient-base:tf24-py36-0.10",   # 7.4GB
+    "paperspace/gradient-base:tf115-py36-0.10",  # 5.43GB
+    "paperspace/fastai:2.0-fastbook-2021-11-12", # 9.34GB
+    "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter", # 5.14GB
+    "rapidsai/rapidsai-core:21.08-cuda11.0-runtime-ubuntu18.04-py3.7",  # 10.1GB
+    "nvcr.io/nvidia/pytorch:21.02-py3",        # 13GB
+    "jupyter/r-notebook",                      # 2.57GB
+    "jupyter/datascience-notebook",            # 4.14GB
+    "jalfaizy/cv_docker:latest",               # 10.2GB
+    "nvcr.io/nvidia/tensorflow:21.09-tf2-py3", # 11.5GB
+    "nvcr.io/nvidia/pytorch:21.10-py3",        # 13.2GB
+  ] # Total: 106GB
 }
 
 resource "rancher2_cluster" "main" {
