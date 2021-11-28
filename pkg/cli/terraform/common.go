@@ -148,6 +148,12 @@ func (c *Common) UpdateSourcePrefix(prefix string, platform paperspace.ClusterPl
 		suffix = "gradient-aws"
 	case paperspace.ClusterPlatformMetal:
 		suffix = "gradient-metal"
+	case paperspace.ClusterPlatformDGX:
+		suffix = "gradient-metal"
+	case paperspace.ClusterPlatformGraphcore:
+		suffix = "gradient-metal"
+	case paperspace.ClusterPlatformSambaNova:
+		suffix = "gradient-metal"
 	}
 
 	c.TerraformSource = fmt.Sprintf("%s/%s", prefix, suffix)

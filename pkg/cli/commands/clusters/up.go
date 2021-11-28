@@ -17,9 +17,10 @@ import (
 
 var TerraformTFName = "main.tf"
 
-func createTerraformMetalNode(terraformMetalNode *terraform.MetalNode, prefix string, required bool) (*terraform.MetalNode, error) {
+func createTerraformMetalNode(terraformMetalNode *terraform.MetalNode, platform paperspace.ClusterPlatformType,
+	prefix string, required bool) (*terraform.MetalNode, error) {
 	if terraformMetalNode == nil {
-		terraformMetalNode = terraform.NewMetalNode()
+		terraformMetalNode = terraform.NewMetalNode(platform)
 	}
 
 	ipPrompt := cli.Prompt{
@@ -33,9 +34,17 @@ func createTerraformMetalNode(terraformMetalNode *terraform.MetalNode, prefix st
 		Value: terraformMetalNode.InternalAddress,
 	}
 
+	var items []string
+	switch platform {
+	case paperspace.ClusterPlatformGraphcore:
+	case paperspace.ClusterPlatformSambaNova:
+		items = []string{string(terraform.PoolTypeCPU)}
+	default:
+		items = []string{string(terraform.PoolTypeGPU), string(terraform.PoolTypeCPU)}
+	}
 	poolTypeSelect := promptui.Select{
 		Label: "Type",
-		Items: []string{string(terraform.PoolTypeGPU), string(terraform.PoolTypeCPU)},
+		Items: items,
 	}
 
 	println("")
@@ -54,12 +63,20 @@ func createTerraformMetalNode(terraformMetalNode *terraform.MetalNode, prefix st
 
 	terraformMetalNode.IP = ipPrompt.Value
 	terraformMetalNode.InternalAddress = internalAddressPrompt.Value
-	terraformMetalNode.UpdatePool(terraform.PoolType(poolType))
+	terraformMetalNode.UpdatePool(terraform.PoolType(poolType), platform)
 
 	return terraformMetalNode, nil
 }
 
-func setupMetalConfig(terraformMetal *terraform.Metal) error {
+func setupMetalConfig(terraformMetal *terraform.Metal, platform paperspace.ClusterPlatformType) error {
+	var platformHasGPU bool
+	switch platform {
+	case paperspace.ClusterPlatformGraphcore:
+	case paperspace.ClusterPlatformSambaNova:
+		platformHasGPU = false
+	default:
+		platformHasGPU = true
+	}
 	// Typed to NFS till we support more storage types
 	sharedStorageServer := cli.Prompt{
 		Label:    "NFS Server",
@@ -71,22 +88,26 @@ func setupMetalConfig(terraformMetal *terraform.Metal) error {
 		Required: true,
 		Value:    terraformMetal.SharedStoragePath,
 	}
-	rebootGPUNodesPrompt := cli.Prompt{
-		Label:         "Reboot GPU Nodes (for NVIDIA drivers)",
-		AllowedValues: cli.YesNoValues,
-		Value:         cli.BoolToYesNo(terraformMetal.RebootGPUNodes),
-		Required:      true,
-	}
 	setupDockerPrompt := cli.Prompt{
 		Label:         "Setup Docker",
 		Required:      true,
 		AllowedValues: cli.YesNoValues,
 		Value:         cli.BoolToYesNo(terraformMetal.SetupDocker),
 	}
-	setupNvidiaPrompt := cli.Prompt{
-		Label:    "Setup NVIDIA",
-		Required: true,
-		Value:    cli.BoolToYesNo(terraformMetal.SetupNvidia),
+	var rebootGPUNodesPrompt cli.Prompt
+	var setupNvidiaPrompt cli.Prompt
+	if platformHasGPU {
+		setupNvidiaPrompt = cli.Prompt{
+			Label:    "Setup NVIDIA",
+			Required: true,
+			Value:    cli.BoolToYesNo(terraformMetal.SetupNvidia),
+		}
+		rebootGPUNodesPrompt = cli.Prompt{
+			Label:         "Reboot GPU Nodes (for NVIDIA drivers)",
+			AllowedValues: cli.YesNoValues,
+			Value:         cli.BoolToYesNo(terraformMetal.RebootGPUNodes),
+			Required:      true,
+		}
 	}
 	sshKeyPathPrompt := cli.Prompt{
 		Label:    "SSH Private Key Path",
@@ -105,7 +126,7 @@ func setupMetalConfig(terraformMetal *terraform.Metal) error {
 		return err
 	}
 
-	mainNode, err := createTerraformMetalNode(terraformMetal.MainNode, "Main Node", true)
+	mainNode, err := createTerraformMetalNode(terraformMetal.MainNode, platform, "Main Node", true)
 	if err != nil {
 		return err
 	}
@@ -129,7 +150,7 @@ func setupMetalConfig(terraformMetal *terraform.Metal) error {
 			continue
 		}
 
-		node, err := createTerraformMetalNode(workerNode, fmt.Sprintf("Worker Node %d", index+1), true)
+		node, err := createTerraformMetalNode(workerNode, platform, fmt.Sprintf("Worker Node %d", index+1), true)
 		if err != nil {
 			return err
 		}
@@ -154,7 +175,7 @@ func setupMetalConfig(terraformMetal *terraform.Metal) error {
 			break
 		}
 
-		node, err := createTerraformMetalNode(nil, fmt.Sprintf("Worker Node %d", len(workerNodes)+1), true)
+		node, err := createTerraformMetalNode(nil, platform, fmt.Sprintf("Worker Node %d", len(workerNodes)+1), true)
 		if err != nil {
 			return err
 		}
@@ -171,8 +192,12 @@ func setupMetalConfig(terraformMetal *terraform.Metal) error {
 	if err := setupDockerPrompt.Run(); err != nil {
 		return err
 	}
-	if err := setupNvidiaPrompt.Run(); err != nil {
-		return err
+	if platformHasGPU {
+		if err := setupNvidiaPrompt.Run(); err != nil {
+			return err
+		}
+
+		terraformMetal.SetupNvidia = cli.YesNoToBool(setupNvidiaPrompt.Value)
 	}
 
 	terraformMetal.MainNode = mainNode
@@ -180,16 +205,17 @@ func setupMetalConfig(terraformMetal *terraform.Metal) error {
 	terraformMetal.SharedStoragePath = sharedStoragePath.Value
 	terraformMetal.SharedStorageServer = sharedStorageServer.Value
 	terraformMetal.SetupDocker = cli.YesNoToBool(setupDockerPrompt.Value)
-	terraformMetal.SetupNvidia = cli.YesNoToBool(setupNvidiaPrompt.Value)
 	terraformMetal.SSHKeyPath = sshKeyPathPrompt.Value
 	terraformMetal.SSHUser = sshUserPrompt.Value
 
-	if terraformMetal.SetupNvidia {
-		if err := rebootGPUNodesPrompt.Run(); err != nil {
-			return err
-		}
+	if platformHasGPU {
+		if terraformMetal.SetupNvidia {
+			if err := rebootGPUNodesPrompt.Run(); err != nil {
+				return err
+			}
 
-		terraformMetal.RebootGPUNodes = cli.YesNoToBool(rebootGPUNodesPrompt.Value)
+			terraformMetal.RebootGPUNodes = cli.YesNoToBool(rebootGPUNodesPrompt.Value)
+		}
 	}
 
 	return nil
@@ -522,8 +548,11 @@ func NewClusterUpCommand() *cobra.Command {
 			switch cluster.Platform {
 			case paperspace.ClusterPlatformAWS:
 			case paperspace.ClusterPlatformMetal:
+			case paperspace.ClusterPlatformDGX:
+			case paperspace.ClusterPlatformGraphcore:
+			case paperspace.ClusterPlatformSambaNova:
 				if reinstall || !terraformInstance.HasValidMetal() {
-					if err := setupMetalConfig(terraformInstance.Modules.Metal); err != nil {
+					if err := setupMetalConfig(terraformInstance.Modules.Metal, cluster.Platform); err != nil {
 						return err
 					}
 				}

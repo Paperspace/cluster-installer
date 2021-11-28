@@ -1,6 +1,10 @@
 package terraform
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/Paperspace/paperspace-go"
+)
 
 type MetalNode struct {
 	IP              string   `json:"ip"`
@@ -23,10 +27,10 @@ type Metal struct {
 	SSHUser             string       `json:"ssh_user,omitempty"`
 }
 
-func NewMetal() *Metal {
+func NewMetal(platform paperspace.ClusterPlatformType) *Metal {
 	metal := Metal{
 		Common:      NewCommon(),
-		MainNode:    NewMetalNode(),
+		MainNode:    NewMetalNode(platform),
 		WorkerNodes: make([]*MetalNode, 0),
 		SSHKeyPath:  "~/.ssh/id_rsa",
 		SSHUser:     "ubuntu",
@@ -36,24 +40,59 @@ func NewMetal() *Metal {
 	return &metal
 }
 
-func NewMetalNode() *MetalNode {
+func NewMetalNode(platform paperspace.ClusterPlatformType) *MetalNode {
+	switch platform {
+	case paperspace.ClusterPlatformGraphcore:
+		return &MetalNode{
+			PoolType: PoolTypeCPU,
+		}
+	case paperspace.ClusterPlatformSambaNova:
+		return &MetalNode{
+			PoolType: PoolTypeCPU,
+		}
+	}
+
 	return &MetalNode{
 		PoolType: PoolTypeGPU,
 	}
 }
 
-func MetalPoolName(poolType PoolType) string {
-	switch poolType {
-	case PoolTypeCPU:
-		return "metal-cpu"
-	case PoolTypeGPU:
-		return "metal-gpu"
+func MetalPoolName(poolType PoolType, platform paperspace.ClusterPlatformType) string {
+	switch platform {
+	case paperspace.ClusterPlatformMetal:
+		switch poolType {
+		case PoolTypeCPU:
+			return "metal-cpu"
+		case PoolTypeGPU:
+			return "metal-gpu"
+		}
+	case paperspace.ClusterPlatformDGX:
+		switch poolType {
+		case PoolTypeCPU:
+			return "dgx.cpu"
+		case PoolTypeGPU:
+			return "dgx.gpu"
+		}
+	case paperspace.ClusterPlatformGraphcore:
+		switch poolType {
+		case PoolTypeCPU:
+			return "ipu-host"
+		case PoolTypeGPU:
+			return ""
+		}
+	case paperspace.ClusterPlatformSambaNova:
+		switch poolType {
+		case PoolTypeCPU:
+			return "rdu-node"
+		case PoolTypeGPU:
+			return ""
+		}
 	}
 
 	return ""
 }
 
-func (m *MetalNode) UpdatePool(poolType PoolType) {
+func (m *MetalNode) UpdatePool(poolType PoolType, platform paperspace.ClusterPlatformType) {
 	m.PoolType = poolType
-	m.PoolName = MetalPoolName(poolType)
+	m.PoolName = MetalPoolName(poolType, platform)
 }

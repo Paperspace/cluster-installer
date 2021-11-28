@@ -5,7 +5,13 @@ import (
 )
 
 var SourcePrefix = "github.com/Paperspace/gradient-installer"
-var SupportedClusterPlatformTypes = []paperspace.ClusterPlatformType{paperspace.ClusterPlatformAWS, paperspace.ClusterPlatformDGX, paperspace.ClusterPlatformMetal}
+var SupportedClusterPlatformTypes = []paperspace.ClusterPlatformType{
+	paperspace.ClusterPlatformAWS,
+	paperspace.ClusterPlatformMetal,
+	paperspace.ClusterPlatformDGX,
+	paperspace.ClusterPlatformGraphcore,
+	paperspace.ClusterPlatformSambaNova,
+}
 
 type PoolType string
 
@@ -33,7 +39,12 @@ func NewTerraform(platform paperspace.ClusterPlatformType) *Terraform {
 			},
 		}
 	case paperspace.ClusterPlatformMetal:
-		terraformModules.Metal = NewMetal()
+	case paperspace.ClusterPlatformDGX:
+		terraformModules.Metal = NewMetal(platform)
+	case paperspace.ClusterPlatformGraphcore:
+		terraformModules.Metal = NewMetal(platform)
+	case paperspace.ClusterPlatformSambaNova:
+		terraformModules.Metal = NewMetal(platform)
 	}
 
 	terraform := Terraform{
@@ -50,6 +61,12 @@ func (t *Terraform) GetCommon(platform paperspace.ClusterPlatformType) *Common {
 	case paperspace.ClusterPlatformAWS:
 		return t.Modules.AWS.Common
 	case paperspace.ClusterPlatformMetal:
+		return t.Modules.Metal.Common
+	case paperspace.ClusterPlatformDGX:
+		return t.Modules.Metal.Common
+	case paperspace.ClusterPlatformGraphcore:
+		return t.Modules.Metal.Common
+	case paperspace.ClusterPlatformSambaNova:
 		return t.Modules.Metal.Common
 	}
 
