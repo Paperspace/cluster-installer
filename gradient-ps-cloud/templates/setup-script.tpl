@@ -2,6 +2,12 @@
 
 sudo su -
 
+# disable apt auto update to reduce chance of apt conflicts
+sed -i 's/APT::Periodic::Update-Package-Lists "1"/APT::Periodic::Update-Package-Lists "0"/' /etc/apt/apt.conf.d/10periodic
+sed -i 's/APT::Periodic::Update-Package-Lists "1"/APT::Periodic::Update-Package-Lists "0"/' /etc/apt/apt.conf.d/20auto-upgrades
+sed -i 's/APT::Periodic::Unattended-Upgrade "1"/APT::Periodic::Unattended-Upgrade "0"/' /etc/apt/apt.conf.d/20auto-upgrades
+systemctl disable --now apt-daily{,-upgrade}.{timer,service}
+
 until docker ps -a || (( count++ >= 30 )); do echo "Check if docker is up..."; sleep 2; done
 
 usermod -G docker paperspace
@@ -43,6 +49,18 @@ export MACHINE_PUBLIC_IP=`curl -s https://metadata.paperspace.com/meta-data/mach
 %{ if kind == "main" ~}
 ${rancher_command} \
     --etcd --controlplane \
+    --address $MACHINE_PUBLIC_IP \
+    --internal-address $MACHINE_PRIVATE_IP
+%{ endif ~}
+%{ if kind == "etcd" ~}
+${rancher_command} \
+    --etcd \
+    --address $MACHINE_PUBLIC_IP \
+    --internal-address $MACHINE_PRIVATE_IP
+%{ endif ~}
+%{ if kind == "controlplane" ~}
+${rancher_command} \
+    --controlplane \
     --address $MACHINE_PUBLIC_IP \
     --internal-address $MACHINE_PRIVATE_IP
 %{ endif ~}

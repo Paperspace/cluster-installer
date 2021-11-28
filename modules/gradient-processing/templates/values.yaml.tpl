@@ -12,12 +12,30 @@ global:
     port: ${elastic_search_port}
     user: ${elastic_search_user}
   %{ endif }
+
   logs:
     host: ${logs_host}
   ingressHost: ${domain}
   clusterSecretChecksum: ${cluster_secret_checksum}
   serviceNodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
+  serviceResources:
+    %{ if is_public_cluster }
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 250m
+      memory: 512Mi
+   %{ else }
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+   %{ endif }
+
   api: ${paperspace_base_url}
 
   defaultStorageName: ${default_storage_name}
@@ -77,13 +95,34 @@ ceph-csi-cephfs:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
+%{ if length(rbd_storage_config) != 0 }
+ceph-csi-rbd:
+  enabled: true
+  storageClass:
+    clusterID: ${cluster_handle}
+    pool: ${rbd_storage_config["rbdPool"]}
+  csiConfig:
+    - clusterID: ${cluster_handle}
+      monitors:
+      %{ for monitor in split(",", lookup(rbd_storage_config, "monitors")) }
+        - ${ monitor }
+      %{ endfor }
+  secret:
+    create: true
+    userID: ${rbd_storage_config["user"]}
+    userKey: ${rbd_storage_config["password"]}
+  provisioner:
+    nodeSelector:
+      paperspace.com/pool-name: ${service_pool_name}
+%{ endif }
+
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}
   %{ if cluster_autoscaler_cloudprovider == "paperspace" }
   image:
     pullPolicy: Always
     repository: paperspace/cluster-autoscaler
-    tag: v1.15.3
+    tag: 1.20-c1bf54b37714f2683cb31e3db71e07c39183a2d7
 
   autoscalingGroups:
     %{ for autoscaling_group in cluster_autoscaler_autoscaling_groups }
@@ -92,6 +131,7 @@ cluster-autoscaler:
       maxSize: ${autoscaling_group["max"]}
     %{ endfor }
   extraArgs:
+    ignore-daemonsets-utilization: true
     skip-nodes-with-system-pods: false
     %{ if cluster_autoscaler_unneeded_time != "" }
     scale-down-delay-after-add: ${cluster_autoscaler_delay_after_add}
@@ -106,6 +146,23 @@ cluster-autoscaler:
       key: PS_API_KEY
 
   %{ endif }
+  %{ if is_public_cluster }
+  resources:
+    requests:
+      cpu: 500m
+      memory: 3072Mi
+    limits:
+      cpu: 500m
+      memory: 3072Mi
+  %{ else }
+  resources:
+    limits:
+      cpu: 100m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+  %{ endif }
 
   awsRegion: ${aws_region}
   autoDiscovery:
@@ -115,10 +172,10 @@ cluster-autoscaler:
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
 
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
+dispatcher:
+  config:
+    apiAddress: ${dispatcher_host}
+
 
 efs-provisioner:
   enabled: ${efs_provisioner_enabled}
@@ -130,14 +187,33 @@ efs-provisioner:
     paperspace.com/pool-name: ${service_pool_name}
 
 fluent-bit:
-  rawConfig: |-
-    # used to trigger changes
-    ${elastic_search_sha}
+  env:
+    - name: PS_LOGS_HOST
+      value: ${logs_host}
+    - name: PS_CLUSTER_HANDLE
+      value: ${cluster_handle}
+    - name: PS_CLUSTER_AUTHORIZATION_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: gradient-processing
+          key: PS_CLUSTER_AUTHORIZATION_TOKEN
 
 gradient-operator:
   config:
     ingressHost: ${domain}
     usePodAntiAffinity: ${use_pod_anti_affinity}
+
+    %{ if is_public_cluster }
+    controller:
+      resources:
+        requests:
+          cpu: 1000m
+          memory: 2048Mi
+        limits:
+          cpu: 1000m
+          memory: 2048Mi
+    %{ endif }
+
     %{ if pod_assignment_label_name != "" }
     podAssignmentLabelName: ${pod_assignment_label_name}
     %{ endif }
@@ -151,9 +227,30 @@ gradient-operator:
     legacyDatasetsSubPath: ${legacy_datasets_sub_path}
     %{ endif }
 
+    %{ if is_public_cluster }
+    stateWatcher:
+      resources:
+        requests:
+          cpu: 250m
+          memory: 512Mi
+        limits:
+          cpu: 250m
+          memory: 512Mi
+    %{ endif }
+
     abuseWatcher:
       enabled: ${anti_crypto_miner_regex != ""}
       antiCryptoMinerRegex: ${anti_crypto_miner_regex}
+
+      %{ if is_public_cluster }
+      resources:
+        requests:
+          cpu: 250m
+          memory: 1Gi
+        limits:
+          cpu: 250m
+          memory: 1Gi
+      %{ endif }
 
     %{ if label_selector_cpu != "" && label_selector_gpu != "" }
     modelDeploymentConfig:
@@ -260,7 +357,7 @@ gradient-operator-dispatcher:
     sentryEnvironment: ${name}
     sentryDSN: ${sentry_dsn}
 
-nfs-client-provisioner:
+nfs-subdir-external-provisioner:
   enabled: ${nfs_client_provisioner_enabled}
   nfs:
     path: ${shared_storage_path}
@@ -268,11 +365,13 @@ nfs-client-provisioner:
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
 
-kube-prometheus-stack:
-  prometheus:
-    prometheusSpec:
+victoria-metrics-k8s-stack:
+  vmsingle:
+    spec:
+      storage:
+        storageClassName: ${metrics_storage_class}
       nodeSelector:
-        paperspace.com/pool-name: ${service_pool_name}
+        paperspace.com/pool-name: ${prometheus_pool_name}
       %{ if prometheus_resources != null }
       resources:
         limits:
@@ -285,14 +384,48 @@ kube-prometheus-stack:
     ingress:
       hosts:
         - ${domain}
-      paths:
-        - /prometheus
+
   kube-state-metrics:
+    %{ if is_public_cluster }
+    resources:
+      requests:
+        cpu: 500m
+        memory: 2Gi
+      limits:
+        cpu: 500m
+        memory: 2Gi
+    %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
-  prometheusOperator:
+
+  victoria-metrics-operator:
+    %{ if is_public_cluster }
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
+
+  vmagent:
+    spec:
+      externalLabels:
+        cluster: ${cluster_handle}
+      nodeSelector:
+        paperspace.com/pool-name: ${service_pool_name}
+      %{ if is_public_cluster }
+      resources:
+        requests:
+          cpu: 1000m
+          memory: 2Gi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+      %{ endif }
 
 traefik:
   replicas: ${lb_count}
@@ -354,15 +487,35 @@ argo:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
-kubefledged:
-  enabled: ${image_cache_enabled}
-  %{ if image_cache_enabled }
-  cacheSpec:
-    - images: ${image_cache_list}
-      nodeSelector:
-        %{ if is_public_cluster }
-        provider.autoscaler/prefix: paperspace
-        %{ else }
-        paperspace.com/gradient-worker: "true"
-        %{ endif }
+%{ if image_cache_enabled }
+imageCacher:
+  enabled: true
+  config:
+    maxParallelism: 20
+    images: ${image_cache_list}
+%{ endif }
+
+
+volumeController:
+  enabled: true
+  %{ if is_public_cluster }
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1536Mi
+    limits:
+      cpu: 500m
+      memory: 1536Mi
   %{ endif }
+
+
+%{ if is_public_cluster }
+gradient-experiment-watcher:
+  enabled: false
+
+gradient-model-deployment-watcher:
+  enabled: false
+
+gradient-model-deployment-autoscaler:
+  enabled: false
+%{ endif }

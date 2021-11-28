@@ -45,6 +45,10 @@ variable "cluster_apikey" {
   description = "Gradient cluster apikey"
 }
 
+variable "cluster_authorization_token" {
+  description = "Cluster auth token to facilitate secure internal communication between API and processing site"
+}
+
 variable "cluster_autoscaler_autoscaling_groups" {
   type        = list(any)
   description = "Cluster autoscaler autoscaling groups"
@@ -70,6 +74,11 @@ variable "cluster_autoscaler_unneeded_time" {
 
 variable "cluster_handle" {
   description = "Gradient cluster handle"
+}
+
+
+variable "dispatcher_host" {
+  description = "Dispatcher host"
 }
 
 variable "domain" {
@@ -287,6 +296,12 @@ variable "prometheus_resources" {
   default     = null
 }
 
+variable "metrics_storage_class" {
+  description = "Name of the storage class for the metrics server"
+  type        = string
+  default     = "gradient-processing-local"
+}
+
 variable "cert_manager_enabled" {
   description = "enable installation of the cert-manager operator"
   type        = bool
@@ -305,14 +320,19 @@ variable "image_cache_enabled" {
   default     = true
 }
 
-variable "kubefledged_version" {
-  description = "Version of the kube-fledged chart to install"
-  type        = string
-  default     = "v0.7.3"
-}
-
 variable "image_cache_list" {
   description = "list of containers to cache on your worker nodes"
   type        = list(string)
   default     = []
+}
+
+variable "prometheus_pool_name" {
+  description = "paperspace.com/pool-name for prometheus"
+  type        = string
+  default     = ""
+}
+
+variable "rbd_storage_config" {
+  description = "Local storage config json"
+  default     = ""
 }

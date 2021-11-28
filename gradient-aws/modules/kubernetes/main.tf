@@ -375,13 +375,13 @@ data "aws_eks_cluster_auth" "cluster" {
     name  = module.eks.cluster_id
 }
 
+/*
 provider "kubernetes" {
     host                   = element(concat(data.aws_eks_cluster.cluster[*].endpoint,tolist([])), 0)
     cluster_ca_certificate = base64decode(element(concat(data.aws_eks_cluster.cluster[*].certificate_authority.0.data,tolist([])), 0))
     token                  = element(concat(data.aws_eks_cluster_auth.cluster[*].token,tolist([])), 0)
-    load_config_file       = false
-    version = "1.11.1"
 }
+*/
 
 resource "aws_key_pair" "main" {
     count = var.public_key == "" ? 0 : 1
@@ -391,6 +391,7 @@ resource "aws_key_pair" "main" {
 
 module "eks" {
     source          = "terraform-aws-modules/eks/aws"
+    version = "15.2.0"
 
     config_output_path = pathexpand(var.kubeconfig_path)
     create_eks = var.enable

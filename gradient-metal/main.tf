@@ -1,7 +1,24 @@
+terraform {
+  required_providers {
+    rancher2 = {
+      source  = "rancher/rancher2"
+      version = "1.17.0"
+    }
+    helm = {
+      source = "hashicorp/helm"
+      version = "2.3.0"
+    }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.5.0"
+    }
+  }
+}
+
 locals {
     has_k8s = var.k8s_endpoint == "" ? false : true
     has_shared_storage = var.shared_storage_path == "" ? false : true
-    k8s_version = var.k8s_version == "" ? "1.16.15" : var.k8s_version
+    k8s_version = var.k8s_version == "" ? "1.20.8" : var.k8s_version
     shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
 
     is_single_node = length(var.k8s_workers) == 0
@@ -44,7 +61,6 @@ module "storage" {
 
 provider "helm" {
     debug = true
-    version = "1.2.1"
     kubernetes {
         host     = module.kubernetes.k8s_host
         username = module.kubernetes.k8s_username
@@ -52,20 +68,16 @@ provider "helm" {
         client_certificate     = module.kubernetes.k8s_client_certificate
         client_key             = module.kubernetes.k8s_client_key
         cluster_ca_certificate = module.kubernetes.k8s_cluster_ca_certificate
-        load_config_file = false
     }
 }
 
 provider "kubernetes" {
-    version = "1.13.3"
-
     host     = module.kubernetes.k8s_host
     username = module.kubernetes.k8s_username
 
     client_certificate     = module.kubernetes.k8s_client_certificate
     client_key             = module.kubernetes.k8s_client_key
     cluster_ca_certificate = module.kubernetes.k8s_cluster_ca_certificate
-    load_config_file = false
 }
 
 // Gradient
@@ -82,10 +94,12 @@ module "gradient_processing" {
     artifacts_secret_access_key = var.artifacts_secret_access_key
     chart = var.gradient_processing_chart
     cluster_apikey = var.cluster_apikey
+    cluster_authorization_token = var.cluster_authorization_token
     cluster_autoscaler_autoscaling_groups = var.cluster_autoscaler_autoscaling_groups
     cluster_autoscaler_cloudprovider = var.cluster_autoscaler_cloudprovider
     cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
     cluster_handle = var.cluster_handle
+    dispatcher_host = var.dispatcher_host
     domain = var.domain
 
     helm_repo_username = var.helm_repo_username

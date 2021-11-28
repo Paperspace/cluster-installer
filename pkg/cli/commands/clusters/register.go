@@ -12,12 +12,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-const (
-	InClusterContainerRegistryOption  = "Install on cluster"
-	ThirdPartyContainerRegistryOption = "Use 3rd Party"
-	NoContainerRegistry               = "No container registry"
-)
-
 func ClusterRegister(client *paperspace.Client, createFilePath string) (string, error) {
 	var cluster paperspace.Cluster
 	var params paperspace.ClusterCreateParams
@@ -53,28 +47,6 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 			Label: "Platform",
 			Items: terraform.SupportedClusterPlatformTypes,
 		}
-		useContainerRegistrySelect := promptui.Select{
-			Label: "Container Registry, used for storing notebook snapshots and container builds",
-			Items: []string{ThirdPartyContainerRegistryOption, NoContainerRegistry},
-		}
-		containerRegistryURLPrompt := cli.Prompt{
-			Label:    "Container Registry URL",
-			Required: true,
-		}
-		containerRegistryRepositoryPrompt := cli.Prompt{
-			Label:    "Container Registry Repository",
-			Required: true,
-		}
-		containerRegistryUsernamePrompt := cli.Prompt{
-			Label:    "Container Registry Username",
-			Required: true,
-		}
-		containerRegistryPasswordPrompt := cli.Prompt{
-			Label:     "Container Registry Password",
-			Required:  true,
-			UseMask:   true,
-		}
-
 		println(cli.TextHeader("Register a private cluster"))
 		if err := namePrompt.Run(); err != nil {
 			return "", err
@@ -104,37 +76,14 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 			return "", err
 		}
 
-		_, useContainerRegistry, err := useContainerRegistrySelect.Run()
-		if err != nil {
-			return "", err
-		}
-		if string(useContainerRegistry) == ThirdPartyContainerRegistryOption {
-			if err := containerRegistryURLPrompt.Run(); err != nil {
-				return "", err
-			}
-			if err := containerRegistryRepositoryPrompt.Run(); err != nil {
-				return "", err
-			}
-			if err := containerRegistryUsernamePrompt.Run(); err != nil {
-				return "", err
-			}
-			if err := containerRegistryPasswordPrompt.Run(); err != nil {
-				return "", err
-			}
-		}
-
 		params = paperspace.ClusterCreateParams{
-			ArtifactsAccessKeyID:        artifactsAccessKeyIDPrompt.Value,
-			ArtifactsBucketPath:         artifactsBucketPathPrompt.Value,
-			ArtifactsSecretAccessKey:    artifactsSecretAccessKeyPrompt.Value,
-			Domain:                      domainPrompt.Value,
-			Name:                        namePrompt.Value,
-			Platform:                    platform,
-			Region:                      region,
-			ContainerRegistryURL:        containerRegistryURLPrompt.Value,
-			ContainerRegistryRepository: containerRegistryRepositoryPrompt.Value,
-			ContainerRegistryUsername:   containerRegistryUsernamePrompt.Value,
-			ContainerRegistryPassword:   containerRegistryPasswordPrompt.Value,
+			ArtifactsAccessKeyID:     artifactsAccessKeyIDPrompt.Value,
+			ArtifactsBucketPath:      artifactsBucketPathPrompt.Value,
+			ArtifactsSecretAccessKey: artifactsSecretAccessKeyPrompt.Value,
+			Domain:                   domainPrompt.Value,
+			Name:                     namePrompt.Value,
+			Platform:                 platform,
+			Region:                   region,
 		}
 	} else {
 		createFile, err := os.Open(createFilePath)

@@ -5,3 +5,4 @@ plugins
 terraform.tfstate
 gradient-installer
 .idea/
+*.sw*

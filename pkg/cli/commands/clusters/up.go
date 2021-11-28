@@ -474,10 +474,11 @@ func NewClusterUpCommand(version string) *cobra.Command {
 				return fmt.Errorf("Platform '%s' is not currently supported by %s", checkCluster.Platform, cli.Name)
 			}
 
-			// Update cluster to regenerate cluster API key
+			// Update cluster to regenerate cluster API key and cluster secret
 			updateClusterParams := paperspace.ClusterUpdateParams{
-				ID:             id,
-				CreateNewToken: true,
+				ID:                     id,
+				CreateNewToken:         true,
+				CreateNewClusterSecret: true,
 			}
 			cluster, err := client.UpdateCluster(id, updateClusterParams)
 			if err != nil {

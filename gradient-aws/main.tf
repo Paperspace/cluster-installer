@@ -1,3 +1,20 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 3"
+    }
+    helm = {
+      source = "hashicorp/helm"
+      version = "2.3.0"
+    }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.5.0"
+    }
+  }
+}
+
 provider "aws" {
   region = var.aws_region
 }
@@ -25,7 +42,7 @@ data "aws_ec2_instance_type_offerings" "available" {
 locals {
     az = compact([for name in data.aws_availability_zones.available.names : length(data.aws_ec2_instance_type_offerings.available[name].instance_types) == length(local.instance_types) ? name : ""])
     az_map = zipmap(data.aws_availability_zones.available.names, data.aws_availability_zones.available.names)
-    
+
     has_k8s = var.k8s_endpoint == "" ? false : true
     has_shared_storage = var.shared_storage_server == "" ? false : true
     instance_types = [
@@ -36,7 +53,7 @@ locals {
         "p3.2xlarge",
         "p3.16xlarge"
     ]
-    k8s_version = var.k8s_version == "" ? "1.16" : var.k8s_version
+    k8s_version = var.k8s_version == "" ? "1.20" : var.k8s_version
     shared_storage_type = var.shared_storage_type == "" ? "efs" : var.shared_storage_type
 }
 
@@ -63,6 +80,9 @@ module "network" {
 // Kubernetes
 module "kubernetes" {
     source = "./modules/kubernetes"
+    providers = {
+        kubernetes = kubernetes.gradient
+    }
     enable = !local.has_k8s
 
     name = var.name
@@ -106,12 +126,10 @@ data "aws_eks_cluster_auth" "cluster" {
 provider "helm" {
     alias = "gradient"
     debug = true
-    version = "1.2.1"
     kubernetes {
         host                   = element(concat(data.aws_eks_cluster.cluster[*].endpoint,tolist([])), 0)
         cluster_ca_certificate = base64decode(element(concat(data.aws_eks_cluster.cluster[*].certificate_authority.0.data,tolist([])), 0))
         token                  = element(concat(data.aws_eks_cluster_auth.cluster[*].token,tolist([])), 0)
-        load_config_file       = false
     }
 }
 provider "kubernetes" {
@@ -120,7 +138,6 @@ provider "kubernetes" {
     host                   = element(concat(data.aws_eks_cluster.cluster[*].endpoint,tolist([])), 0)
     cluster_ca_certificate = base64decode(element(concat(data.aws_eks_cluster.cluster[*].certificate_authority.0.data,tolist([])), 0))
     token                  = element(concat(data.aws_eks_cluster_auth.cluster[*].token,tolist([])), 0)
-    load_config_file       = false
 }
 
 // Gradient
@@ -142,8 +159,10 @@ module "gradient_processing" {
     artifacts_secret_access_key = var.artifacts_secret_access_key
     chart = var.gradient_processing_chart
     cluster_apikey = var.cluster_apikey
+    cluster_authorization_token = var.cluster_authorization_token
     cluster_autoscaler_enabled = true
     cluster_handle = var.cluster_handle
+    dispatcher_host = var.dispatcher_host
     domain = var.domain
     elastic_search_host = var.elastic_search_host
     elastic_search_index = var.elastic_search_index
@@ -177,5 +196,5 @@ module "gradient_processing" {
 }
 
 output "elb_hostname" {
-    value = module.gradient_processing.traefik_service.load_balancer_ingress[0].hostname
+    value = module.gradient_processing.traefik_service.status.0.load_balancer.0.ingress.0.hostname
 }

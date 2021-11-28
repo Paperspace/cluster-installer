@@ -18,44 +18,23 @@ locals {
       "global.storage.gradient-processing-shared.password" = lookup(local.shared_storage_config, "password", "")
     }
   }
+  rbd_storage_config = var.rbd_storage_config == "" ? {} : jsondecode(var.rbd_storage_config)
 
-  tls_secret_name = "gradient-processing-tls"
+  tls_secret_name      = "gradient-processing-tls"
+  prometheus_pool_name = var.prometheus_pool_name != "" ? var.prometheus_pool_name : var.service_pool_name
 }
 
 resource "helm_release" "cert_manager" {
   count = var.cert_manager_enabled ? 1 : 0
 
-  name                = "cert-manager"
-  repository          = "https://charts.jetstack.io"
-  chart               = "cert-manager"
-  version             = var.cert_manager_version
+  name       = "cert-manager"
+  repository = "https://charts.jetstack.io"
+  chart      = "cert-manager"
+  version    = var.cert_manager_version
 
   values = [
     yamlencode({
       "installCRDs" = true
-      "nodeSelector" = {
-        "paperspace.com/pool-name" = var.service_pool_name
-      }
-    })
-  ]
-}
-
-resource "helm_release" "kube_fledged" {
-  count = var.image_cache_enabled ? 1 : 0
-  depends_on = [ helm_release.cert_manager ]
-
-  name                = "fledged"
-  repository          = local.helm_repo_url
-  repository_username = var.helm_repo_username
-  repository_password = var.helm_repo_password
-  chart               = "kubefledged"
-  version             = var.kubefledged_version
-
-  values = [
-    yamlencode({
-      "certManager" = {
-        "enabled" = true
-      }
       "nodeSelector" = {
         "paperspace.com/pool-name" = var.service_pool_name
       }
@@ -70,7 +49,6 @@ resource "helm_release" "gradient_processing" {
   repository_password = var.helm_repo_password
   chart               = var.chart
   version             = var.gradient_processing_version
-  depends_on          = [ helm_release.kube_fledged ]
 
   set_sensitive {
     name  = "global.elasticSearch.password"
@@ -91,6 +69,10 @@ resource "helm_release" "gradient_processing" {
   set_sensitive {
     name  = "secrets.clusterApikey"
     value = var.cluster_apikey
+  }
+  set_sensitive {
+    name  = "secrets.clusterAuthorizationToken"
+    value = var.cluster_authorization_token
   }
   set_sensitive {
     name  = "secrets.tlsCert"
@@ -156,8 +138,9 @@ resource "helm_release" "gradient_processing" {
       cluster_autoscaler_delay_after_add    = var.cluster_autoscaler_delay_after_add
       cluster_autoscaler_unneeded_time      = var.cluster_autoscaler_unneeded_time
       cluster_handle                        = var.cluster_handle
-      cluster_secret_checksum               = sha256("${var.cluster_handle}${var.cluster_apikey}")
+      cluster_secret_checksum               = sha256("${var.cluster_handle}${var.cluster_apikey}${var.cluster_authorization_token}")
       default_storage_name                  = local.local_storage_name
+      dispatcher_host                       = var.dispatcher_host
       efs_provisioner_enabled               = var.shared_storage_type == "efs" || var.local_storage_type == "efs"
       elastic_search_enabled                = var.elastic_search_password != ""
       elastic_search_host                   = var.elastic_search_host
@@ -199,8 +182,11 @@ resource "helm_release" "gradient_processing" {
       legacy_datasets_pvc_name              = var.legacy_datasets_pvc_name
       anti_crypto_miner_regex               = var.anti_crypto_miner_regex
       prometheus_resources                  = var.prometheus_resources
+      prometheus_pool_name                  = local.prometheus_pool_name
       image_cache_enabled                   = var.image_cache_enabled
       image_cache_list                      = jsonencode(var.image_cache_list)
+      metrics_storage_class                 = var.metrics_storage_class
+      rbd_storage_config                    = local.rbd_storage_config
     })
   ]
 }
