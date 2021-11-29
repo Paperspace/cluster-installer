@@ -64,7 +64,7 @@ variable "machine_template_id_main" {
 variable "machine_type_main" {
   description = "Main machine type"
   default = {
-    singlenode = "C5"
+    singlenode = "C7"
     multinode  = "C7"
   }
 }
@@ -194,4 +194,9 @@ variable "ccm_chart_version" {
 variable "ccm_image_tag" {
   description = "Cloud Controller Manager image tag"
   default     = "v0.20.0"
+}
+
+variable "pop_chart_version" {
+  description = "Pool Overprovisioner chart version"
+  default     = "0.1.0"
 }
