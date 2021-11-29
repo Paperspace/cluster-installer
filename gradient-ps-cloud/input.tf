@@ -64,7 +64,7 @@ variable "machine_template_id_main" {
 variable "machine_type_main" {
   description = "Main machine type"
   default = {
-    singlenode = "C5"
+    singlenode = "C7"
     multinode  = "C7"
   }
 }
