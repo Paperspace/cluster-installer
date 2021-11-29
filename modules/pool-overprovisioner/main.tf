@@ -7,6 +7,6 @@ resource "helm_release" "pool-overprovisioner" {
   version             = var.chart_version
   set {
     name  = "poolOverprovisions"
-    value = yamlencode(tomap(var.pool_overprovisions))
+    value = var.pool_overprovisions
   }
 }
