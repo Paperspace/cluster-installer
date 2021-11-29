@@ -7,6 +7,6 @@ resource "helm_release" "pool-overprovisioner" {
   version             = var.chart_version
   set {
     name  = "poolOverprovisions"
-    value = var.pool_overprovisions
+    value = jsonencode(var.pool_overprovisions)
   }
 }
