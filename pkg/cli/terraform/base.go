@@ -40,11 +40,11 @@ func NewTerraform(platform paperspace.ClusterPlatformType) *Terraform {
 		}
 	case paperspace.ClusterPlatformMetal:
 	case paperspace.ClusterPlatformDGX:
-		terraformModules.Metal = NewMetal(platform)
+		terraformModules.Metal = NewMetalPlatform(platform)
 	case paperspace.ClusterPlatformGraphcore:
-		terraformModules.Metal = NewMetal(platform)
+		terraformModules.Metal = NewMetalPlatform(platform)
 	case paperspace.ClusterPlatformSambaNova:
-		terraformModules.Metal = NewMetal(platform)
+		terraformModules.Metal = NewMetalPlatform(platform)
 	}
 
 	terraform := Terraform{

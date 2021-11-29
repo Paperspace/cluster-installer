@@ -6,58 +6,58 @@ import (
 	"github.com/Paperspace/paperspace-go"
 )
 
-type MetalNode struct {
+type MetalPlatformNode struct {
 	IP              string   `json:"ip"`
 	InternalAddress string   `json:"internal-address,omitempty"`
 	PoolName        string   `json:"pool-name"`
 	PoolType        PoolType `json:"pool-type"`
 }
 
-type Metal struct {
+type MetalPlatform struct {
 	*Common
-	MainNode            *MetalNode   `json:"k8s_master_node"`
-	WorkerNodes         []*MetalNode `json:"k8s_workers"`
-	RebootGPUNodes      bool         `json:"reboot_gpu_nodes,omitempty"`
-	Sans                []string     `json:"k8s_sans,omitempty"`
-	SetupDocker         bool         `json:"setup_docker,omitempty"`
-	SetupNvidia         bool         `json:"setup_nvidia,omitempty"`
-	SharedStoragePath   string       `json:"shared_storage_path,omitempty"`
-	SharedStorageServer string       `json:"shared_storage_server,omitempty"`
-	SSHKeyPath          string       `json:"ssh_key_path,omitempty"`
-	SSHUser             string       `json:"ssh_user,omitempty"`
+	MainNode            *MetalPlatformNode   `json:"k8s_master_node"`
+	WorkerNodes         []*MetalPlatformNode `json:"k8s_workers"`
+	RebootGPUNodes      bool                 `json:"reboot_gpu_nodes,omitempty"`
+	Sans                []string             `json:"k8s_sans,omitempty"`
+	SetupDocker         bool                 `json:"setup_docker,omitempty"`
+	SetupNvidia         bool                 `json:"setup_nvidia,omitempty"`
+	SharedStoragePath   string               `json:"shared_storage_path,omitempty"`
+	SharedStorageServer string               `json:"shared_storage_server,omitempty"`
+	SSHKeyPath          string               `json:"ssh_key_path,omitempty"`
+	SSHUser             string               `json:"ssh_user,omitempty"`
 }
 
-func NewMetal(platform paperspace.ClusterPlatformType) *Metal {
-	metal := Metal{
+func NewMetalPlatform(platform paperspace.ClusterPlatformType) *MetalPlatform {
+	metalPlatform := MetalPlatform{
 		Common:      NewCommon(),
-		MainNode:    NewMetalNode(platform),
-		WorkerNodes: make([]*MetalNode, 0),
+		MainNode:    NewMetalPlatformNode(platform),
+		WorkerNodes: make([]*MetalPlatformNode, 0),
 		SSHKeyPath:  "~/.ssh/id_rsa",
 		SSHUser:     "ubuntu",
 	}
 
-	metal.TerraformSource = fmt.Sprintf("%s?ref=master/gradient-metal", SourcePrefix)
-	return &metal
+	metalPlatform.TerraformSource = fmt.Sprintf("%s?ref=master/gradient-metal", SourcePrefix)
+	return &metalPlatform
 }
 
-func NewMetalNode(platform paperspace.ClusterPlatformType) *MetalNode {
+func NewMetalPlatformNode(platform paperspace.ClusterPlatformType) *MetalPlatformNode {
 	switch platform {
 	case paperspace.ClusterPlatformGraphcore:
-		return &MetalNode{
+		return &MetalPlatformNode{
 			PoolType: PoolTypeCPU,
 		}
 	case paperspace.ClusterPlatformSambaNova:
-		return &MetalNode{
+		return &MetalPlatformNode{
 			PoolType: PoolTypeCPU,
 		}
 	}
 
-	return &MetalNode{
+	return &MetalPlatformNode{
 		PoolType: PoolTypeGPU,
 	}
 }
 
-func MetalPoolName(poolType PoolType, platform paperspace.ClusterPlatformType) string {
+func MetalPlatformPoolName(poolType PoolType, platform paperspace.ClusterPlatformType) string {
 	switch platform {
 	case paperspace.ClusterPlatformMetal:
 		switch poolType {
@@ -92,7 +92,7 @@ func MetalPoolName(poolType PoolType, platform paperspace.ClusterPlatformType) s
 	return ""
 }
 
-func (m *MetalNode) UpdatePool(poolType PoolType, platform paperspace.ClusterPlatformType) {
+func (m *MetalPlatformNode) UpdatePool(poolType PoolType, platform paperspace.ClusterPlatformType) {
 	m.PoolType = poolType
-	m.PoolName = MetalPoolName(poolType, platform)
+	m.PoolName = MetalPlatformPoolName(poolType, platform)
 }

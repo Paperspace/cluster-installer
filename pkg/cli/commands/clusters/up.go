@@ -17,21 +17,21 @@ import (
 
 var TerraformTFName = "main.tf"
 
-func createTerraformMetalNode(terraformMetalNode *terraform.MetalNode, platform paperspace.ClusterPlatformType,
-	prefix string, required bool) (*terraform.MetalNode, error) {
-	if terraformMetalNode == nil {
-		terraformMetalNode = terraform.NewMetalNode(platform)
+func createTerraformMetalPlatformNode(terraformMetalPlatformNode *terraform.MetalPlatformNode, platform paperspace.ClusterPlatformType,
+	prefix string, required bool) (*terraform.MetalPlatformNode, error) {
+	if terraformMetalPlatformNode == nil {
+		terraformMetalPlatformNode = terraform.NewMetalPlatformNode(platform)
 	}
 
 	ipPrompt := cli.Prompt{
 		Label:    "IP",
-		Value:    terraformMetalNode.IP,
+		Value:    terraformMetalPlatformNode.IP,
 		Required: required,
 	}
 
 	internalAddressPrompt := cli.Prompt{
 		Label: "Internal IP (if applicable)",
-		Value: terraformMetalNode.InternalAddress,
+		Value: terraformMetalPlatformNode.InternalAddress,
 	}
 
 	var items []string
@@ -51,24 +51,24 @@ func createTerraformMetalNode(terraformMetalNode *terraform.MetalNode, platform 
 	println(cli.TextHeader(fmt.Sprintf("Add %s", prefix)))
 
 	if err := ipPrompt.Run(); err != nil {
-		return terraformMetalNode, err
+		return terraformMetalPlatformNode, err
 	}
 	if err := internalAddressPrompt.Run(); err != nil {
-		return terraformMetalNode, err
+		return terraformMetalPlatformNode, err
 	}
 	_, poolType, err := poolTypeSelect.Run()
 	if err != nil {
-		return terraformMetalNode, err
+		return terraformMetalPlatformNode, err
 	}
 
-	terraformMetalNode.IP = ipPrompt.Value
-	terraformMetalNode.InternalAddress = internalAddressPrompt.Value
-	terraformMetalNode.UpdatePool(terraform.PoolType(poolType), platform)
+	terraformMetalPlatformNode.IP = ipPrompt.Value
+	terraformMetalPlatformNode.InternalAddress = internalAddressPrompt.Value
+	terraformMetalPlatformNode.UpdatePool(terraform.PoolType(poolType), platform)
 
-	return terraformMetalNode, nil
+	return terraformMetalPlatformNode, nil
 }
 
-func setupMetalConfig(terraformMetal *terraform.Metal, platform paperspace.ClusterPlatformType) error {
+func setupMetalConfig(terraformMetalPlatform *terraform.MetalPlatform, platform paperspace.ClusterPlatformType) error {
 	var platformHasGPU bool
 	switch platform {
 	case paperspace.ClusterPlatformGraphcore:
@@ -81,18 +81,18 @@ func setupMetalConfig(terraformMetal *terraform.Metal, platform paperspace.Clust
 	sharedStorageServer := cli.Prompt{
 		Label:    "NFS Server",
 		Required: true,
-		Value:    terraformMetal.SharedStorageServer,
+		Value:    terraformMetalPlatform.SharedStorageServer,
 	}
 	sharedStoragePath := cli.Prompt{
 		Label:    "NFS Storage Path",
 		Required: true,
-		Value:    terraformMetal.SharedStoragePath,
+		Value:    terraformMetalPlatform.SharedStoragePath,
 	}
 	setupDockerPrompt := cli.Prompt{
 		Label:         "Setup Docker",
 		Required:      true,
 		AllowedValues: cli.YesNoValues,
-		Value:         cli.BoolToYesNo(terraformMetal.SetupDocker),
+		Value:         cli.BoolToYesNo(terraformMetalPlatform.SetupDocker),
 	}
 	var rebootGPUNodesPrompt cli.Prompt
 	var setupNvidiaPrompt cli.Prompt
@@ -100,24 +100,24 @@ func setupMetalConfig(terraformMetal *terraform.Metal, platform paperspace.Clust
 		setupNvidiaPrompt = cli.Prompt{
 			Label:    "Setup NVIDIA",
 			Required: true,
-			Value:    cli.BoolToYesNo(terraformMetal.SetupNvidia),
+			Value:    cli.BoolToYesNo(terraformMetalPlatform.SetupNvidia),
 		}
 		rebootGPUNodesPrompt = cli.Prompt{
 			Label:         "Reboot GPU Nodes (for NVIDIA drivers)",
 			AllowedValues: cli.YesNoValues,
-			Value:         cli.BoolToYesNo(terraformMetal.RebootGPUNodes),
+			Value:         cli.BoolToYesNo(terraformMetalPlatform.RebootGPUNodes),
 			Required:      true,
 		}
 	}
 	sshKeyPathPrompt := cli.Prompt{
 		Label:    "SSH Private Key Path",
 		Required: true,
-		Value:    terraformMetal.SSHKeyPath,
+		Value:    terraformMetalPlatform.SSHKeyPath,
 	}
 	sshUserPrompt := cli.Prompt{
 		Label:    "SSH User",
 		Required: true,
-		Value:    terraformMetal.SSHUser,
+		Value:    terraformMetalPlatform.SSHUser,
 	}
 	if err := sharedStorageServer.Run(); err != nil {
 		return err
@@ -126,14 +126,14 @@ func setupMetalConfig(terraformMetal *terraform.Metal, platform paperspace.Clust
 		return err
 	}
 
-	mainNode, err := createTerraformMetalNode(terraformMetal.MainNode, platform, "Main Node", true)
+	mainNode, err := createTerraformMetalPlatformNode(terraformMetalPlatform.MainNode, platform, "Main Node", true)
 	if err != nil {
 		return err
 	}
 
-	workerNodes := make([]*terraform.MetalNode, 0)
+	workerNodes := make([]*terraform.MetalPlatformNode, 0)
 
-	for index, workerNode := range terraformMetal.WorkerNodes {
+	for index, workerNode := range terraformMetalPlatform.WorkerNodes {
 		workerPrompt := cli.Prompt{
 			Label:         fmt.Sprintf("Remove worker node %d with IP: %s?", index+1, workerNode.IP),
 			HideValue:     true,
@@ -150,7 +150,7 @@ func setupMetalConfig(terraformMetal *terraform.Metal, platform paperspace.Clust
 			continue
 		}
 
-		node, err := createTerraformMetalNode(workerNode, platform, fmt.Sprintf("Worker Node %d", index+1), true)
+		node, err := createTerraformMetalPlatformNode(workerNode, platform, fmt.Sprintf("Worker Node %d", index+1), true)
 		if err != nil {
 			return err
 		}
@@ -175,7 +175,7 @@ func setupMetalConfig(terraformMetal *terraform.Metal, platform paperspace.Clust
 			break
 		}
 
-		node, err := createTerraformMetalNode(nil, platform, fmt.Sprintf("Worker Node %d", len(workerNodes)+1), true)
+		node, err := createTerraformMetalPlatformNode(nil, platform, fmt.Sprintf("Worker Node %d", len(workerNodes)+1), true)
 		if err != nil {
 			return err
 		}
@@ -197,24 +197,24 @@ func setupMetalConfig(terraformMetal *terraform.Metal, platform paperspace.Clust
 			return err
 		}
 
-		terraformMetal.SetupNvidia = cli.YesNoToBool(setupNvidiaPrompt.Value)
+		terraformMetalPlatform.SetupNvidia = cli.YesNoToBool(setupNvidiaPrompt.Value)
 	}
 
-	terraformMetal.MainNode = mainNode
-	terraformMetal.WorkerNodes = workerNodes
-	terraformMetal.SharedStoragePath = sharedStoragePath.Value
-	terraformMetal.SharedStorageServer = sharedStorageServer.Value
-	terraformMetal.SetupDocker = cli.YesNoToBool(setupDockerPrompt.Value)
-	terraformMetal.SSHKeyPath = sshKeyPathPrompt.Value
-	terraformMetal.SSHUser = sshUserPrompt.Value
+	terraformMetalPlatform.MainNode = mainNode
+	terraformMetalPlatform.WorkerNodes = workerNodes
+	terraformMetalPlatform.SharedStoragePath = sharedStoragePath.Value
+	terraformMetalPlatform.SharedStorageServer = sharedStorageServer.Value
+	terraformMetalPlatform.SetupDocker = cli.YesNoToBool(setupDockerPrompt.Value)
+	terraformMetalPlatform.SSHKeyPath = sshKeyPathPrompt.Value
+	terraformMetalPlatform.SSHUser = sshUserPrompt.Value
 
 	if platformHasGPU {
-		if terraformMetal.SetupNvidia {
+		if terraformMetalPlatform.SetupNvidia {
 			if err := rebootGPUNodesPrompt.Run(); err != nil {
 				return err
 			}
 
-			terraformMetal.RebootGPUNodes = cli.YesNoToBool(rebootGPUNodesPrompt.Value)
+			terraformMetalPlatform.RebootGPUNodes = cli.YesNoToBool(rebootGPUNodesPrompt.Value)
 		}
 	}
 
