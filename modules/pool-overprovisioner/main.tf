@@ -5,8 +5,9 @@ resource "helm_release" "pool-overprovisioner" {
   repository_password = var.helm_repo_password
   chart               = "pool-overprovisioner"
   version             = var.chart_version
-  set {
-    name  = "poolOverprovisions"
-    value = yamlencode(var.pool_overprovisions)
-  }
+  values = [
+    yamlencode({
+      "poolOverprovisions" = var.pool_overprovisions
+    })
+  ]
 }
