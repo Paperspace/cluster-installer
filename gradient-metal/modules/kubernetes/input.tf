@@ -60,6 +60,10 @@ variable "ssh_user" {
     description = "SSH user"
 }
 
+variable "ssh_agent_auth" {
+    description = "SSH agent auth"
+}
+
 variable "workers" {
     type = list
     description = "Kubernetes workers"

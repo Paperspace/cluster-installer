@@ -103,6 +103,7 @@ resource "null_resource" "rke_nodes_wait" {
 resource "rke_cluster" "main" {
     depends_on = [null_resource.rke_nodes_wait]
     cluster_name = var.name
+    ssh_agent_auth = var.ssh_agent_auth
 
     dynamic "nodes" {
         for_each = local.rke_nodes

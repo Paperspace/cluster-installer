@@ -32,7 +32,7 @@ func NewMetalPlatform(platform paperspace.ClusterPlatformType) *MetalPlatform {
 		Common:      NewCommon(),
 		MainNode:    NewMetalPlatformNode(platform),
 		WorkerNodes: make([]*MetalPlatformNode, 0),
-		SSHKeyPath:  "~/.ssh/id_rsa",
+		SSHKeyPath:  "", // TODO TOMS provide alternatives
 		SSHUser:     "ubuntu",
 	}
 
