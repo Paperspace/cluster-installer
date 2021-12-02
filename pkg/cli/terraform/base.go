@@ -38,12 +38,10 @@ func NewTerraform(platform paperspace.ClusterPlatformType) *Terraform {
 				Value: "${module.gradient_aws.elb_hostname}",
 			},
 		}
-	case paperspace.ClusterPlatformMetal:
-	case paperspace.ClusterPlatformDGX:
-		terraformModules.Metal = NewMetalPlatform(platform)
-	case paperspace.ClusterPlatformGraphcore:
-		terraformModules.Metal = NewMetalPlatform(platform)
-	case paperspace.ClusterPlatformSambaNova:
+	case paperspace.ClusterPlatformMetal,
+		paperspace.ClusterPlatformDGX,
+		paperspace.ClusterPlatformGraphcore,
+		paperspace.ClusterPlatformSambaNova:
 		terraformModules.Metal = NewMetalPlatform(platform)
 	}
 

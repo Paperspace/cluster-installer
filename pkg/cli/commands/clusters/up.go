@@ -36,8 +36,8 @@ func createTerraformMetalPlatformNode(terraformMetalPlatformNode *terraform.Meta
 
 	var items []string
 	switch platform {
-	case paperspace.ClusterPlatformGraphcore:
-	case paperspace.ClusterPlatformSambaNova:
+	case paperspace.ClusterPlatformGraphcore,
+	    paperspace.ClusterPlatformSambaNova:
 		items = []string{string(terraform.PoolTypeCPU)}
 	default:
 		items = []string{string(terraform.PoolTypeGPU), string(terraform.PoolTypeCPU)}
@@ -71,8 +71,8 @@ func createTerraformMetalPlatformNode(terraformMetalPlatformNode *terraform.Meta
 func setupMetalConfig(terraformMetalPlatform *terraform.MetalPlatform, platform paperspace.ClusterPlatformType) error {
 	var platformHasGPU bool
 	switch platform {
-	case paperspace.ClusterPlatformGraphcore:
-	case paperspace.ClusterPlatformSambaNova:
+	case paperspace.ClusterPlatformGraphcore,
+	    paperspace.ClusterPlatformSambaNova:
 		platformHasGPU = false
 	default:
 		platformHasGPU = true
@@ -555,10 +555,10 @@ func NewClusterUpCommand() *cobra.Command {
 			// Specific
 			switch cluster.Platform {
 			case paperspace.ClusterPlatformAWS:
-			case paperspace.ClusterPlatformMetal:
-			case paperspace.ClusterPlatformDGX:
-			case paperspace.ClusterPlatformGraphcore:
-			case paperspace.ClusterPlatformSambaNova:
+			case paperspace.ClusterPlatformMetal,
+				paperspace.ClusterPlatformDGX,
+				paperspace.ClusterPlatformGraphcore,
+				paperspace.ClusterPlatformSambaNova:
 				if reinstall || !terraformInstance.HasValidMetal() {
 					if err := setupMetalConfig(terraformInstance.Modules.Metal, cluster.Platform); err != nil {
 						return err
