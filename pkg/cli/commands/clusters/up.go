@@ -413,7 +413,6 @@ func setupTerraformProvider(terraformProvider *terraform.TerraformProvider) erro
 	}
 	s3RegionPrompt := cli.Prompt{
 		Label:    "Region",
-		Required: true,
 		Value:    terraformProvider.Backends.S3.Region,
 	}
 	s3EndpointPrompt := cli.Prompt{
@@ -462,6 +461,15 @@ func setupTerraformProvider(terraformProvider *terraform.TerraformProvider) erro
 	terraformProvider.Backends.S3.Endpoint = s3EndpointPrompt.Value
 	terraformProvider.Backends.S3.Key = s3KeyPrompt.Value
 	terraformProvider.Backends.S3.Region = s3RegionPrompt.Value
+
+	if s3RegionPrompt.Value == "none" || s3RegionPrompt.Value == "main" || s3RegionPrompt.Value == "minio" ||
+	    s3RegionPrompt.Value == "" {
+		terraformProvider.Backends.S3.Region = "main"
+		terraformProvider.Backends.S3.SkipRegionValidation = true
+		terraformProvider.Backends.S3.SkipCredentialsValidation = true
+		terraformProvider.Backends.S3.SkipMetadataAPICheck = true
+		terraformProvider.Backends.S3.ForcePathStyle = true
+	}
 
 	return nil
 }
