@@ -46,7 +46,7 @@ variable "ssh_key" {
 
 variable "ssh_key_path" {
     description = "Private SSH key file path"
-    default = "~/.ssh/id_rsa"
+    default = ""
 }
 
 variable "ssh_user" {

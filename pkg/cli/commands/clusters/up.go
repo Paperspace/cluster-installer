@@ -36,8 +36,8 @@ func createTerraformMetalPlatformNode(terraformMetalPlatformNode *terraform.Meta
 
 	var items []string
 	switch platform {
-	case paperspace.ClusterPlatformGraphcore:
-	case paperspace.ClusterPlatformSambaNova:
+	case paperspace.ClusterPlatformGraphcore,
+	    paperspace.ClusterPlatformSambaNova:
 		items = []string{string(terraform.PoolTypeCPU)}
 	default:
 		items = []string{string(terraform.PoolTypeGPU), string(terraform.PoolTypeCPU)}
@@ -71,8 +71,8 @@ func createTerraformMetalPlatformNode(terraformMetalPlatformNode *terraform.Meta
 func setupMetalConfig(terraformMetalPlatform *terraform.MetalPlatform, platform paperspace.ClusterPlatformType) error {
 	var platformHasGPU bool
 	switch platform {
-	case paperspace.ClusterPlatformGraphcore:
-	case paperspace.ClusterPlatformSambaNova:
+	case paperspace.ClusterPlatformGraphcore,
+	    paperspace.ClusterPlatformSambaNova:
 		platformHasGPU = false
 	default:
 		platformHasGPU = true
@@ -413,7 +413,6 @@ func setupTerraformProvider(terraformProvider *terraform.TerraformProvider) erro
 	}
 	s3RegionPrompt := cli.Prompt{
 		Label:    "Region",
-		Required: true,
 		Value:    terraformProvider.Backends.S3.Region,
 	}
 	s3EndpointPrompt := cli.Prompt{
@@ -462,6 +461,15 @@ func setupTerraformProvider(terraformProvider *terraform.TerraformProvider) erro
 	terraformProvider.Backends.S3.Endpoint = s3EndpointPrompt.Value
 	terraformProvider.Backends.S3.Key = s3KeyPrompt.Value
 	terraformProvider.Backends.S3.Region = s3RegionPrompt.Value
+
+	if s3RegionPrompt.Value == "none" || s3RegionPrompt.Value == "main" || s3RegionPrompt.Value == "minio" ||
+	    s3RegionPrompt.Value == "" {
+		terraformProvider.Backends.S3.Region = "main"
+		terraformProvider.Backends.S3.SkipRegionValidation = true
+		terraformProvider.Backends.S3.SkipCredentialsValidation = true
+		terraformProvider.Backends.S3.SkipMetadataAPICheck = true
+		terraformProvider.Backends.S3.ForcePathStyle = true
+	}
 
 	return nil
 }
@@ -547,10 +555,10 @@ func NewClusterUpCommand() *cobra.Command {
 			// Specific
 			switch cluster.Platform {
 			case paperspace.ClusterPlatformAWS:
-			case paperspace.ClusterPlatformMetal:
-			case paperspace.ClusterPlatformDGX:
-			case paperspace.ClusterPlatformGraphcore:
-			case paperspace.ClusterPlatformSambaNova:
+			case paperspace.ClusterPlatformMetal,
+				paperspace.ClusterPlatformDGX,
+				paperspace.ClusterPlatformGraphcore,
+				paperspace.ClusterPlatformSambaNova:
 				if reinstall || !terraformInstance.HasValidMetal() {
 					if err := setupMetalConfig(terraformInstance.Modules.Metal, cluster.Platform); err != nil {
 						return err
