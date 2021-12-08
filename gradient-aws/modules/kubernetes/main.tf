@@ -13,7 +13,6 @@ data "aws_ami" "eks_gpu" {
 locals {
     asg_max_size_default = 600
     cpu_ami_id = data.aws_ami.eks_cpu.id
-    gpu_ami_id = data.aws_ami.eks_gpu.id
     root_volume_size_default = 50
 
     node_ami_ids = {
@@ -23,30 +22,20 @@ locals {
 
         "experiment-cpu-small"=local.cpu_ami_id,
         "experiment-cpu-medium"=local.cpu_ami_id,
-        "experiment-gpu-small"=local.gpu_ami_id,
-        "experiment-gpu-medium"=local.gpu_ami_id,
-        "experiment-gpu-large"=local.gpu_ami_id,
 
         "model-deployment-cpu-small"=local.cpu_ami_id,
         "model-deployment-cpu-medium"=local.cpu_ami_id,
-        "model-deployment-gpu-small"=local.gpu_ami_id,
-        "model-deployment-gpu-medium"=local.gpu_ami_id,
-        "model-deployment-gpu-large"=local.gpu_ami_id,
 
         "notebook-cpu-small"=local.cpu_ami_id,
         "notebook-cpu-medium"=local.cpu_ami_id,
-        "notebook-gpu-small"=local.gpu_ami_id,
-        "notebook-gpu-medium"=local.gpu_ami_id,
-        "notebook-gpu-large"=local.gpu_ami_id,
 
         "tensorboard-cpu-small"=local.cpu_ami_id,
         "tensorboard-cpu-medium"=local.cpu_ami_id,
-        "tensorboard-gpu-small"=local.gpu_ami_id,
-        "tensorboard-gpu-medium"=local.gpu_ami_id,
-        "tensorboard-gpu-large"=local.gpu_ami_id,
     }
 
     node_instance_types = merge({
+        # Make sure services-small persists
+        # servies med/large delete
         "services-small"="c5.xlarge",
         "services-medium"="c5.xlarge",
         "services-large"="c5.2xlarge",
@@ -168,32 +157,18 @@ locals {
 
     node_types = [
         "services-small",
-        "services-medium",
-        "services-large",
 
         "experiment-cpu-small",
         "experiment-cpu-medium",
-        "experiment-gpu-small",
-        "experiment-gpu-medium",
-        "experiment-gpu-large",
 
         "model-deployment-cpu-small",
         "model-deployment-cpu-medium",
-        "model-deployment-gpu-small",
-        "model-deployment-gpu-medium",
-        "model-deployment-gpu-large",
 
         "notebook-cpu-small",
         "notebook-cpu-medium",
-        "notebook-gpu-small",
-        "notebook-gpu-medium",
-        "notebook-gpu-large",
 
         "tensorboard-cpu-small",
-        "tensorboard-cpu-medium",
-        "tensorboard-gpu-small",
-        "tensorboard-gpu-medium",
-        "tensorboard-gpu-large",
+        "tensorboard-cpu-medium"
     ]
 
     node_pool_types = {
@@ -202,120 +177,44 @@ locals {
         "services-large"="cpu",
         "experiment-cpu-small"="cpu",
         "experiment-cpu-medium"="cpu",
-        "experiment-gpu-small"="gpu",
-        "experiment-gpu-medium"="gpu",
-        "experiment-gpu-large"="gpu",
         "model-deployment-cpu-small"="cpu",
         "model-deployment-cpu-medium"="cpu",
-        "model-deployment-gpu-small"="gpu",
-        "model-deployment-gpu-medium"="gpu",
-        "model-deployment-gpu-large"="gpu",
         "notebook-cpu-small"="cpu",
         "notebook-cpu-medium"="cpu",
-        "notebook-gpu-small"="gpu",
-        "notebook-gpu-medium"="gpu",
-        "notebook-gpu-large"="gpu",
         "tensorboard-cpu-small"="cpu",
         "tensorboard-cpu-medium"="cpu",
-        "tensorboard-gpu-small"="gpu",
-        "tensorboard-gpu-medium"="gpu",
-        "tensorboard-gpu-large"="gpu",
     }
 
     kubelet_extra_args = {
         "services-small"=[],
-        "services-medium"=[],
-        "services-large"=[],
+
         "experiment-cpu-small"=[],
         "experiment-cpu-medium"=[],
-        "experiment-gpu-small"=[
-            "cloud.google.com/gke-accelerator=nvidia-tesla-k80",
-            "k8s.amazonaws.com/accelerator=nvidia-tesla-k80"
-        ],
-        "experiment-gpu-medium"=[
-            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
-            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
-        ],
-        "experiment-gpu-large"=[
-            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
-            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
-        ],
 
         "model-deployment-cpu-small"=[],
         "model-deployment-cpu-medium"=[],
-        "model-deployment-gpu-small"=[
-            "cloud.google.com/gke-accelerator=nvidia-tesla-k80",
-            "k8s.amazonaws.com/accelerator=nvidia-tesla-k80"
-        ],
-        "model-deployment-gpu-medium"=[
-            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
-            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
-        ],
-        "model-deployment-gpu-large"=[
-            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
-            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
-        ],
 
         "notebook-cpu-small"=[],
         "notebook-cpu-medium"=[],
-        "notebook-gpu-small"=[
-            "cloud.google.com/gke-accelerator=nvidia-tesla-k80",
-            "k8s.amazonaws.com/accelerator=nvidia-tesla-k80",
-        ],
-        "notebook-gpu-medium"=[
-            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
-            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
-        ],
-        "notebook-gpu-large"=[
-            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
-            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
-        ],
 
         "tensorboard-cpu-small"=[],
         "tensorboard-cpu-medium"=[],
-        "tensorboard-gpu-small"=[
-            "cloud.google.com/gke-accelerator=nvidia-tesla-k80",
-            "k8s.amazonaws.com/accelerator=nvidia-tesla-k80"
-        ],
-        "tensorboard-gpu-medium"=[
-            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
-            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
-        ],
-        "tensorboard-gpu-large"=[
-            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
-            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
-        ],
-
     }
 
     node_volume_sizes = merge({
         "services-small"=local.root_volume_size_default,
-        "services-medium"=local.root_volume_size_default,
-        "services-large"=local.root_volume_size_default,
 
         "experiment-cpu-small"=local.root_volume_size_default,
         "experiment-cpu-medium"=local.root_volume_size_default,
-        "experiment-gpu-small"=local.root_volume_size_default,
-        "experiment-gpu-medium"=local.root_volume_size_default,
-        "experiment-gpu-large"=local.root_volume_size_default,
 
         "model-deployment-cpu-small"=local.root_volume_size_default,
         "model-deployment-cpu-medium"=local.root_volume_size_default,
-        "model-deployment-gpu-small"=local.root_volume_size_default,
-        "model-deployment-gpu-medium"=local.root_volume_size_default,
-        "model-deployment-gpu-large"=local.root_volume_size_default,
 
         "notebook-cpu-small"=local.root_volume_size_default,
         "notebook-cpu-medium"=local.root_volume_size_default,
-        "notebook-gpu-small"=local.root_volume_size_default,
-        "notebook-gpu-medium"=local.root_volume_size_default,
-        "notebook-gpu-large"=local.root_volume_size_default,
 
         "tensorboard-cpu-small"=local.root_volume_size_default,
         "tensorboard-cpu-medium"=local.root_volume_size_default,
-        "tensorboard-gpu-small"=local.root_volume_size_default,
-        "tensorboard-gpu-medium"=local.root_volume_size_default,
-        "tensorboard-gpu-large"=local.root_volume_size_default,
     }, var.node_asg_max_sizes)
 
     worker_groups = [for node_type in local.node_types : {
@@ -324,7 +223,9 @@ locals {
         subnets = [var.node_subnet_ids[0]]
         additional_security_group_ids = var.node_security_group_ids
         additional_userdata = var.additional_userdata
+        #
         ami_id = local.node_ami_ids[node_type]
+        ami_id = local.cpu_ami_id 
         asg_force_delete = true
         asg_desired_capacity = local.node_asg_desired_sizes[node_type]
         asg_max_size = local.node_asg_max_sizes[node_type]
@@ -360,6 +261,65 @@ locals {
     }]
 }
 
+locals {
+    
+    # Within each worker node definition there lives a "node_pool_type" that corresponds to this
+    # lookup map, enabling us to dynamically select the correct AMI based on worker definition
+    ami_lookup = { "cpu" : data.aws_ami.eks_cpu.id, "gpu" : data.aws_ami.eks_gpu.id }
+    
+    gpu_instance_type_set = toset([
+        var.aws_ec2_gpu_instance_p3_16xlarge, 
+        var.aws_ec2_gpu_instance_p3_2xlarge,
+        var.aws_ec2_gpu_instance_p2_xlarge
+    ])
+
+
+    gpu_worker_groups = flatten([
+        for gpu_instance_type in local.gpu_instance_type_set : [
+            for worker_node_definition in gpu_instance_type.instance_type_metadata : {
+            
+            # ToDo, create issue and seperate release of this module enabling a list of subnets
+            name = "${worker_node_definition}-${data.aws_subnet.nodes[0].availability_zone}"
+            subnets = [var.node_subnet_ids[0]]
+            additional_security_group_ids = var.node_security_group_ids
+            additional_userdata = var.additional_userdata
+
+            ami_id = local.ami_lookup[worker_node_definition.node_pool_type]
+            asg_force_delete = true
+            asg_desired_capacity = worker_node_definition.default["desired"]
+            asg_max_size = worker_node_definition.default["max"]
+            asg_min_size = worker_node_definition.default["min"]
+            instance_type = worker_node_definition.aws_ec2_instance_type
+            root_volume_type = worker_node_definition.root_storage_volume_type
+            key_name = var.public_key == "" ? "" : aws_key_pair.main[0].id
+            kubelet_extra_args = "--node-labels=${join(",",
+                concat([
+                    "paperspace.com/pool-name=${worker_node_definition.instance_type_name}",
+                    "paperspace.com/pool-type=${worker_node_definition.node_pool_type}",
+                    "paperspace.com/gradient-worker=${tostring(length(regexall("^services", worker_node_definition.instance_type_metadata.instance_type_name)) > 0)}",
+                ],   worker_node_definition.kubelet_extra_args)
+            )}"
+
+            tags = [
+                {
+                    key                 = "k8s.io/cluster-autoscaler/enabled",
+                    value               = "true",
+                    propagate_at_launch = "true",
+                },
+                {
+                    key = "k8s.io/cluster-autoscaler/node-template/label/paperspace.com/pool-name"
+                    value = worker_node_definition.instance_type_name
+                    propagate_at_launch = "true",
+                },
+                {
+                    key                 = "k8s.io/cluster-autoscaler/${var.name}",
+                    value               = "true",
+                    propagate_at_launch = "true",
+                },
+            ]
+        }]])
+}
+
 data "aws_subnet" "nodes" {
     count = length(var.node_subnet_ids)
     id = var.node_subnet_ids[count.index]
@@ -374,14 +334,6 @@ data "aws_eks_cluster_auth" "cluster" {
     count = var.enable ? 1 : 0
     name  = module.eks.cluster_id
 }
-
-/*
-provider "kubernetes" {
-    host                   = element(concat(data.aws_eks_cluster.cluster[*].endpoint,tolist([])), 0)
-    cluster_ca_certificate = base64decode(element(concat(data.aws_eks_cluster.cluster[*].certificate_authority.0.data,tolist([])), 0))
-    token                  = element(concat(data.aws_eks_cluster_auth.cluster[*].token,tolist([])), 0)
-}
-*/
 
 resource "aws_key_pair" "main" {
     count = var.public_key == "" ? 0 : 1
@@ -404,7 +356,7 @@ module "eks" {
     vpc_id          = var.vpc_id
 
     wait_for_cluster_cmd = "until curl -k -s $ENDPOINT/healthz >/dev/null; do sleep 4; done"
-    worker_groups = local.worker_groups
+    worker_groups = concat([local.worker_groups, local.gpu_worker_groups])
     write_kubeconfig = var.write_kubeconfig
 }
 
