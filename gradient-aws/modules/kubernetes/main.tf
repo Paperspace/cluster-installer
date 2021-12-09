@@ -217,6 +217,8 @@ locals {
         "tensorboard-cpu-medium"=local.root_volume_size_default,
     }, var.node_asg_max_sizes)
 
+    # ToDo, why are we using the asg max size variable to override the root volume sizes?
+
     worker_groups = [for node_type in local.node_types : {
         // Can remove if we deprecate EBS
         name = "${node_type}-${data.aws_subnet.nodes[0].availability_zone}"
@@ -278,25 +280,25 @@ locals {
         for gpu_instance_type in local.gpu_instance_type_set : [
             for worker_node_definition in gpu_instance_type.instance_type_metadata : {
             
-            # ToDo, create issue and seperate release of this module enabling a list of subnets
-            name = "${worker_node_definition}-${data.aws_subnet.nodes[0].availability_zone}"
+            name = "${worker_node_definition.instance_type_name}-${data.aws_subnet.nodes[0].availability_zone}"
             subnets = [var.node_subnet_ids[0]]
             additional_security_group_ids = var.node_security_group_ids
             additional_userdata = var.additional_userdata
 
             ami_id = local.ami_lookup[worker_node_definition.node_pool_type]
             asg_force_delete = true
-            asg_desired_capacity = worker_node_definition.default["desired"]
-            asg_max_size = worker_node_definition.default["max"]
-            asg_min_size = worker_node_definition.default["min"]
-            instance_type = worker_node_definition.aws_ec2_instance_type
+            # ToDo, do we want to allow customers to pass in the desired capacity as well?
+            asg_desired_capacity = worker_node_definition.default_node_asg_capacities["desired"]
+            asg_max_size = lookup(var.node_asg_max_sizes, worker_node_definition.instance_type_name, worker_node_definition.default_node_asg_capacities["max"])
+            asg_min_size = lookup(var.node_asg_min_sizes, worker_node_definition.instance_type_name, worker_node_definition.default_node_asg_capacities["min"])
+            instance_type = gpu_instance_type.aws_ec2_instance_type
             root_volume_type = worker_node_definition.root_storage_volume_type
             key_name = var.public_key == "" ? "" : aws_key_pair.main[0].id
             kubelet_extra_args = "--node-labels=${join(",",
                 concat([
                     "paperspace.com/pool-name=${worker_node_definition.instance_type_name}",
                     "paperspace.com/pool-type=${worker_node_definition.node_pool_type}",
-                    "paperspace.com/gradient-worker=${tostring(length(regexall("^services", worker_node_definition.instance_type_metadata.instance_type_name)) > 0)}",
+                    "paperspace.com/gradient-worker=${tostring(length(regexall("^services", worker_node_definition.instance_type_name)) > 0)}",
                 ],   worker_node_definition.kubelet_extra_args)
             )}"
 
@@ -356,7 +358,7 @@ module "eks" {
     vpc_id          = var.vpc_id
 
     wait_for_cluster_cmd = "until curl -k -s $ENDPOINT/healthz >/dev/null; do sleep 4; done"
-    worker_groups = concat([local.worker_groups, local.gpu_worker_groups])
+    worker_groups = concat(local.worker_groups, local.gpu_worker_groups)
     write_kubeconfig = var.write_kubeconfig
 }
 
