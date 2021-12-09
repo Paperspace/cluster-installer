@@ -16,7 +16,7 @@ variable "aws_ec2_gpu_instance_p3_16xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
@@ -33,7 +33,7 @@ variable "aws_ec2_gpu_instance_p3_16xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
@@ -51,7 +51,7 @@ variable "aws_ec2_gpu_instance_p3_16xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
@@ -68,7 +68,7 @@ variable "aws_ec2_gpu_instance_p3_16xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
@@ -85,7 +85,7 @@ variable "aws_ec2_gpu_instance_p3_16xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
@@ -111,7 +111,7 @@ variable "aws_ec2_gpu_instance_p3_2xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
@@ -128,7 +128,7 @@ variable "aws_ec2_gpu_instance_p3_2xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
@@ -146,7 +146,7 @@ variable "aws_ec2_gpu_instance_p3_2xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
@@ -163,7 +163,7 @@ variable "aws_ec2_gpu_instance_p3_2xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
@@ -180,7 +180,7 @@ variable "aws_ec2_gpu_instance_p3_2xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
@@ -206,7 +206,7 @@ variable "aws_ec2_gpu_instance_p2_xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
@@ -223,7 +223,7 @@ variable "aws_ec2_gpu_instance_p2_xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
@@ -241,7 +241,7 @@ variable "aws_ec2_gpu_instance_p2_xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
@@ -258,7 +258,7 @@ variable "aws_ec2_gpu_instance_p2_xlarge" {
         default_node_asg_capacities : {
           "desired" : 0
           "min" : 0
-          "max" : 600
+          "max" : 20
         }
         node_pool_type : "gpu"
         root_storage_volume_type : "gp2"
