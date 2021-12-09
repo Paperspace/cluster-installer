@@ -1,5 +1,8 @@
-# Make sure services-small persists
-# services med/large delete
+# Within this variables file each variable points to a specific EC2 Instace Type
+# From there for kube we need to map each of our internal offerings
+# worker_group metadata (https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/workers_launch_template.tf#L3)
+# instance_type_metadata == our mapping for worker_group variables, please see the link above for an exhaustive list (select the correct release)
+
 variable "aws_ec2_gpu_instance_p3_16xlarge" {
   default = {
     aws_ec2_instance_type : "p3.16xlarge",
