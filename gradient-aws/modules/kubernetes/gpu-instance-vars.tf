@@ -1,3 +1,4 @@
+# GPU EC2 Instance Types
 # Within this variables file each variable points to a specific EC2 Instace Type
 # From there for kube we need to map each of our internal offerings
 # worker_group metadata (https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/workers_launch_template.tf#L3)
