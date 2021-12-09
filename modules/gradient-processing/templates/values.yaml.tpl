@@ -491,14 +491,21 @@ argo-rollouts:
   controller:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
-    resources:
 %{ if is_public_cluster }
+    resources:
       requests:
         cpu: 250m
         memory: 512Mi
       limits:
         cpu: 250m
         memory: 512Mi
+%{ else }
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
 %{ endif }
 
 %{ if image_cache_enabled }
