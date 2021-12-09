@@ -47,11 +47,11 @@ variable "node_asg_min_sizes" {
   description = "Node auto scaling group min sizes"
 }
 
-# node_instance_types (Node Instance Types)
-# These instance types correspond to AWS EC2 Instance Types (i.e. virtual machines)
-# AWS EC2 Instance Type Reference: (https://aws.amazon.com/ec2/instance-types/)
-# EC2 Instance Type Terraform Reference: (https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ec2_instance_type)
-# Internally, these instance types are mapped to our provisioning resources 
+# Allows you to override our default instance type associations
+# For example within var.aws_ec2_gpu_instance_p3_16xlarge, the instance_type_metadata.instance_type_name 
+# for experiment-gpu-medium is p3.2xlarge, and if you want to override it you would provide
+# var.node_instance_types = { "experiment-gpu-medium" = "some other ec2 instance type" }
+
 variable "node_instance_types" {
   description = "Node instance type"
   type        = map(string)
