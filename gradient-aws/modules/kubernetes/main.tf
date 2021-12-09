@@ -42,7 +42,7 @@ locals {
         asg_desired_capacity = worker_node_definition.default_node_asg_capacities["desired"]
         asg_max_size         = lookup(var.node_asg_max_sizes, worker_node_definition.instance_type_name, worker_node_definition.default_node_asg_capacities["max"])
         asg_min_size         = lookup(var.node_asg_min_sizes, worker_node_definition.instance_type_name, worker_node_definition.default_node_asg_capacities["min"])
-        instance_type        = gpu_instance_type.aws_ec2_instance_type
+        instance_type        = lookup(var.node_instance_types, worker_node_definition.instance_type_name, gpu_instance_type.aws_ec2_instance_type)
         root_volume_type     = worker_node_definition.root_storage_volume_type
         # ToDo, overrides for root_volume_size?
         root_volume_size = worker_node_definition.root_volume_size
