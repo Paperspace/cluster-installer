@@ -487,6 +487,20 @@ argo:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
+argo-rollouts:
+  controller:
+    nodeSelector:
+      paperspace.com/pool-name: ${service_pool_name}
+    resources:
+%{ if is_public_cluster }
+      requests:
+        cpu: 250m
+        memory: 512Mi
+      limits:
+        cpu: 250m
+        memory: 512Mi
+%{ endif }
+
 %{ if image_cache_enabled }
 imageCacher:
   enabled: true
