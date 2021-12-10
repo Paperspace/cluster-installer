@@ -569,7 +569,7 @@ module "gradient_processing" {
     "paperspace/gradient-base:tf24-py36-0.10",
     "paperspace/gradient-base:tf115-py36-0.10",
     "paperspace/fastai:2.0-fastbook-2021-11-12",
-    "paperspace/notebook_idle:v1.0.4",
+    "paperspace/notebook_idle:v1.0.5",
     "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
     "rapidsai/rapidsai-core:21.08-cuda11.0-runtime-ubuntu18.04-py3.7",
     "nvcr.io/nvidia/pytorch:21.02-py3",
