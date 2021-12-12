@@ -16,4 +16,5 @@ variable "chart_version" {
 
 variable "pool_overprovisions" {
   description = "Mapping of vm types to overprovision count"
+  default = {}
 }
