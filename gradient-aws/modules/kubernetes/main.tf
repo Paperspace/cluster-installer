@@ -27,8 +27,8 @@ locals {
   ec2_instance_type_set = flatten([local.gpu_instance_type_set, local.cpu_instance_type_set])
 
   kube_worker_group = flatten([
-    for gpu_instance_type in local.ec2_instance_type_set : [
-      for worker_node_definition in gpu_instance_type.instance_type_metadata : {
+    for instance_type in local.ec2_instance_type_set : [
+      for worker_node_definition in instance_type.instance_type_metadata : {
 
         name = "${worker_node_definition.instance_type_name}-${data.aws_subnet.nodes[0].availability_zone}"
         # For subnets please see https://github.com/Paperspace/gradient-installer/issues/241 
@@ -41,9 +41,9 @@ locals {
         # ToDo, overrides for asg_desired_capacity?
         asg_desired_capacity = worker_node_definition.default_node_asg_capacities["desired"]
         # To preserve backwards compatibility with overriding default EC2 types, we still need the experiment-gpu-medium => ASG min/max as a default
-        asg_max_size     = lookup(var.node_asg_max_sizes, worker_node_definition.instance_type_name, lookup(var.node_asg_max_sizes, gpu_instance_type.aws_ec2_instance_type, worker_node_definition.default_node_asg_capacities["max"]))
-        asg_min_size     = lookup(var.node_asg_min_sizes, worker_node_definition.instance_type_name, lookup(var.node_asg_min_sizes, gpu_instance_type.aws_ec2_instance_type, worker_node_definition.default_node_asg_capacities["min"]))
-        instance_type    = lookup(var.node_instance_types, worker_node_definition.instance_type_name, gpu_instance_type.aws_ec2_instance_type)
+        asg_max_size     = lookup(var.node_asg_max_sizes, worker_node_definition.instance_type_name, lookup(var.node_asg_max_sizes, instance_type.aws_ec2_instance_type, worker_node_definition.default_node_asg_capacities["max"]))
+        asg_min_size     = lookup(var.node_asg_min_sizes, worker_node_definition.instance_type_name, lookup(var.node_asg_min_sizes, instance_type.aws_ec2_instance_type, worker_node_definition.default_node_asg_capacities["min"]))
+        instance_type    = lookup(var.node_instance_types, worker_node_definition.instance_type_name, instance_type.aws_ec2_instance_type)
         root_volume_type = worker_node_definition.root_storage_volume_type
         # ToDo, overrides for root_volume_size?
         root_volume_size = worker_node_definition.root_volume_size

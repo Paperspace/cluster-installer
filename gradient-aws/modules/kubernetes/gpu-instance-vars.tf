@@ -8,9 +8,9 @@ variable "aws_ec2_gpu_instance_p3_16xlarge" {
   default = {
     aws_ec2_instance_type : "p3.16xlarge",
     paperspace_type : "gpu",
-    instance_type_metadata : {
+    instance_type_metadata : [
       # Experiment GPU Large
-      "experiment-gpu-large" : {
+      {
         instance_type_name : "experiment-gpu-large"
 
         default_node_asg_capacities : {
@@ -27,7 +27,7 @@ variable "aws_ec2_gpu_instance_p3_16xlarge" {
         "k8s.amazonaws.com/accelerator=nvidia-tesla-v100"]
       },
       # Model Deployment GPU Large
-      "model-deployment-gpu-large" : {
+      {
         instance_type_name : "model-deployment-gpu-large"
 
         default_node_asg_capacities : {
@@ -45,7 +45,7 @@ variable "aws_ec2_gpu_instance_p3_16xlarge" {
 
       },
       # Notebook GPU Large
-      "notebook-gpu-large" : {
+      {
         instance_type_name : "notebook-gpu-large"
 
         default_node_asg_capacities : {
@@ -62,7 +62,7 @@ variable "aws_ec2_gpu_instance_p3_16xlarge" {
         "k8s.amazonaws.com/accelerator=nvidia-tesla-v100"]
       },
       # Model Deployment GPU Large
-      "model-deployment-gpu-large" : {
+      {
         instance_type_name : "model-deployment-gpu-large"
 
         default_node_asg_capacities : {
@@ -79,7 +79,7 @@ variable "aws_ec2_gpu_instance_p3_16xlarge" {
         "k8s.amazonaws.com/accelerator=nvidia-tesla-v100"]
       },
       # Tensorboard GPU Large
-      "tensorboard-gpu-large" : {
+      {
         instance_type_name : "tensorboard-gpu-large"
 
         default_node_asg_capacities : {
@@ -95,7 +95,7 @@ variable "aws_ec2_gpu_instance_p3_16xlarge" {
           "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
         "k8s.amazonaws.com/accelerator=nvidia-tesla-v100"]
       }
-    }
+    ]
   }
 }
 
@@ -103,9 +103,9 @@ variable "aws_ec2_gpu_instance_p3_2xlarge" {
   default = {
     aws_ec2_instance_type : "p3.2xlarge",
     paperspace_type : "gpu",
-    instance_type_metadata : {
+    instance_type_metadata : [
       # Experiment GPU Medium
-      "experiment-gpu-medium" : {
+      {
         instance_type_name : "experiment-gpu-medium"
 
         default_node_asg_capacities : {
@@ -122,7 +122,7 @@ variable "aws_ec2_gpu_instance_p3_2xlarge" {
         "k8s.amazonaws.com/accelerator=nvidia-tesla-v100"]
       },
       # Model Deployment GPU Medium
-      "model-deployment-gpu-medium" : {
+      {
         instance_type_name : "model-deployment-gpu-medium"
 
         default_node_asg_capacities : {
@@ -140,7 +140,7 @@ variable "aws_ec2_gpu_instance_p3_2xlarge" {
 
       },
       # Notebook GPU Medium
-      "notebook-gpu-medium" : {
+      {
         instance_type_name : "notebook-gpu-medium"
 
         default_node_asg_capacities : {
@@ -157,7 +157,7 @@ variable "aws_ec2_gpu_instance_p3_2xlarge" {
         "k8s.amazonaws.com/accelerator=nvidia-tesla-v100"]
       },
       # Model Deployment GPU Medium
-      "model-deployment-gpu-medium" : {
+      {
         instance_type_name : "model-deployment-gpu-medium"
 
         default_node_asg_capacities : {
@@ -174,7 +174,7 @@ variable "aws_ec2_gpu_instance_p3_2xlarge" {
         "k8s.amazonaws.com/accelerator=nvidia-tesla-v100"]
       },
       # Tensorboard GPU Medium
-      "tensorboard-gpu-medium" : {
+      {
         instance_type_name : "tensorboard-gpu-medium"
 
         default_node_asg_capacities : {
@@ -190,7 +190,7 @@ variable "aws_ec2_gpu_instance_p3_2xlarge" {
           "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
         "k8s.amazonaws.com/accelerator=nvidia-tesla-v100"]
       }
-    }
+    ]
   }
 }
 
@@ -198,9 +198,9 @@ variable "aws_ec2_gpu_instance_p2_xlarge" {
   default = {
     aws_ec2_instance_type : "p2.xlarge",
     paperspace_type : "gpu",
-    instance_type_metadata : {
+    instance_type_metadata : [
       # Experiment GPU Small
-      "experiment-gpu-small" : {
+      {
         instance_type_name : "experiment-gpu-small",
 
         default_node_asg_capacities : {
@@ -217,7 +217,7 @@ variable "aws_ec2_gpu_instance_p2_xlarge" {
         "k8s.amazonaws.com/accelerator=nvidia-tesla-k80"]
       },
       # Model Deployment GPU Small
-      "model-deployment-gpu-small" : {
+      {
         instance_type_name : "model-deployment-gpu-small"
 
         default_node_asg_capacities : {
@@ -235,7 +235,7 @@ variable "aws_ec2_gpu_instance_p2_xlarge" {
 
       },
       # Notebook GPU Small
-      "notebook-gpu-small" : {
+      {
         instance_type_name : "notebook-gpu-small"
 
         default_node_asg_capacities : {
@@ -252,7 +252,7 @@ variable "aws_ec2_gpu_instance_p2_xlarge" {
         "k8s.amazonaws.com/accelerator=nvidia-tesla-k80"]
       },
       # Tensorboard GPU Small
-      "tensorboard-gpu-small" : {
+      {
         instance_type_name : "tensorboard-gpu-small"
 
         default_node_asg_capacities : {
@@ -269,6 +269,6 @@ variable "aws_ec2_gpu_instance_p2_xlarge" {
         "k8s.amazonaws.com/accelerator=nvidia-tesla-k80"]
 
       }
-    }
+    ]
   }
 }

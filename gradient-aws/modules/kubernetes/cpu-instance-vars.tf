@@ -8,9 +8,9 @@ variable "aws_ec2_cpu_instance_c5_xlarge" {
   default = {
     aws_ec2_instance_type : "c5.xlarge",
     paperspace_type : "cpu",
-    instance_type_metadata : {
+    instance_type_metadata = [
       # Services Small
-      "services-small" : {
+      {
         instance_type_name : "services-small"
 
         default_node_asg_capacities : {
@@ -25,7 +25,7 @@ variable "aws_ec2_cpu_instance_c5_xlarge" {
         kubelet_extra_args : []
       },
       # Experiment CPU Small
-      "experiment-cpu-small" : {
+      {
         instance_type_name : "experiment-cpu-small"
 
         default_node_asg_capacities : {
@@ -40,7 +40,7 @@ variable "aws_ec2_cpu_instance_c5_xlarge" {
         kubelet_extra_args : []
       },
       # Model Deployment CPU Small
-      "model-deployment-cpu-small" : {
+      {
         instance_type_name : "model-deployment-cpu-small"
 
         default_node_asg_capacities : {
@@ -55,7 +55,7 @@ variable "aws_ec2_cpu_instance_c5_xlarge" {
         kubelet_extra_args : []
       },
       # Notebook CPU Small
-      "notebook-cpu-small" : {
+      {
         instance_type_name : "notebook-cpu-small"
 
         default_node_asg_capacities : {
@@ -70,7 +70,7 @@ variable "aws_ec2_cpu_instance_c5_xlarge" {
         kubelet_extra_args : []
       },
       # Tensorboard CPU Small
-      "tensorboard-cpu-small" : {
+      {
         instance_type_name : "tensorboard-cpu-small"
 
         default_node_asg_capacities : {
@@ -84,7 +84,7 @@ variable "aws_ec2_cpu_instance_c5_xlarge" {
         root_volume_size : 50
         kubelet_extra_args : []
       },
-    },
+    ],
   }
 }
 
@@ -92,9 +92,9 @@ variable "aws_ec2_cpu_instance_c5_4xlarge" {
   default = {
     aws_ec2_instance_type : "c5.4xlarge",
     paperspace_type : "cpu",
-    instance_type_metadata : {
+    instance_type_metadata : [
       # Experiment CPU Medium
-      "experiment-cpu-medium" : {
+      {
         instance_type_name : "experiment-cpu-medium"
 
         default_node_asg_capacities : {
@@ -109,7 +109,7 @@ variable "aws_ec2_cpu_instance_c5_4xlarge" {
         kubelet_extra_args : []
       },
       # Model Deployment CPU Medium
-      "model-deployment-cpu-medium" : {
+      {
         instance_type_name : "model-deployment-cpu-medium"
 
         default_node_asg_capacities : {
@@ -124,7 +124,7 @@ variable "aws_ec2_cpu_instance_c5_4xlarge" {
         kubelet_extra_args : []
       },
       # Notebook CPU Medium
-      "notebook-cpu-medium" : {
+      {
         instance_type_name : "notebook-cpu-medium"
 
         default_node_asg_capacities : {
@@ -139,7 +139,7 @@ variable "aws_ec2_cpu_instance_c5_4xlarge" {
         kubelet_extra_args : []
       },
       # Tensorboard CPU Medium
-      "tensorboard-cpu-medium" : {
+      {
         instance_type_name : "tensorboard-cpu-medium"
 
         default_node_asg_capacities : {
@@ -153,6 +153,6 @@ variable "aws_ec2_cpu_instance_c5_4xlarge" {
         root_volume_size : 50
         kubelet_extra_args : []
       },
-    },
+    ],
   }
 }
