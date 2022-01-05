@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sts"
 	"github.com/manifoldco/promptui"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
 	"os"
@@ -99,10 +100,8 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 			artifactsSecretAccessKeyPrompt.Value,
 			region,
 		)
-
 		if err != nil {
-			println(fmt.Sprintf("Unable to validate AWS identity from credentails: %s", err))
-			return "", err
+			return "", errors.New("Unable to validate your AWS identity from the specified credentials.")
 		} else {
 			println(fmt.Sprintf("AWS Identity is for: %s", arn))
 		}
