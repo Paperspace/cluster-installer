@@ -6,6 +6,7 @@ import (
 	"github.com/Paperspace/gradient-installer/pkg/cli/terraform"
 	"github.com/Paperspace/paperspace-go"
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sts"
 	"github.com/manifoldco/promptui"
@@ -16,12 +17,9 @@ import (
 
 func verifySTSCallerIdentity(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string) (string, bool, error) {
 
-	// the aws session will check environment vars
-	os.Setenv("AWS_ACCESS_KEY_ID", AWSAccessKeyID)
-	os.Setenv("AWS_SECRET_ACCESS_KEY", AWSSecretAccessKey)
-
 	session, err := session.NewSession(&aws.Config{
-		Region: aws.String(AWSRegion),
+		Region:      aws.String(AWSRegion),
+		Credentials: credentials.NewStaticCredentials(AWSAccessKeyID, AWSSecretAccessKey, ""),
 	})
 
 	if err != nil {
@@ -33,9 +31,6 @@ func verifySTSCallerIdentity(AWSAccessKeyID string, AWSSecretAccessKey string, A
 	if err != nil {
 		return "", false, err
 	}
-
-	_ = os.Unsetenv("AWS_ACCESS_KEY_ID")
-	_ = os.Unsetenv("AWS_SECRET_ACCESS_KEY")
 
 	return *result.Arn, true, err
 }
@@ -84,6 +79,7 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 
 		if err != nil || !stsValidated {
 			println(fmt.Sprintf("Unable to validate AWS identity from credentails: %s", err))
+			return "", err
 		} else {
 			println(fmt.Sprintf("AWS Identity is for: %s", arn))
 		}
@@ -97,25 +93,31 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 		if err := artifactsBucketPathPrompt.Run(); err != nil {
 			return "", err
 		}
+
 		domainPrompt := cli.Prompt{
 			Label:    "Domain (gradient.mycompany.com)",
 			Required: true,
 		}
+
+		if err := domainPrompt.Run(); err != nil {
+			return "", err
+		}
+
 		namePrompt := cli.Prompt{
 			Label:    "Name",
 			Required: true,
 		}
+
+		if err := namePrompt.Run(); err != nil {
+			return "", err
+		}
+
 		platformSelect := promptui.Select{
 			Label: "Platform",
 			Items: terraform.SupportedClusterPlatformTypes,
 		}
+
 		println(cli.TextHeader("Register a private cluster"))
-		if err := namePrompt.Run(); err != nil {
-			return "", err
-		}
-		if err := domainPrompt.Run(); err != nil {
-			return "", err
-		}
 		_, platform, err := platformSelect.Run()
 		if err != nil {
 			return "", err
