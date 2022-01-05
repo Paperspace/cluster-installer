@@ -15,7 +15,7 @@ import (
 	"os"
 )
 
-func verifySTSCallerIdentity(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string) (string, bool, error) {
+func getAWSSTSCallerArn(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string) (string, error) {
 
 	session, err := session.NewSession(&aws.Config{
 		Region:      aws.String(AWSRegion),
@@ -23,103 +23,91 @@ func verifySTSCallerIdentity(AWSAccessKeyID string, AWSSecretAccessKey string, A
 	})
 
 	if err != nil {
-		return "", false, err
+		return "", err
 	}
 	svc := sts.New(session)
 	result, err := svc.GetCallerIdentity(&sts.GetCallerIdentityInput{})
 
 	if err != nil {
-		return "", false, err
+		return "", err
 	}
 
-	return *result.Arn, true, err
+	return *result.Arn, err
 }
 
 func ClusterRegister(client *paperspace.Client, createFilePath string) (string, error) {
 	var cluster paperspace.Cluster
 	var params paperspace.ClusterCreateParams
+	var region string
 
 	if createFilePath == "" {
-
-		// Select AWS Region
 		awsRegionSelect := promptui.Select{
 			Label: "AWS Region",
 			Items: paperspace.ClusterAWSRegions,
 		}
-
-		_, region, err := awsRegionSelect.Run()
-		if err != nil {
-			return "", err
-		}
-
-		// Input AWS ACCESS_KEY_ID and SECRET_ACCCESS_KEY
 		artifactsAccessKeyIDPrompt := cli.Prompt{
 			Label:    "Artifacts S3 Access Key ID",
 			Required: true,
 		}
-
-		if err := artifactsAccessKeyIDPrompt.Run(); err != nil {
-			return "", err
+		artifactsBucketPathPrompt := cli.Prompt{
+			Label:    "Artifacts S3 Bucket",
+			Required: true,
 		}
-
 		artifactsSecretAccessKeyPrompt := cli.Prompt{
 			Label:    "Artifacts S3 Secret Access Key",
 			Required: true,
 			UseMask:  true,
 		}
+		domainPrompt := cli.Prompt{
+			Label:    "Domain (gradient.mycompany.com)",
+			Required: true,
+		}
+		namePrompt := cli.Prompt{
+			Label:    "Name",
+			Required: true,
+		}
+		platformSelect := promptui.Select{
+			Label: "Platform",
+			Items: terraform.SupportedClusterPlatformTypes,
+		}
+		println(cli.TextHeader("Register a private cluster"))
+		if err := namePrompt.Run(); err != nil {
+			return "", err
+		}
+		if err := domainPrompt.Run(); err != nil {
+			return "", err
+		}
 
+		_, platform, err := platformSelect.Run()
+		if err != nil {
+			return "", err
+		}
+		if platform == string(paperspace.ClusterPlatformAWS) {
+			_, region, err = awsRegionSelect.Run()
+			if err != nil {
+				return "", err
+			}
+		}
+		if err := artifactsAccessKeyIDPrompt.Run(); err != nil {
+			return "", err
+		}
 		if err := artifactsSecretAccessKeyPrompt.Run(); err != nil {
 			return "", err
 		}
 
-		arn, stsValidated, err := verifySTSCallerIdentity(artifactsAccessKeyIDPrompt.Value,
+		arn, err := getAWSSTSCallerArn(artifactsAccessKeyIDPrompt.Value,
 			artifactsSecretAccessKeyPrompt.Value,
 			region,
 		)
 
-		if err != nil || !stsValidated {
+		if err != nil {
 			println(fmt.Sprintf("Unable to validate AWS identity from credentails: %s", err))
 			return "", err
 		} else {
 			println(fmt.Sprintf("AWS Identity is for: %s", arn))
 		}
 
-		// Input object store bucket for artifacts
-		artifactsBucketPathPrompt := cli.Prompt{
-			Label:    "Artifacts S3 Bucket",
-			Required: true,
-		}
-
 		if err := artifactsBucketPathPrompt.Run(); err != nil {
-			return "", err
-		}
-
-		domainPrompt := cli.Prompt{
-			Label:    "Domain (gradient.mycompany.com)",
-			Required: true,
-		}
-
-		if err := domainPrompt.Run(); err != nil {
-			return "", err
-		}
-
-		namePrompt := cli.Prompt{
-			Label:    "Name",
-			Required: true,
-		}
-
-		if err := namePrompt.Run(); err != nil {
-			return "", err
-		}
-
-		platformSelect := promptui.Select{
-			Label: "Platform",
-			Items: terraform.SupportedClusterPlatformTypes,
-		}
-
-		println(cli.TextHeader("Register a private cluster"))
-		_, platform, err := platformSelect.Run()
-		if err != nil {
 			return "", err
 		}
 
@@ -155,7 +143,6 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 
 	return cluster.ID, nil
 }
-
 func NewClusterRegisterCommand() *cobra.Command {
 	var createFilePath string
 
