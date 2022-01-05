@@ -2,15 +2,39 @@ package clusters
 
 import (
 	"fmt"
-	"os"
-
 	"github.com/Paperspace/gradient-installer/pkg/cli"
 	"github.com/Paperspace/gradient-installer/pkg/cli/terraform"
 	"github.com/Paperspace/paperspace-go"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/sts"
 	"github.com/manifoldco/promptui"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
+	"os"
 )
+
+func getAWSSTSCallerArn(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string) (string, error) {
+
+	session, err := session.NewSession(&aws.Config{
+		Region:      aws.String(AWSRegion),
+		Credentials: credentials.NewStaticCredentials(AWSAccessKeyID, AWSSecretAccessKey, ""),
+	})
+
+	if err != nil {
+		return "", err
+	}
+	svc := sts.New(session)
+	result, err := svc.GetCallerIdentity(&sts.GetCallerIdentityInput{})
+
+	if err != nil {
+		return "", err
+	}
+
+	return *result.Arn, err
+}
 
 func ClusterRegister(client *paperspace.Client, createFilePath string) (string, error) {
 	var cluster paperspace.Cluster
@@ -65,14 +89,24 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 				return "", err
 			}
 		}
-
-		if err := artifactsBucketPathPrompt.Run(); err != nil {
-			return "", err
-		}
 		if err := artifactsAccessKeyIDPrompt.Run(); err != nil {
 			return "", err
 		}
 		if err := artifactsSecretAccessKeyPrompt.Run(); err != nil {
+			return "", err
+		}
+
+		arn, err := getAWSSTSCallerArn(artifactsAccessKeyIDPrompt.Value,
+			artifactsSecretAccessKeyPrompt.Value,
+			region,
+		)
+		if err != nil {
+			return "", errors.New("Unable to validate your AWS identity from the specified credentials.")
+		} else {
+			println(fmt.Sprintf("AWS Identity is for: %s", arn))
+		}
+
+		if err := artifactsBucketPathPrompt.Run(); err != nil {
 			return "", err
 		}
 
@@ -108,7 +142,6 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 
 	return cluster.ID, nil
 }
-
 func NewClusterRegisterCommand() *cobra.Command {
 	var createFilePath string
 
