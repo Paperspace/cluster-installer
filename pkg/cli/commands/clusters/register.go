@@ -2,38 +2,100 @@ package clusters
 
 import (
 	"fmt"
-	"os"
-
 	"github.com/Paperspace/gradient-installer/pkg/cli"
 	"github.com/Paperspace/gradient-installer/pkg/cli/terraform"
 	"github.com/Paperspace/paperspace-go"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/sts"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
+	"os"
 )
+
+func verifySTSCallerIdentity(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string) (string, bool, error) {
+
+	// the aws session will check environment vars
+	os.Setenv("AWS_ACCESS_KEY_ID", AWSAccessKeyID)
+	os.Setenv("AWS_SECRET_ACCESS_KEY", AWSSecretAccessKey)
+
+	session, err := session.NewSession(&aws.Config{
+		Region: aws.String(AWSRegion),
+	})
+
+	if err != nil {
+		return "", false, err
+	}
+	svc := sts.New(session)
+	result, err := svc.GetCallerIdentity(&sts.GetCallerIdentityInput{})
+
+	if err != nil {
+		return "", false, err
+	}
+
+	_ = os.Unsetenv("AWS_ACCESS_KEY_ID")
+	_ = os.Unsetenv("AWS_SECRET_ACCESS_KEY")
+
+	return *result.Arn, true, err
+}
 
 func ClusterRegister(client *paperspace.Client, createFilePath string) (string, error) {
 	var cluster paperspace.Cluster
 	var params paperspace.ClusterCreateParams
-	var region string
 
 	if createFilePath == "" {
+
+		// Select AWS Region
 		awsRegionSelect := promptui.Select{
 			Label: "AWS Region",
 			Items: paperspace.ClusterAWSRegions,
 		}
+
+		_, region, err := awsRegionSelect.Run()
+		if err != nil {
+			return "", err
+		}
+
+		// Input AWS ACCESS_KEY_ID and SECRET_ACCCESS_KEY
 		artifactsAccessKeyIDPrompt := cli.Prompt{
 			Label:    "Artifacts S3 Access Key ID",
 			Required: true,
 		}
-		artifactsBucketPathPrompt := cli.Prompt{
-			Label:    "Artifacts S3 Bucket",
-			Required: true,
+
+		if err := artifactsAccessKeyIDPrompt.Run(); err != nil {
+			return "", err
 		}
+
 		artifactsSecretAccessKeyPrompt := cli.Prompt{
 			Label:    "Artifacts S3 Secret Access Key",
 			Required: true,
 			UseMask:  true,
+		}
+
+		if err := artifactsSecretAccessKeyPrompt.Run(); err != nil {
+			return "", err
+		}
+
+		arn, stsValidated, err := verifySTSCallerIdentity(artifactsAccessKeyIDPrompt.Value,
+			artifactsSecretAccessKeyPrompt.Value,
+			region,
+		)
+
+		if err != nil || !stsValidated {
+			println(fmt.Sprintf("Unable to validate AWS identity from credentails: %s", err))
+		} else {
+			println(fmt.Sprintf("AWS Identity is for: %s", arn))
+		}
+
+		// Input object store bucket for artifacts
+		artifactsBucketPathPrompt := cli.Prompt{
+			Label:    "Artifacts S3 Bucket",
+			Required: true,
+		}
+
+		if err := artifactsBucketPathPrompt.Run(); err != nil {
+			return "", err
 		}
 		domainPrompt := cli.Prompt{
 			Label:    "Domain (gradient.mycompany.com)",
@@ -54,25 +116,8 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 		if err := domainPrompt.Run(); err != nil {
 			return "", err
 		}
-
 		_, platform, err := platformSelect.Run()
 		if err != nil {
-			return "", err
-		}
-		if platform == string(paperspace.ClusterPlatformAWS) {
-			_, region, err = awsRegionSelect.Run()
-			if err != nil {
-				return "", err
-			}
-		}
-
-		if err := artifactsBucketPathPrompt.Run(); err != nil {
-			return "", err
-		}
-		if err := artifactsAccessKeyIDPrompt.Run(); err != nil {
-			return "", err
-		}
-		if err := artifactsSecretAccessKeyPrompt.Run(); err != nil {
 			return "", err
 		}
 
