@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/sts"
 	"github.com/manifoldco/promptui"
 	"github.com/pkg/errors"
@@ -16,12 +17,33 @@ import (
 	"os"
 )
 
-func getAWSSTSCallerArn(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string) (string, error) {
-
-	session, err := session.NewSession(&aws.Config{
+func createAWSStaticCredentialSession(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string) (*session.Session, error) {
+	return session.NewSession(&aws.Config{
 		Region:      aws.String(AWSRegion),
 		Credentials: credentials.NewStaticCredentials(AWSAccessKeyID, AWSSecretAccessKey, ""),
 	})
+}
+
+func validateAWSS3BucketExists(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string, AWSBucketName string) error {
+
+	session, err := createAWSStaticCredentialSession(AWSAccessKeyID, AWSSecretAccessKey, AWSRegion)
+
+	if err != nil {
+		return err
+	}
+
+	svc := s3.New(session)
+
+	_, err = svc.HeadBucket(&s3.HeadBucketInput{
+		Bucket: aws.String(AWSBucketName),
+	})
+
+	return err
+}
+
+func getAWSSTSCallerArn(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string) (string, error) {
+
+	session, err := createAWSStaticCredentialSession(AWSAccessKeyID, AWSSecretAccessKey, AWSRegion)
 
 	if err != nil {
 		return "", err
@@ -108,6 +130,20 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 
 		if err := artifactsBucketPathPrompt.Run(); err != nil {
 			return "", err
+		}
+
+		err = validateAWSS3BucketExists(artifactsAccessKeyIDPrompt.Value,
+			artifactsSecretAccessKeyPrompt.Value,
+			region,
+			artifactsBucketPathPrompt.Value,
+		)
+
+		if err != nil {
+			return "",
+				errors.New(
+					fmt.Sprintf("Unable to validate your S3 bucket %s from the specified credentials.", artifactsBucketPathPrompt.Value))
+		} else {
+			println(fmt.Sprintf("S3 Bucket [%s]a validated via a HeadBucket Request", artifactsBucketPathPrompt.Value))
 		}
 
 		params = paperspace.ClusterCreateParams{
