@@ -403,10 +403,10 @@ victoria-metrics-k8s-stack:
     resources:
       requests:
         cpu: 500m
-        memory: 512Mi
+        memory: 1Gi
       limits:
         cpu: 500m
-        memory: 512Mi
+        memory: 1Gi
     %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
