@@ -118,14 +118,12 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 			return "", err
 		}
 
-		arn, err := getAWSSTSCallerArn(artifactsAccessKeyIDPrompt.Value,
+		_, err = getAWSSTSCallerArn(artifactsAccessKeyIDPrompt.Value,
 			artifactsSecretAccessKeyPrompt.Value,
 			region,
 		)
 		if err != nil {
 			return "", errors.New("Unable to validate your AWS identity from the specified credentials.")
-		} else {
-			println(fmt.Sprintf("AWS Identity is for: %s", arn))
 		}
 
 		if err := artifactsBucketPathPrompt.Run(); err != nil {
