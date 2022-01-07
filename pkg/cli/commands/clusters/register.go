@@ -140,8 +140,6 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 			return "",
 				errors.New(
 					fmt.Sprintf("Unable to validate your S3 bucket %s from the specified credentials.", artifactsBucketPathPrompt.Value))
-		} else {
-			println(fmt.Sprintf("S3 Bucket [%s]a validated via a HeadBucket Request", artifactsBucketPathPrompt.Value))
 		}
 
 		params = paperspace.ClusterCreateParams{
