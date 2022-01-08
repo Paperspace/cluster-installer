@@ -1,6 +1,7 @@
 package clusters
 
 import (
+	"errors"
 	"fmt"
 	"github.com/Paperspace/gradient-installer/pkg/cli"
 	"github.com/Paperspace/gradient-installer/pkg/cli/terraform"
@@ -11,7 +12,6 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/sts"
 	"github.com/manifoldco/promptui"
-	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
 	"os"
