@@ -564,20 +564,19 @@ module "gradient_processing" {
   cert_manager_enabled        = true
   image_cache_enabled         = true
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
-    "tensorflow/tensorflow:2.4.1-gpu-jupyter",
-    "paperspace/transformers-gpu:0.4.0",
-    "paperspace/gradient-base:tf24-py36-0.10",
-    "paperspace/gradient-base:tf115-py36-0.10",
-    "paperspace/fastai:2.0-fastbook-2021-11-12",
-    "paperspace/notebook_idle:v1.0.5",
-    "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
-    "rapidsai/rapidsai-core:21.08-cuda11.0-runtime-ubuntu18.04-py3.7",
-    "nvcr.io/nvidia/pytorch:21.02-py3",
-    "jupyter/r-notebook",
-    "jupyter/datascience-notebook",
-    "jalfaizy/cv_docker:latest",
-    "nvcr.io/nvidia/tensorflow:21.09-tf2-py3",
+    # Ordered by most used
     "nvcr.io/nvidia/pytorch:21.10-py3",
+    "nvcr.io/nvidia/tensorflow:21.09-tf2-py3",
+    "paperspace/fastai:2.0-fastbook-2021-11-12",
+    "rapidsai/rapidsai-core:21.08-cuda11.0-runtime-ubuntu18.04-py3.7",
+    "paperspace/transformers-gpu:0.4.0",
+    "jupyter/datascience-notebook",
+    "paperspace/gradient-base:tf24-py36-0.10",
+    "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
+    "paperspace/clip-pixeldraw:jupyter",
+    "jalfaizy/cv_docker:latest",
+    # Images used in our infrastructure
+    "paperspace/notebook_idle:v1.0.5",
   ]
 }
 
