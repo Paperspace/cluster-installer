@@ -569,13 +569,14 @@ module "gradient_processing" {
     "nvcr.io/nvidia/tensorflow:21.09-tf2-py3",
     "paperspace/fastai:2.0-fastbook-2021-11-12",
     "rapidsai/rapidsai-core:21.08-cuda11.0-runtime-ubuntu18.04-py3.7",
+    "rapidsai/rapidsai:cuda11.0-runtime-ubuntu20.04-py3.8",
     "paperspace/transformers-gpu:0.4.0",
     "jupyter/datascience-notebook",
     "paperspace/gradient-base:tf24-py36-0.10",
     "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
     "paperspace/clip-pixeldraw:jupyter",
     "jalfaizy/cv_docker:latest",
-    # Images used in our infrastructure
+    # Images used internally
     "paperspace/notebook_idle:v1.0.5",
   ]
 }
