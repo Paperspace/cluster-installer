@@ -572,8 +572,9 @@ module "gradient_processing" {
     "rapidsai/rapidsai:cuda11.0-runtime-ubuntu20.04-py3.8",
     "paperspace/transformers-gpu:0.4.0",
     "jupyter/datascience-notebook",
-    "paperspace/gradient-base:tf24-py36-0.10",
     "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
+    "paperspace/gradient-base:tf24-py36-0.10",
+    "maximedurand/stylegan3:latest",
     "paperspace/clip-pixeldraw:jupyter",
     "jalfaizy/cv_docker:latest",
     # Images used internally
