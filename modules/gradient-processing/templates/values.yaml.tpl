@@ -208,10 +208,10 @@ gradient-operator:
       resources:
         requests:
           cpu: 1000m
-          memory: 2048Mi
+          memory: 3072Mi
         limits:
           cpu: 1000m
-          memory: 2048Mi
+          memory: 3072Mi
     %{ endif }
 
     %{ if pod_assignment_label_name != "" }
@@ -232,14 +232,14 @@ gradient-operator:
       resources:
         requests:
           cpu: 250m
-          memory: 512Mi
+          memory: 768Mi
         limits:
           cpu: 250m
-          memory: 512Mi
+          memory: 768Mi
     %{ endif }
 
     abuseWatcher:
-      enabled: ${anti_crypto_miner_regex != ""}
+      enabled: false
       antiCryptoMinerRegex: ${anti_crypto_miner_regex}
 
       %{ if is_public_cluster }
