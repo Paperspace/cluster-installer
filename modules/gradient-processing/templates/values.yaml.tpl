@@ -534,6 +534,18 @@ volumeController:
       memory: 1536Mi
   %{ endif }
 
+recycleBin:
+  enabled: true
+  %{ if is_public_cluster }
+  resources:
+    requests:
+      cpu: 250m
+      memory: 1Gi
+    limits:
+      cpu: 250m
+      memory: 1Gi
+  %{ endif }
+
 
 %{ if is_public_cluster }
 gradient-experiment-watcher:
