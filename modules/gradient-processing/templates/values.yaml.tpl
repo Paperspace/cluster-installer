@@ -121,20 +121,20 @@ ceph-csi-rbd:
     resources:
       requests:
         cpu: 500m
-        memory: 2Gi
+        memory: 256Mi
       limits:
         cpu: 500m
-        memory: 256Mi
+        memory: 2Gi
     %{ endif }
   csi-resizer:
     %{ if is_public_cluster }
     resources:
       requests:
         cpu: 500m
-        memory: 2Gi
+        memory: 256Mi
       limits:
         cpu: 500m
-        memory: 256Mi
+        memory: 2Gi
     %{ endif }
 %{ endif }
 
