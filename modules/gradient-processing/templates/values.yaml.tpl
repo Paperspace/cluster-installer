@@ -136,6 +136,7 @@ ceph-csi-rbd:
         cpu: 500m
         memory: 256Mi
     %{ endif }
+%{ endif }
 
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}
