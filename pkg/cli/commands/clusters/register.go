@@ -1,6 +1,7 @@
 package clusters
 
 import (
+	"errors"
 	"fmt"
 	"github.com/Paperspace/gradient-installer/pkg/cli"
 	"github.com/Paperspace/gradient-installer/pkg/cli/terraform"
@@ -8,20 +9,41 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/sts"
 	"github.com/manifoldco/promptui"
-	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
 	"os"
 )
 
-func getAWSSTSCallerArn(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string) (string, error) {
-
-	session, err := session.NewSession(&aws.Config{
+func createAWSStaticCredentialSession(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string) (*session.Session, error) {
+	return session.NewSession(&aws.Config{
 		Region:      aws.String(AWSRegion),
 		Credentials: credentials.NewStaticCredentials(AWSAccessKeyID, AWSSecretAccessKey, ""),
 	})
+}
+
+func validateAWSS3BucketExists(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string, AWSBucketName string) error {
+
+	session, err := createAWSStaticCredentialSession(AWSAccessKeyID, AWSSecretAccessKey, AWSRegion)
+
+	if err != nil {
+		return err
+	}
+
+	svc := s3.New(session)
+
+	_, err = svc.HeadBucket(&s3.HeadBucketInput{
+		Bucket: aws.String(AWSBucketName),
+	})
+
+	return err
+}
+
+func getAWSSTSCallerArn(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string) (string, error) {
+
+	session, err := createAWSStaticCredentialSession(AWSAccessKeyID, AWSSecretAccessKey, AWSRegion)
 
 	if err != nil {
 		return "", err
@@ -96,18 +118,28 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 			return "", err
 		}
 
-		arn, err := getAWSSTSCallerArn(artifactsAccessKeyIDPrompt.Value,
+		_, err = getAWSSTSCallerArn(artifactsAccessKeyIDPrompt.Value,
 			artifactsSecretAccessKeyPrompt.Value,
 			region,
 		)
 		if err != nil {
 			return "", errors.New("Unable to validate your AWS identity from the specified credentials.")
-		} else {
-			println(fmt.Sprintf("AWS Identity is for: %s", arn))
 		}
 
 		if err := artifactsBucketPathPrompt.Run(); err != nil {
 			return "", err
+		}
+
+		err = validateAWSS3BucketExists(artifactsAccessKeyIDPrompt.Value,
+			artifactsSecretAccessKeyPrompt.Value,
+			region,
+			artifactsBucketPathPrompt.Value,
+		)
+
+		if err != nil {
+			return "",
+				errors.New(
+					fmt.Sprintf("Unable to validate your S3 bucket %s from the specified credentials.", artifactsBucketPathPrompt.Value))
 		}
 
 		params = paperspace.ClusterCreateParams{
