@@ -115,7 +115,6 @@ ceph-csi-rbd:
   provisioner:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
-  csi-provisioner:
     image: k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
     %{ if is_public_cluster }
     resources:
@@ -126,7 +125,7 @@ ceph-csi-rbd:
         cpu: 500m
         memory: 2Gi
     %{ endif }
-  csi-resizer:
+  resizer:
     %{ if is_public_cluster }
     resources:
       requests:
