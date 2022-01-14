@@ -95,6 +95,7 @@ ceph-csi-cephfs:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
+# https://github.com/kubernetes-csi/external-provisioner/releases
 %{ if length(rbd_storage_config) != 0 }
 ceph-csi-rbd:
   enabled: true
@@ -114,6 +115,26 @@ ceph-csi-rbd:
   provisioner:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
+    image: k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
+    %{ if is_public_cluster }
+    resources:
+      requests:
+        cpu: 500m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 2Gi
+    %{ endif }
+  resizer:
+    %{ if is_public_cluster }
+    resources:
+      requests:
+        cpu: 500m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 2Gi
+    %{ endif }
 %{ endif }
 
 cluster-autoscaler:
