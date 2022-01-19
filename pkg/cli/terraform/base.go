@@ -45,6 +45,7 @@ func NewTerraform(platform paperspace.ClusterPlatformType) *Terraform {
 		terraformModules.Metal = NewMetalPlatform(platform)
 	}
 
+	//ToDo NewTerraformProvider, pass region down
 	terraform := Terraform{
 		Modules:           &terraformModules,
 		Outputs:           terraformOutputs,
