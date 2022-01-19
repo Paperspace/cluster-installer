@@ -15,6 +15,7 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
 	"os"
+	"sort"
 )
 
 func createAWSStaticCredentialSession(AWSAccessKeyID string, AWSSecretAccessKey string, AWSRegion string) (*session.Session, error) {
@@ -63,10 +64,19 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 	var params paperspace.ClusterCreateParams
 	var region string
 
+	//ToDo update paperspace go library with static enum
+	AWSRegions := paperspace.ClusterAWSRegions
+	AWSRegions = append(AWSRegions, ("us-west-1"))
+	sort.Strings(AWSRegions)
+
 	if createFilePath == "" {
 		awsRegionSelect := promptui.Select{
 			Label: "AWS Region",
-			Items: paperspace.ClusterAWSRegions,
+			Items: AWSRegions,
+		}
+		artifactsBucketRegionPrompt := promptui.Select{
+			Label: "AWS S3 Artifact Region",
+			Items: AWSRegions,
 		}
 		artifactsAccessKeyIDPrompt := cli.Prompt{
 			Label:    "Artifacts S3 Access Key ID",
@@ -105,12 +115,19 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 		if err != nil {
 			return "", err
 		}
+
 		if platform == string(paperspace.ClusterPlatformAWS) {
 			_, region, err = awsRegionSelect.Run()
 			if err != nil {
 				return "", err
 			}
 		}
+
+		_, artifactsBucketRegion, err := artifactsBucketRegionPrompt.Run()
+		if err != nil {
+			return "", err
+		}
+
 		if err := artifactsAccessKeyIDPrompt.Run(); err != nil {
 			return "", err
 		}
@@ -120,7 +137,7 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 
 		_, err = getAWSSTSCallerArn(artifactsAccessKeyIDPrompt.Value,
 			artifactsSecretAccessKeyPrompt.Value,
-			region,
+			artifactsBucketRegion,
 		)
 		if err != nil {
 			return "", errors.New("Unable to validate your AWS identity from the specified credentials.")
@@ -132,7 +149,7 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 
 		err = validateAWSS3BucketExists(artifactsAccessKeyIDPrompt.Value,
 			artifactsSecretAccessKeyPrompt.Value,
-			region,
+			artifactsBucketRegion,
 			artifactsBucketPathPrompt.Value,
 		)
 
