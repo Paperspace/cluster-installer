@@ -23,7 +23,7 @@ type MetalPlatform struct {
 	SetupNvidia         bool                 `json:"setup_nvidia,omitempty"`
 	SharedStoragePath   string               `json:"shared_storage_path,omitempty"`
 	SharedStorageServer string               `json:"shared_storage_server,omitempty"`
-	SSHKeyPath          string               `json:"ssh_key_path,omitempty"`
+	SSHKeyPath          *string              `json:"ssh_key_path,omitempty"`
 	SSHUser             string               `json:"ssh_user,omitempty"`
 }
 
@@ -32,7 +32,7 @@ func NewMetalPlatform(platform paperspace.ClusterPlatformType) *MetalPlatform {
 		Common:      NewCommon(),
 		MainNode:    NewMetalPlatformNode(platform),
 		WorkerNodes: make([]*MetalPlatformNode, 0),
-		SSHKeyPath:  "", // TODO TOMS provide alternatives
+		SSHKeyPath:  nil, // TODO TOMS provide alternatives
 		SSHUser:     "ubuntu",
 	}
 

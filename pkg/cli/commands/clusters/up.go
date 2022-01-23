@@ -37,7 +37,7 @@ func createTerraformMetalPlatformNode(terraformMetalPlatformNode *terraform.Meta
 	var items []string
 	switch platform {
 	case paperspace.ClusterPlatformGraphcore,
-	    paperspace.ClusterPlatformSambaNova:
+		paperspace.ClusterPlatformSambaNova:
 		items = []string{string(terraform.PoolTypeCPU)}
 	default:
 		items = []string{string(terraform.PoolTypeGPU), string(terraform.PoolTypeCPU)}
@@ -72,7 +72,7 @@ func setupMetalConfig(terraformMetalPlatform *terraform.MetalPlatform, platform 
 	var platformHasGPU bool
 	switch platform {
 	case paperspace.ClusterPlatformGraphcore,
-	    paperspace.ClusterPlatformSambaNova:
+		paperspace.ClusterPlatformSambaNova:
 		platformHasGPU = false
 	default:
 		platformHasGPU = true
@@ -111,8 +111,8 @@ func setupMetalConfig(terraformMetalPlatform *terraform.MetalPlatform, platform 
 	}
 	sshKeyPathPrompt := cli.Prompt{
 		Label:    "SSH Private Key Path",
-		Required: true,
-		Value:    terraformMetalPlatform.SSHKeyPath,
+		Required: false,
+		Value:    *terraformMetalPlatform.SSHKeyPath,
 	}
 	sshUserPrompt := cli.Prompt{
 		Label:    "SSH User",
@@ -205,7 +205,7 @@ func setupMetalConfig(terraformMetalPlatform *terraform.MetalPlatform, platform 
 	terraformMetalPlatform.SharedStoragePath = sharedStoragePath.Value
 	terraformMetalPlatform.SharedStorageServer = sharedStorageServer.Value
 	terraformMetalPlatform.SetupDocker = cli.YesNoToBool(setupDockerPrompt.Value)
-	terraformMetalPlatform.SSHKeyPath = sshKeyPathPrompt.Value
+	terraformMetalPlatform.SSHKeyPath = &sshKeyPathPrompt.Value
 	terraformMetalPlatform.SSHUser = sshUserPrompt.Value
 
 	if platformHasGPU {
@@ -412,8 +412,8 @@ func setupTerraformProvider(terraformProvider *terraform.TerraformProvider) erro
 		UseMask:        true,
 	}
 	s3RegionPrompt := cli.Prompt{
-		Label:    "Region",
-		Value:    terraformProvider.Backends.S3.Region,
+		Label: "Region",
+		Value: terraformProvider.Backends.S3.Region,
 	}
 	s3EndpointPrompt := cli.Prompt{
 		Label: "Endpoint",
@@ -463,7 +463,7 @@ func setupTerraformProvider(terraformProvider *terraform.TerraformProvider) erro
 	terraformProvider.Backends.S3.Region = s3RegionPrompt.Value
 
 	if s3RegionPrompt.Value == "none" || s3RegionPrompt.Value == "main" || s3RegionPrompt.Value == "minio" ||
-	    s3RegionPrompt.Value == "" {
+		s3RegionPrompt.Value == "" {
 		terraformProvider.Backends.S3.Region = "main"
 		terraformProvider.Backends.S3.SkipRegionValidation = true
 		terraformProvider.Backends.S3.SkipCredentialsValidation = true
