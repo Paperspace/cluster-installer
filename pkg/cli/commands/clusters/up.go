@@ -110,11 +110,10 @@ func setupMetalConfig(terraformMetalPlatform *terraform.MetalPlatform, platform 
 		}
 	}
 
-	var SSHKeyPath string
 	sshKeyPathPrompt := cli.Prompt{
 		Label:    "SSH Private Key Path",
 		Required: false,
-		Value:    SSHKeyPath,
+		Value:    terraformMetalPlatform.SSHKeyPath,
 	}
 	sshUserPrompt := cli.Prompt{
 		Label:    "SSH User",
@@ -207,7 +206,7 @@ func setupMetalConfig(terraformMetalPlatform *terraform.MetalPlatform, platform 
 	terraformMetalPlatform.SharedStoragePath = sharedStoragePath.Value
 	terraformMetalPlatform.SharedStorageServer = sharedStorageServer.Value
 	terraformMetalPlatform.SetupDocker = cli.YesNoToBool(setupDockerPrompt.Value)
-	terraformMetalPlatform.SSHKeyPath = &sshKeyPathPrompt.Value
+	terraformMetalPlatform.SSHKeyPath = sshKeyPathPrompt.Value
 	terraformMetalPlatform.SSHUser = sshUserPrompt.Value
 
 	if platformHasGPU {
