@@ -109,10 +109,12 @@ func setupMetalConfig(terraformMetalPlatform *terraform.MetalPlatform, platform 
 			Required:      true,
 		}
 	}
+
+	var SSHKeyPath string
 	sshKeyPathPrompt := cli.Prompt{
 		Label:    "SSH Private Key Path",
 		Required: false,
-		Value:    *terraformMetalPlatform.SSHKeyPath,
+		Value:    SSHKeyPath,
 	}
 	sshUserPrompt := cli.Prompt{
 		Label:    "SSH User",
