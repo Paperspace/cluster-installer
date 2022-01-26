@@ -39,5 +39,9 @@ func (p *Profile) NewPaperspaceClient() *paperspace.Client {
 	client := paperspace.NewClientWithBackend(paperspace.Backend(apiBackend))
 	client.APIKey = p.APIKey
 
+	if os.Getenv("PAPERSPACE_API_KEY") != "" {
+		client.APIKey = os.Getenv("PAPERSPACE_API_KEY")
+	}
+
 	return client
 }
