@@ -501,11 +501,11 @@ traefik:
   %{ if is_public_cluster }
   resources:
     requests:
-      cpu: 500m
-      memory: 256Mi
+      cpu: 2
+      memory: 2Gi
     limits:
-      cpu: 1000m
-      memory: 2048Mi
+      cpu: 2
+      memory: 2Gi
   %{ endif }
 
 argo:
