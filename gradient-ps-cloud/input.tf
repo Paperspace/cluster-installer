@@ -82,7 +82,7 @@ variable "machine_template_id_lb" {
 
 variable "machine_type_lb" {
   description = "LB machine type"
-  default     = "C5"
+  default     = "C7"
 }
 
 variable "machine_storage_service" {
