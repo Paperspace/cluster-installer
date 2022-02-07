@@ -196,6 +196,15 @@ cluster-autoscaler:
 dispatcher:
   config:
     apiAddress: ${dispatcher_host}
+    %{ if is_public_cluster }
+    resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
+      limits:
+        cpu: 250m
+        memory: 800Mi
+    %{ endif }
 
 
 efs-provisioner:
