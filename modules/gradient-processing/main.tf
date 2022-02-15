@@ -41,6 +41,14 @@ resource "helm_release" "cert_manager" {
     })
   ]
 }
+resource "helm_release" "metrics_server" {
+  count = var.metrics_server_enabled ? 1 : 0
+
+  name       = "metrics-server"
+  repository = "https://kubernetes-sigs.github.io/metrics-server"
+  chart      = "metrics-server"
+  version    = var.metrics_server_version
+}
 
 resource "helm_release" "gradient_processing" {
   name                = "gradient-processing"
