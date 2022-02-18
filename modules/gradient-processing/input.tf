@@ -336,3 +336,13 @@ variable "rbd_storage_config" {
   description = "Local storage config json"
   default     = ""
 }
+
+variable "metrics_server_enabled" {
+  description = "enable installation of the metrics server"
+  default     = true
+}
+
+variable "metrics_server_version" {
+  description = "Version of the metrics server chart to install"
+  default     = "3.7.0" # metrics-server 3.5.0 same as rancher
+}

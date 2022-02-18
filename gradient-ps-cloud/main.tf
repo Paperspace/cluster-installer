@@ -580,6 +580,7 @@ module "gradient_processing" {
     # Images used internally
     "paperspace/notebook_idle:v1.0.5",
   ]
+  metrics_server_enabled = false
 }
 
 resource "rancher2_cluster" "main" {
