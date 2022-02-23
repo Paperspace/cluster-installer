@@ -28,7 +28,7 @@ resource "paperspace_machine" "gradient_admin" {
   ]
 
   region           = var.region
-  name             = "${var.name}-"
+  name             = "${var.name}-admin"
   machine_type     = var.machine_type_admin
   size             = var.machine_storage_admin
   billing_type     = "hourly"
