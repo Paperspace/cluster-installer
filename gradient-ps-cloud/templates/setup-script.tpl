@@ -41,7 +41,6 @@ EOL
 service docker reload
 
 echo "${ssh_public_key}" >> /home/paperspace/.ssh/authorized_keys
-echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 
 export MACHINE_ID=`curl -s https://metadata.paperspace.com/meta-data/machine | grep id | sed 's/^.*: "\(.*\)".*/\1/'`
 export MACHINE_PRIVATE_IP=`curl -s https://metadata.paperspace.com/meta-data/machine | grep privateIpAddress | sed 's/^.*: "\(.*\)".*/\1/'`
@@ -67,6 +66,7 @@ ${rancher_command} \
 %{ endif ~}
 
 %{ if kind == "main_single" ~}
+echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --etcd --controlplane --worker \
     --label paperspace.com/pool-name=services-small \
@@ -75,6 +75,7 @@ ${rancher_command} \
 %{ endif ~}
 
 %{ if kind == "autoscale_worker" ~}
+echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --worker \
     --label paperspace.com/pool-name=${pool_name} \
@@ -87,6 +88,7 @@ ${rancher_command} \
 %{ endif ~}
 
 %{ if kind == "worker" ~}
+echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --worker \
     --label paperspace.com/pool-name=${pool_name} \
@@ -97,6 +99,7 @@ ${rancher_command} \
 %{ endif ~}
 
 %{ if kind == "worker_public" ~}
+echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --worker \
     --label paperspace.com/pool-name=${pool_name} \
@@ -108,9 +111,8 @@ ${rancher_command} \
 %{ endif ~}
 
 %{ if kind == "admin_public" ~}
-
 echo "${admin_management_private_key}" >> /home/paperspace/.ssh/admin.pem
-
+echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --worker \
     --label paperspace.com/gradient-worker=false \
