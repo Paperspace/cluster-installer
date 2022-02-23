@@ -41,6 +41,7 @@ EOL
 service docker reload
 
 echo "${ssh_public_key}" >> /home/paperspace/.ssh/authorized_keys
+echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 
 export MACHINE_ID=`curl -s https://metadata.paperspace.com/meta-data/machine | grep id | sed 's/^.*: "\(.*\)".*/\1/'`
 export MACHINE_PRIVATE_IP=`curl -s https://metadata.paperspace.com/meta-data/machine | grep privateIpAddress | sed 's/^.*: "\(.*\)".*/\1/'`
@@ -100,6 +101,19 @@ ${rancher_command} \
     --worker \
     --label paperspace.com/pool-name=${pool_name} \
     --label paperspace.com/gradient-worker=true \
+    --label paperspace.com/pool-type=${pool_type} \
+    --node-name $MACHINE_ID \
+    --address $MACHINE_PUBLIC_IP \
+    --internal-address $MACHINE_PRIVATE_IP
+%{ endif ~}
+
+%{ if kind == "admin_public" ~}
+
+echo "${admin_management_private_key}" >> /home/paperspace/.ssh/admin.pem
+
+${rancher_command} \
+    --worker \
+    --label paperspace.com/gradient-worker=false \
     --label paperspace.com/pool-type=${pool_type} \
     --node-name $MACHINE_ID \
     --address $MACHINE_PUBLIC_IP \

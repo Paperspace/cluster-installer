@@ -1,3 +1,7 @@
+resource "tls_private_key" "admin_management_key" {
+  algorithm = "RSA"
+}
+
 resource "paperspace_script" "gradient_machine_setup" {
   count = var.gradient_admin_vm_enabled ? 1 : 0
   name        = "Gradient Admin Setup"
@@ -7,7 +11,10 @@ resource "paperspace_script" "gradient_machine_setup" {
     gpu_enabled     = false
     rancher_command = rancher2_cluster.main.cluster_registration_token[0].node_command
     ssh_public_key  = tls_private_key.ssh_key.public_key_openssh
+    admin_management_private_key = tls_private_key.admin_management_key.private_key_pem
+    admin_management_public_key = tls_private_key.admin_management_key.public_key_openssh
     registry_mirror = local.region_to_mirror[var.region]
+    pool_type       = "admin"
   })
   is_enabled = true
   run_once   = true
