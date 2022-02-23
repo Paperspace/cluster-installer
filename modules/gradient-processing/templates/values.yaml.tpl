@@ -572,7 +572,7 @@ recycleBin:
       cpu: 250m
       memory: 1Gi
     limits:
-      cpu: 250m
+      cpu: 500m
       memory: 1Gi
   %{ endif }
 
