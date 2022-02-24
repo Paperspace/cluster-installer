@@ -85,6 +85,27 @@ variable "machine_type_lb" {
   default     = "C5"
 }
 
+variable "machine_template_id_admin" {
+  description = "admin template id"
+  default     = "tpi7gqht"
+}
+
+variable "machine_type_admin" {
+  description = "admin machine type"
+  default     = "C5"
+}
+
+variable "machine_storage_admin" {
+  type        = number
+  description = "admin storage"
+  default     = 200
+}
+
+variable "gradient_admin_vm_enabled" {
+  description = "gradient admin public box is enabled"
+  default     = true
+}
+
 variable "machine_storage_service" {
   type        = number
   description = "Service storage"
