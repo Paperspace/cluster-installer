@@ -200,3 +200,8 @@ variable "pop_chart_version" {
   description = "Pool Overprovisioner chart version"
   default     = "0.1.0"
 }
+
+variable "paperspace_api_next_url" {
+  description = "Paperspace API next URL"
+  default     = "https://api.paperspace.com"
+}

@@ -173,6 +173,7 @@ resource "helm_release" "gradient_processing" {
       name                                  = var.name
       nfs_client_provisioner_enabled        = var.shared_storage_type == "nfs" || var.local_storage_type == "nfs"
       paperspace_base_url                   = var.paperspace_base_url
+      paperspace_api_next_url               = var.paperspace_api_next_url
       sentry_dsn                            = var.sentry_dsn
       service_pool_name                     = var.service_pool_name
       shared_storage_config                 = local.shared_storage_config

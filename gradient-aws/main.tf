@@ -176,6 +176,7 @@ module "gradient_processing" {
     letsencrypt_dns_settings = var.letsencrypt_dns_settings
     logs_host = var.logs_host
     paperspace_base_url = var.api_host
+    paperspace_api_next_url = var.paperspace_api_next_url
 
     gradient_processing_version = var.gradient_processing_version
     name = var.name
