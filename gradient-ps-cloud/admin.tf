@@ -45,7 +45,7 @@ resource "paperspace_machine" "gradient_admin" {
   provisioner "remote-exec" {
     inline = ["/bin/true"]
     connection {
-      timeout     = "10m"
+      timeout     = "15m"
       type        = "ssh"
       user        = "paperspace"
       host        = self.public_ip_address
