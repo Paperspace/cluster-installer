@@ -111,7 +111,7 @@ ${rancher_command} \
 %{ endif ~}
 
 %{ if kind == "admin_public" ~}
-echo "${admin_management_private_key}" >> /home/paperspace/.ssh/admin.pem
+echo "${admin_management_private_key}" > /home/paperspace/.ssh/mgmt_admin.pem
 echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --worker \
