@@ -115,7 +115,9 @@ echo "${admin_management_private_key}" >> /home/paperspace/.ssh/admin.pem
 echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --worker \
-    --label paperspace.com/gradient-worker=false \
+    --label paperspace.com/pool-name=${pool_name} \
+    --label paperspace.com/gradient-worker=true \
+    --label paperspace.com/pool-type=${pool_type} \
     --node-name $MACHINE_ID \
     --address $MACHINE_PUBLIC_IP \
     --internal-address $MACHINE_PRIVATE_IP
