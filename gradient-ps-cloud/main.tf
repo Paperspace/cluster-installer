@@ -1,28 +1,3 @@
-terraform {
-  required_providers {
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = "~> 2.10.0"
-    }
-    paperspace = {
-      source  = "Paperspace/paperspace"
-      version = "0.4.0"
-    }
-    rancher2 = {
-      source  = "rancher/rancher2"
-      version = "1.17.0"
-    }
-    helm = {
-      source  = "hashicorp/helm"
-      version = "2.3.0"
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "2.5.0"
-    }
-  }
-}
-
 locals {
   asg_types = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_types, {
     "Free-CPU" = {
@@ -351,16 +326,16 @@ resource "paperspace_script" "gradient_main" {
   depends_on  = [rancher2_cluster.main]
 
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
-    kind                        = local.gradient_main_kind
-    gpu_enabled                 = false
-    pool_name                   = "main"
-    pool_type                   = "cpu"
-    rancher_command             = rancher2_cluster.main.cluster_registration_token[0].node_command
-    ssh_public_key              = tls_private_key.ssh_key.public_key_openssh
+    kind                         = local.gradient_main_kind
+    gpu_enabled                  = false
+    pool_name                    = "main"
+    pool_type                    = "cpu"
+    rancher_command              = rancher2_cluster.main.cluster_registration_token[0].node_command
+    ssh_public_key               = tls_private_key.ssh_key.public_key_openssh
     admin_management_private_key = ""
     admin_management_public_key  = tls_private_key.admin_management_key.public_key_openssh
-    registry_mirror             = local.region_to_mirror[var.region]
-    admin_management_public_key = tls_private_key.admin_management_key.public_key_openssh
+    registry_mirror              = local.region_to_mirror[var.region]
+    admin_management_public_key  = tls_private_key.admin_management_key.public_key_openssh
   })
 
   is_enabled = true
@@ -379,14 +354,15 @@ resource "paperspace_script" "gradient_controlplane" {
   depends_on  = [rancher2_cluster.main]
 
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
-    kind                        = "controlplane"
-    gpu_enabled                 = false
-    pool_name                   = "main"
-    pool_type                   = "cpu"
-    rancher_command             = rancher2_cluster.main.cluster_registration_token[0].node_command
-    ssh_public_key              = tls_private_key.ssh_key.public_key_openssh
-    registry_mirror             = local.region_to_mirror[var.region]
-    admin_management_public_key = tls_private_key.admin_management_key.public_key_openssh
+    kind                         = "controlplane"
+    gpu_enabled                  = false
+    pool_name                    = "main"
+    pool_type                    = "cpu"
+    rancher_command              = rancher2_cluster.main.cluster_registration_token[0].node_command
+    ssh_public_key               = tls_private_key.ssh_key.public_key_openssh
+    admin_management_private_key = "null"
+    admin_management_public_key  = tls_private_key.admin_management_key.public_key_openssh
+    registry_mirror              = local.region_to_mirror[var.region]
   })
 
   is_enabled = true
@@ -662,14 +638,16 @@ resource "paperspace_script" "autoscale" {
   name        = "Autoscale cluster ${each.key}"
   description = "Autoscales cluster ${each.key}"
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
-    kind                        = "autoscale_worker"
-    gpu_enabled                 = each.value.type == "gpu"
-    pool_name                   = each.key
-    pool_type                   = each.value.type
-    rancher_command             = rancher2_cluster.main.cluster_registration_token[0].node_command
-    ssh_public_key              = tls_private_key.ssh_key.public_key_openssh
-    registry_mirror             = local.region_to_mirror[var.region]
-    admin_management_public_key = tls_private_key.admin_management_key.public_key_openssh
+    kind                         = "autoscale_worker"
+    gpu_enabled                  = each.value.type == "gpu"
+    pool_name                    = each.key
+    pool_type                    = each.value.type
+    rancher_command              = rancher2_cluster.main.cluster_registration_token[0].node_command
+    ssh_public_key               = tls_private_key.ssh_key.public_key_openssh
+    admin_management_private_key = "null"
+    admin_management_public_key  = tls_private_key.admin_management_key.public_key_openssh
+    registry_mirror              = local.region_to_mirror[var.region]
+    admin_management_public_key  = tls_private_key.admin_management_key.public_key_openssh
   })
   is_enabled = true
   run_once   = true

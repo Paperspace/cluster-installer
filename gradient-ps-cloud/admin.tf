@@ -15,6 +15,7 @@ resource "paperspace_script" "gradient_machine_setup" {
     admin_management_public_key  = tls_private_key.admin_management_key.public_key_openssh
     registry_mirror              = local.region_to_mirror[var.region]
     pool_type                    = "admin"
+    pool_name                    = "null"
   })
   is_enabled = true
   run_once   = true

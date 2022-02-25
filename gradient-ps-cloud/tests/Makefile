@@ -13,4 +13,11 @@ bin_exists:
 init:
 	${TERRAFORM_BIN} init
 
+.PHONY: plan
+plan:
+	${TERRAFORM_BIN} plan
+
+fmt_module:
+	cd ../ && ${TERRAFORM_BIN} fmt -recursive -write=true
+
 

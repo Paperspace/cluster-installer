@@ -4,15 +4,15 @@ resource "paperspace_script" "gradient_prometheus" {
   name        = "Gradient Prometheus setup"
   description = "Gradient Prometheus setup"
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
-    kind            = "worker_public"
-    gpu_enabled     = false
-    pool_name       = "prometheus"
-    pool_type       = "cpu"
-    rancher_command = rancher2_cluster.main.cluster_registration_token[0].node_command
-    ssh_public_key  = tls_private_key.ssh_key.public_key_openssh
+    kind                         = "worker_public"
+    gpu_enabled                  = false
+    pool_name                    = "prometheus"
+    pool_type                    = "cpu"
+    rancher_command              = rancher2_cluster.main.cluster_registration_token[0].node_command
+    ssh_public_key               = tls_private_key.ssh_key.public_key_openssh
     admin_management_private_key = ""
     admin_management_public_key  = tls_private_key.admin_management_key.public_key_openssh
-    registry_mirror = local.region_to_mirror[var.region]
+    registry_mirror              = local.region_to_mirror[var.region]
   })
   is_enabled = true
   run_once   = true
