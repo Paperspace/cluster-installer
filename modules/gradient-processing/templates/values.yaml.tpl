@@ -558,10 +558,10 @@ volumeController:
   resources:
     requests:
       cpu: 500m
-      memory: 1536Mi
+      memory: 2048Mi
     limits:
       cpu: 500m
-      memory: 1536Mi
+      memory: 2048Mi
   %{ endif }
 
 recycleBin:
