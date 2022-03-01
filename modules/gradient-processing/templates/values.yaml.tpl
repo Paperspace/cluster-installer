@@ -587,3 +587,8 @@ gradient-model-deployment-watcher:
 gradient-model-deployment-autoscaler:
   enabled: false
 %{ endif }
+
+
+grafs:
+  config:
+    host: ${domain}
