@@ -525,6 +525,7 @@ module "gradient_processing" {
   gradient_processing_version = var.gradient_processing_version
   name                        = var.name
   paperspace_base_url         = var.api_host
+  paperspace_api_next_url     = var.paperspace_api_next_url
   sentry_dsn                  = var.sentry_dsn
   service_pool_name           = var.service_pool_name
   shared_storage_config       = var.shared_storage_config

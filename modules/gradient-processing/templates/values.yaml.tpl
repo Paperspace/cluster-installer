@@ -37,6 +37,7 @@ global:
    %{ endif }
 
   api: ${paperspace_base_url}
+  apiNext: ${paperspace_api_next_url}
 
   defaultStorageName: ${default_storage_name}
   sharedStorageName: ${shared_storage_name}

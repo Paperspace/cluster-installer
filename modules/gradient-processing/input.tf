@@ -346,3 +346,8 @@ variable "metrics_server_version" {
   description = "Version of the metrics server chart to install"
   default     = "3.7.0" # metrics-server 3.5.0 same as rancher
 }
+
+variable "paperspace_api_next_url" {
+  description = "Paperspace API next URL"
+  default     = "https://api.paperspace.com"
+}
