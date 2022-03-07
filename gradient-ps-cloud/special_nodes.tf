@@ -10,7 +10,7 @@ resource "paperspace_script" "gradient_machine_workspace" {
     admin_management_private_key = ""
     admin_management_public_key  = tls_private_key.admin_management_key.public_key_openssh
     registry_mirror              = local.region_to_mirror[var.region]
-    pool_type                    = "cpu"
+    pool_type                    = "workspace"
     pool_name                    = "workspace"
   })
   is_enabled = true
@@ -25,7 +25,7 @@ resource "paperspace_machine" "gradient_workspace_node" {
   ]
 
   region           = var.region
-  name             = "${var.name}-workspace"
+  name             = "${var.name}-workspace-manager"
   machine_type     = var.machine_type_admin
   size             = var.machine_storage_admin
   billing_type     = "hourly"
