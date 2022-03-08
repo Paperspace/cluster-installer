@@ -402,7 +402,7 @@ victoria-metrics-k8s-stack:
       storage:
         storageClassName: ${metrics_storage_class}
       %{ if is_public_cluster }
-        resources:  
+        resources:
           requests:
             storage: 400Gi
       %{ endif }
@@ -555,6 +555,11 @@ imageCacher:
 
 volumeController:
   enabled: true
+  config:
+    gradientTeamsPersistentVolumeClaimName: ${shared_storage_name}
+    %{ if local_storage_type == "ceph-csi-fs" }
+    volumeType: generic # cephfs support is incomplete
+    %{ endif }
   %{ if is_public_cluster }
   resources:
     requests:
