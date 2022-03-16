@@ -251,7 +251,7 @@ locals {
 
   gradient_controlplane_count = local.is_public_cluster ? 3 : 0
   gradient_service_count      = var.kind == "multinode" ? 5 : 0
-  k8s_version                 = var.k8s_version == "" ? "1.20.9" : var.k8s_version
+  k8s_version                 = var.k8s_version == "" ? "1.20.15" : var.k8s_version
   kubeconfig                  = yamldecode(rancher2_cluster_sync.main.kube_config)
   lb_ips                      = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
   lb_pool_name                = var.kind == "multinode" ? "lb" : "services-small"
@@ -274,6 +274,7 @@ locals {
   storage_server = paperspace_machine.gradient_main[0].private_ip_address
 
   k8s_version_to_rke_version = {
+    "1.20.15" = "v1.20.15-rancher1-1",
     "1.20.9"  = "v1.20.9-rancher1-1",
     "1.16.15" = "v1.16.15-rancher1-4",
     "1.15.12" = "v1.15.12-rancher2-7",
