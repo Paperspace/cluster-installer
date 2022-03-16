@@ -17,7 +17,12 @@ init:
 plan:
 	${TERRAFORM_BIN} plan
 
+.PHONY: fmt_module
 fmt_module:
 	cd ../ && ${TERRAFORM_BIN} fmt -recursive -write=true
+
+.PHONY: validate
+validate:
+	${TERRAFORM_BIN} validate
 
 
