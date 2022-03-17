@@ -103,7 +103,12 @@ variable "machine_storage_admin" {
 
 variable "gradient_admin_vm_enabled" {
   description = "gradient admin public box is enabled"
-  default     = true
+  default     = false
+}
+
+variable "gradient_workspace_vm_enabled" {
+  description = "gradient workspace job box is enabled"
+  default     = false
 }
 
 variable "machine_storage_service" {
