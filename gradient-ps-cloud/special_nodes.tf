@@ -1,5 +1,5 @@
 resource "paperspace_script" "gradient_machine_workspace" {
-  count       = var.gradient_admin_vm_enabled ? 1 : 0
+  count       = var.gradient_workspace_vm_enabled ? 1 : 0
   name        = "Gradient Workspace Controller Node Setup"
   description = "Gradient Workspace Controller Node Script"
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
@@ -18,7 +18,7 @@ resource "paperspace_script" "gradient_machine_workspace" {
 }
 
 resource "paperspace_machine" "gradient_workspace_node" {
-  count = var.gradient_admin_vm_enabled ? 1 : 0
+  count = var.gradient_workspace_vm_enabled ? 1 : 0
   depends_on = [
     paperspace_script.gradient_machine_workspace,
     tls_private_key.ssh_key,
