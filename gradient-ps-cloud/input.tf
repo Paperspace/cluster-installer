@@ -108,7 +108,7 @@ variable "gradient_admin_vm_enabled" {
 
 variable "gradient_workspace_vm_enabled" {
   description = "gradient workspace job box is enabled"
-  default     = false
+  default     = true
 }
 
 variable "machine_storage_service" {
