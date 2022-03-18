@@ -33,7 +33,7 @@ resource "paperspace_machine" "gradient_workspace_node" {
   template_id      = var.machine_template_id_admin
   user_id          = data.paperspace_user.admin.id
   team_id          = data.paperspace_user.admin.team_id
-  script_id        = paperspace_script.gradient_machine_setup[0].id
+  script_id        = paperspace_script.gradient_machine_workspace[0].id
   network_id       = paperspace_network.network.handle
   live_forever     = true
   is_managed       = true
