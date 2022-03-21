@@ -547,21 +547,14 @@ module "gradient_processing" {
   image_cache_enabled         = true
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
     # Ordered by most used
-    "nvcr.io/nvidia/pytorch:21.10-py3",  # [TODO]: deprecated image, remove as usage declines
     "paperspace/nb-pytorch:22.02-py3",
-    "nvcr.io/nvidia/tensorflow:21.09-tf2-py3",  # [TODO]: deprecated image, remove as usage declines
     "paperspace/nb-tensorflow:22.02-tf2-py3",
     "paperspace/fastai:2.0-fastbook-2021-11-12",
     "paperspace/nb-rapids:22.02-cuda11.2-runtime-ubuntu20.04-py3.9",
-    "rapidsai/rapidsai-core:21.08-cuda11.0-runtime-ubuntu18.04-py3.7",  # [TODO]: deprecated image, remove as usage declines
-    "rapidsai/rapidsai:cuda11.0-runtime-ubuntu20.04-py3.8",  # [TODO]: deprecated image, remove as usage declines
     "paperspace/transformers-gpu:0.4.0",
     "jupyter/datascience-notebook",
     "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
     "paperspace/gradient-base:tf24-py36-0.10",
-    "maximedurand/stylegan3:latest",
-    "paperspace/clip-pixeldraw:jupyter",
-    "jalfaizy/cv_docker:latest",
     # Images used internally
     "paperspace/notebook_idle:v1.0.5",
   ]
