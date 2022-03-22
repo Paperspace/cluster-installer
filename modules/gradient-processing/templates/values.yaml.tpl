@@ -560,7 +560,7 @@ volumeController:
   config:
     gradientTeamsPersistentVolumeClaimName: ${shared_storage_name}
     %{ if local_storage_type == "ceph-csi-fs" }
-    volumeType: generic # cephfs support is incomplete
+    volumeType: cephfs
     %{ endif }
   %{ if is_public_cluster }
   resources:
