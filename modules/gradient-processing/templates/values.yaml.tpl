@@ -424,23 +424,23 @@ victoria-metrics-k8s-stack:
       hosts:
         - ${domain}
         
-    vmcluster:
-      enabled: ${enable_victoria_metrics_vm_cluster}
-      vmselect:
-         replicaCount: ${vm_select_replica_count}
-         storage:
-           storageClassName: "gradient-processing-local"
-      vmstorage:
-        replicaCount: ${vm_storage_replica_count}
-        storageDataPath: "/vm-data"
-        storage:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: "${metrics_storage_class}"
+  vmcluster:
+    enabled: ${enable_victoria_metrics_vm_cluster}
+    vmselect:
+       replicaCount: ${vm_select_replica_count}
+       storage:
+         storageClassName: "gradient-processing-local"
+    vmstorage:
+      replicaCount: ${vm_storage_replica_count}
+      storageDataPath: "/vm-data"
+      storage:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: "${metrics_storage_class}"
       ingress:
         select:
           hosts:
-          - ${domain} 
+            - ${domain}
 
   kube-state-metrics:
     %{ if is_public_cluster }
