@@ -196,6 +196,10 @@ resource "helm_release" "gradient_processing" {
       image_cache_list                      = jsonencode(var.image_cache_list)
       metrics_storage_class                 = var.metrics_storage_class
       rbd_storage_config                    = local.rbd_storage_config
+      enable_victoria_metrics_vm_single     = var.victoria_metrics_vmsingle_enabled
+      enable_victoria_metrics_vm_cluster    = var.victoria_metrics_vmcluster_enabled
+      vm_select_replica_count               = var.victoria_metrics_vmcluster_vmselect_replicacount
+      vm_storage_replica_count              = var.victoria_metrics_vmcluster_vmstorage_replicacount
     })
   ]
 }
