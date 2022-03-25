@@ -361,7 +361,7 @@ variable "victoria_metrics_vmsingle_enabled" {
 variable "victoria_metrics_vmcluster_enabled" {
   description = "Is VMCluster Mode Enabled?"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "victoria_metrics_vmcluster_vmselect_replicacount" {
