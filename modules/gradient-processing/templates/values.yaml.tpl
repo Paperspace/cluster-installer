@@ -427,8 +427,14 @@ victoria-metrics-k8s-stack:
       vmselect:
           replicaCount: 2
           storage:
-            storageClassName: ${metrics_storage_class}
-
+            storageClassName: "gradient-processing-local"
+      vmstorage:
+        replicaCount: 1
+        storageDataPath: "/vm-data"
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: "${metrics_storage_class}"
       ingress:
         select:
           hosts:
