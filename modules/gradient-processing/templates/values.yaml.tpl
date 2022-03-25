@@ -427,9 +427,9 @@ victoria-metrics-k8s-stack:
     vmcluster:
       enabled: ${enable_victoria_metrics_vm_cluster}
       vmselect:
-          replicaCount: ${vm_select_replica_count}
-          storage:
-            storageClassName: "gradient-processing-local"
+         replicaCount: ${vm_select_replica_count}
+         storage:
+           storageClassName: "gradient-processing-local"
       vmstorage:
         replicaCount: ${vm_storage_replica_count}
         storageDataPath: "/vm-data"
