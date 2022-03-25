@@ -400,6 +400,7 @@ nfs-subdir-external-provisioner:
 
 victoria-metrics-k8s-stack:
   vmsingle:
+    enabled: ${enable_victoria_metrics_vm_single}
     spec:
       storage:
         storageClassName: ${metrics_storage_class}
@@ -424,12 +425,13 @@ victoria-metrics-k8s-stack:
         - ${domain}
         
     vmcluster:
+      enabled: ${enable_victoria_metrics_vm_cluster}
       vmselect:
-          replicaCount: 2
+          replicaCount: ${vm_select_replica_count}
           storage:
             storageClassName: "gradient-processing-local"
       vmstorage:
-        replicaCount: 1
+        replicaCount: ${vm_storage_replica_count}
         storageDataPath: "/vm-data"
         storage:
           volumeClaimTemplate:
