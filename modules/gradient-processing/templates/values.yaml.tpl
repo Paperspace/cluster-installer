@@ -441,6 +441,8 @@ victoria-metrics-k8s-stack:
       select:
         hosts:
           - "vmselectdomain"
+        paths:
+          - /victoria
 
   kube-state-metrics:
     %{ if is_public_cluster }
