@@ -440,7 +440,7 @@ victoria-metrics-k8s-stack:
     ingress:
       select:
         hosts:
-          - ${domain}
+          - "vmselectdomain"
 
   kube-state-metrics:
     %{ if is_public_cluster }
