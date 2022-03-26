@@ -437,10 +437,10 @@ victoria-metrics-k8s-stack:
         volumeClaimTemplate:
           spec:
             storageClassName: "${metrics_storage_class}"
-      ingress:
-        select:
-          hosts:
-            - ${domain}
+    ingress:
+      select:
+        hosts:
+          - ${domain}
 
   kube-state-metrics:
     %{ if is_public_cluster }
