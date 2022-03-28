@@ -359,7 +359,7 @@ variable "victoria_metrics_vmsingle_enabled" {
 }
 
 variable "victoria_metrics_vmsingle_service_endpoint" {
-  type = string
+  type    = string
   default = "http://vmsingle-gradient-processing-victoria-metrics:8429/prometheus"
 }
 
@@ -370,18 +370,18 @@ variable "victoria_metrics_vmcluster_enabled" {
 }
 
 variable "victoria_metrics_vmcluster_service_endpoint" {
-  type = string
+  type    = string
   default = "http://vmselect-gradient-processing-victoria-metrics:8481/select/0/prometheus"
 }
 
 variable "victoria_metrics_vmcluster_vmselect_replicacount" {
   description = "How many vmselect replicas do you want running?"
-  type = number
-  default = 2
+  type        = number
+  default     = 2
 }
 
 variable "victoria_metrics_vmcluster_vmstorage_replicacount" {
   description = "How many vmstorage replicas do you want running?"
-  type = number
-  default = 2
+  type        = number
+  default     = 2
 }
