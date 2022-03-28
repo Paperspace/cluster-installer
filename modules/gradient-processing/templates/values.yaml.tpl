@@ -440,7 +440,7 @@ victoria-metrics-k8s-stack:
     ingress:
       select:
         hosts:
-          - "vmselectdomain"
+          - ${domain}
         paths:
           - /victoria
 
