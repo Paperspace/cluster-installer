@@ -382,6 +382,7 @@ gradient-metrics:
     hostPath:
       ${domain}: /metrics
   config:
+    connectionString: ${gradient_metrics_conn_str}
     newRelicEnabled: ${metrics_new_relic_enabled}
     newRelicName: ${metrics_new_relic_name}
 
