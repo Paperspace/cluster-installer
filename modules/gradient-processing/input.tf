@@ -366,7 +366,7 @@ variable "victoria_metrics_vmsingle_service_endpoint" {
 variable "victoria_metrics_vmcluster_enabled" {
   description = "Is VMCluster Mode Enabled?"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "victoria_metrics_vmcluster_service_endpoint" {
