@@ -444,9 +444,7 @@ victoria-metrics-k8s-stack:
           requests:
             storage: 100Gi
       %{ endif }
-        volumeClaimTemplate:
-          spec:
-            storageClassName: "${metrics_storage_class}"
+        storageClassName: "${metrics_storage_class}"
     ingress:
       select:
         hosts:
