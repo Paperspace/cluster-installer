@@ -428,11 +428,15 @@ victoria-metrics-k8s-stack:
     enabled: ${enable_victoria_metrics_vm_cluster}
     vmselect:
        replicaCount: ${vm_select_replica_count}
+       nodeSelector:
+         paperspace.com/pool-name: ${prometheus_pool_name}
        storage:
          storageClassName: "gradient-processing-local"
     vmstorage:
       replicaCount: ${vm_storage_replica_count}
       storageDataPath: "/vm-data"
+      nodeSelector:
+        paperspace.com/pool-name: ${prometheus_pool_name}
       storage:
         volumeClaimTemplate:
           spec:
@@ -441,8 +445,6 @@ victoria-metrics-k8s-stack:
       select:
         hosts:
           - ${domain}
-        paths:
-          - /victoria
 
   kube-state-metrics:
     %{ if is_public_cluster }

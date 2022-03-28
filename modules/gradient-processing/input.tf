@@ -355,7 +355,7 @@ variable "paperspace_api_next_url" {
 variable "victoria_metrics_vmsingle_enabled" {
   description = "Is VMSingle Enabled?"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "victoria_metrics_vmcluster_enabled" {
