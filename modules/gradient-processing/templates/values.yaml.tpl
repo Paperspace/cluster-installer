@@ -382,6 +382,7 @@ gradient-metrics:
     hostPath:
       ${domain}: /metrics
   config:
+    connectionString: ${gradient_metrics_conn_str}
     newRelicEnabled: ${metrics_new_relic_enabled}
     newRelicName: ${metrics_new_relic_name}
 
@@ -400,6 +401,7 @@ nfs-subdir-external-provisioner:
 
 victoria-metrics-k8s-stack:
   vmsingle:
+    enabled: ${enable_victoria_metrics_vm_single}
     spec:
       storage:
         storageClassName: ${metrics_storage_class}
@@ -422,6 +424,33 @@ victoria-metrics-k8s-stack:
     ingress:
       hosts:
         - ${domain}
+        
+  vmcluster:
+    enabled: ${enable_victoria_metrics_vm_cluster}
+    vmselect:
+       replicaCount: ${vm_select_replica_count}
+       nodeSelector:
+         paperspace.com/pool-name: ${prometheus_pool_name}
+       storage:
+         storageClassName: "gradient-processing-local"
+    vmstorage:
+      replicaCount: ${vm_storage_replica_count}
+      storageDataPath: "/vm-data"
+      nodeSelector:
+        paperspace.com/pool-name: ${prometheus_pool_name}
+      storage:
+      %{ if is_public_cluster }
+        resources:
+          requests:
+            storage: 100Gi
+      %{ endif }
+        volumeClaimTemplate:
+          spec:
+            storageClassName: "${metrics_storage_class}"
+    ingress:
+      select:
+        hosts:
+          - ${domain}
 
   kube-state-metrics:
     %{ if is_public_cluster }

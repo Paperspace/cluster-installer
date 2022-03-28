@@ -20,8 +20,9 @@ locals {
   }
   rbd_storage_config = var.rbd_storage_config == "" ? {} : jsondecode(var.rbd_storage_config)
 
-  tls_secret_name      = "gradient-processing-tls"
-  prometheus_pool_name = var.prometheus_pool_name != "" ? var.prometheus_pool_name : var.service_pool_name
+  tls_secret_name                    = "gradient-processing-tls"
+  prometheus_pool_name               = var.prometheus_pool_name != "" ? var.prometheus_pool_name : var.service_pool_name
+  gradient-metrics-victoria-endpoint = var.victoria_metrics_vmcluster_enabled ? var.victoria_metrics_vmcluster_service_endpoint : var.victoria_metrics_vmsingle_service_endpoint
 }
 
 resource "helm_release" "cert_manager" {
@@ -196,6 +197,11 @@ resource "helm_release" "gradient_processing" {
       image_cache_list                      = jsonencode(var.image_cache_list)
       metrics_storage_class                 = var.metrics_storage_class
       rbd_storage_config                    = local.rbd_storage_config
+      gradient_metrics_conn_str             = local.gradient-metrics-victoria-endpoint
+      enable_victoria_metrics_vm_single     = var.victoria_metrics_vmsingle_enabled
+      enable_victoria_metrics_vm_cluster    = var.victoria_metrics_vmcluster_enabled
+      vm_select_replica_count               = var.victoria_metrics_vmcluster_vmselect_replicacount
+      vm_storage_replica_count              = var.victoria_metrics_vmcluster_vmstorage_replicacount
     })
   ]
 }

@@ -351,3 +351,37 @@ variable "paperspace_api_next_url" {
   description = "Paperspace API next URL"
   default     = "https://api.paperspace.com"
 }
+
+variable "victoria_metrics_vmsingle_enabled" {
+  description = "Is VMSingle Enabled?"
+  type        = bool
+  default     = false
+}
+
+variable "victoria_metrics_vmsingle_service_endpoint" {
+  type    = string
+  default = "http://vmsingle-gradient-processing-victoria-metrics:8429/prometheus"
+}
+
+variable "victoria_metrics_vmcluster_enabled" {
+  description = "Is VMCluster Mode Enabled?"
+  type        = bool
+  default     = true
+}
+
+variable "victoria_metrics_vmcluster_service_endpoint" {
+  type    = string
+  default = "http://vmselect-gradient-processing-victoria-metrics:8481/select/0/prometheus"
+}
+
+variable "victoria_metrics_vmcluster_vmselect_replicacount" {
+  description = "How many vmselect replicas do you want running?"
+  type        = number
+  default     = 2
+}
+
+variable "victoria_metrics_vmcluster_vmstorage_replicacount" {
+  description = "How many vmstorage replicas do you want running?"
+  type        = number
+  default     = 2
+}
