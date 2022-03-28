@@ -20,8 +20,8 @@ locals {
   }
   rbd_storage_config = var.rbd_storage_config == "" ? {} : jsondecode(var.rbd_storage_config)
 
-  tls_secret_name      = "gradient-processing-tls"
-  prometheus_pool_name = var.prometheus_pool_name != "" ? var.prometheus_pool_name : var.service_pool_name
+  tls_secret_name                    = "gradient-processing-tls"
+  prometheus_pool_name               = var.prometheus_pool_name != "" ? var.prometheus_pool_name : var.service_pool_name
   gradient-metrics-victoria-endpoint = var.victoria_metrics_vmcluster_enabled ? var.victoria_metrics_vmcluster_service_endpoint : var.victoria_metrics_vmsingle_service_endpoint
 }
 
