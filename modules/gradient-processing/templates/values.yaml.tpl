@@ -439,6 +439,11 @@ victoria-metrics-k8s-stack:
       nodeSelector:
         paperspace.com/pool-name: ${prometheus_pool_name}
       storage:
+      %{ if is_public_cluster }
+        resources:
+          requests:
+            storage: 100Gi
+      %{ endif }
         volumeClaimTemplate:
           spec:
             storageClassName: "${metrics_storage_class}"
