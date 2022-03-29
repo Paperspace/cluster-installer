@@ -434,7 +434,12 @@ victoria-metrics-k8s-stack:
         nodeSelector:
           paperspace.com/pool-name: ${prometheus_pool_name}
         storage:
-          storageClassName: "gradient-processing-local"
+          volumeClaimTemplate:
+            spec:
+              storageClassName: "gradient-processing-local"
+              resources:
+                requests:
+                  storage: 2Gi
       vmstorage:
         replicaCount: ${vm_storage_replica_count}
         storageDataPath: "/vm-data"
