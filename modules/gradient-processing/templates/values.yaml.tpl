@@ -429,7 +429,17 @@ victoria-metrics-k8s-stack:
     enabled: ${enable_victoria_metrics_vm_cluster}
     spec:
       retentionPeriod: "2"
+      vminsert:
+        extraArgs:
+          maxLabelsPerTimeseries: "70"
       vmselect:
+        resources:
+          limits:
+            cpu: "2"
+            memory: 4Gi
+        extraArgs:
+          search.maxConcurrentRequests: "200"
+          search.maxQueryDuration: "60s"
         replicaCount: ${vm_select_replica_count}
         nodeSelector:
           paperspace.com/pool-name: ${prometheus_pool_name}
@@ -441,6 +451,8 @@ victoria-metrics-k8s-stack:
                 requests:
                   storage: 2Gi
       vmstorage:
+        extraArgs:
+          search.maxUniqueTimeseries: "6000000"
         replicaCount: ${vm_storage_replica_count}
         storageDataPath: "/vm-data"
         nodeSelector:
@@ -454,6 +466,10 @@ victoria-metrics-k8s-stack:
                 requests:
                   storage: 100Gi
             %{ endif }
+        resources:
+          limits:
+            cpu: "4"
+            memory: 10Gi
     ingress:
       select:
         hosts:
