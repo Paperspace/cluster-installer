@@ -448,7 +448,7 @@ victoria-metrics-k8s-stack:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: "gradient-processing-rbd"
+              storageClassName: "${metrics_storage_class}"
             %{ if is_public_cluster }
               resources:
                 requests:
