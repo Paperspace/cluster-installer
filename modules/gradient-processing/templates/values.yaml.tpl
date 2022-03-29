@@ -435,8 +435,8 @@ victoria-metrics-k8s-stack:
       vmselect:
         resources:
           limits:
-            cpu: "4"
-            memory: 10Gi
+            cpu: "2"
+            memory: 4Gi
         extraArgs:
           search.maxConcurrentRequests: "200"
           search.maxQueryDuration: "60s"
