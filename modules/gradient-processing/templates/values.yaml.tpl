@@ -454,6 +454,10 @@ victoria-metrics-k8s-stack:
                 requests:
                   storage: 100Gi
             %{ endif }
+        resources:
+          limits:
+            cpu: "2"
+            memory: 4Gi
     ingress:
       select:
         hosts:
