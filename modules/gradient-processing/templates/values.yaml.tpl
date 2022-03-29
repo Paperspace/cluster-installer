@@ -434,7 +434,6 @@ victoria-metrics-k8s-stack:
           maxLabelsPerTimeseries: "70"
       vmselect:
         extraArgs:
-          search.maxUniqueTimeseries: "6000000"
           search.maxConcurrentRequests: "200"
           search.maxQueryDuration: "60s"
         replicaCount: ${vm_select_replica_count}
@@ -448,6 +447,8 @@ victoria-metrics-k8s-stack:
                 requests:
                   storage: 2Gi
       vmstorage:
+        extraArgs:
+          search.maxUniqueTimeseries: "6000000"
         replicaCount: ${vm_storage_replica_count}
         storageDataPath: "/vm-data"
         nodeSelector:
