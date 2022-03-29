@@ -427,26 +427,33 @@ victoria-metrics-k8s-stack:
         
   vmcluster:
     enabled: ${enable_victoria_metrics_vm_cluster}
-    vmselect:
-       replicaCount: ${vm_select_replica_count}
-       nodeSelector:
-         paperspace.com/pool-name: ${prometheus_pool_name}
-       storage:
-         storageClassName: "gradient-processing-local"
-    vmstorage:
-      replicaCount: ${vm_storage_replica_count}
-      storageDataPath: "/vm-data"
-      nodeSelector:
-        paperspace.com/pool-name: ${prometheus_pool_name}
-      storage:
-      %{ if is_public_cluster }
-        resources:
-          requests:
-            storage: 100Gi
-      %{ endif }
-        volumeClaimTemplate:
-          spec:
-            storageClassName: "${metrics_storage_class}"
+    spec:
+      retentionPeriod: "2"
+      vmselect:
+        replicaCount: ${vm_select_replica_count}
+        nodeSelector:
+          paperspace.com/pool-name: ${prometheus_pool_name}
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: "gradient-processing-local"
+              resources:
+                requests:
+                  storage: 2Gi
+      vmstorage:
+        replicaCount: ${vm_storage_replica_count}
+        storageDataPath: "/vm-data"
+        nodeSelector:
+          paperspace.com/pool-name: ${prometheus_pool_name}
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: "${metrics_storage_class}"
+            %{ if is_public_cluster }
+              resources:
+                requests:
+                  storage: 100Gi
+            %{ endif }
     ingress:
       select:
         hosts:
