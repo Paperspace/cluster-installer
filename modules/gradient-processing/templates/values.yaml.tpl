@@ -433,6 +433,10 @@ victoria-metrics-k8s-stack:
         extraArgs:
           maxLabelsPerTimeseries: "70"
       vmselect:
+        resources:
+          limits:
+            cpu: "4"
+            memory: 10Gi
         extraArgs:
           search.maxConcurrentRequests: "200"
           search.maxQueryDuration: "60s"
