@@ -454,7 +454,7 @@ victoria-metrics-k8s-stack:
         extraArgs:
           search.maxUniqueTimeseries: "6000000"
           memory.allowedPercent: 45.0
-          retentionPeriod: 2d
+          retentionPeriod: 2w
         replicaCount: ${vm_storage_replica_count}
         storageDataPath: "/vm-data"
         nodeSelector:
