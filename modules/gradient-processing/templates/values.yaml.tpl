@@ -428,7 +428,6 @@ victoria-metrics-k8s-stack:
   vmcluster:
     enabled: ${enable_victoria_metrics_vm_cluster}
     spec:
-      retentionPeriod: "2"
       vminsert:
         extraArgs:
           maxLabelsPerTimeseries: "70"
