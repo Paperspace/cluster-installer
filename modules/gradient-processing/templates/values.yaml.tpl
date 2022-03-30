@@ -428,6 +428,7 @@ victoria-metrics-k8s-stack:
   vmcluster:
     enabled: ${enable_victoria_metrics_vm_cluster}
     spec:
+      retentionPeriod: "2w"
       vminsert:
         extraArgs:
           maxLabelsPerTimeseries: "70"
@@ -453,7 +454,6 @@ victoria-metrics-k8s-stack:
         extraArgs:
           search.maxUniqueTimeseries: "6000000"
           memory.allowedPercent: "45.0"
-          retentionPeriod: 2w
         replicaCount: ${vm_storage_replica_count}
         storageDataPath: "/vm-data"
         nodeSelector:
