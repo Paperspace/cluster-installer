@@ -469,8 +469,8 @@ victoria-metrics-k8s-stack:
             %{ endif }
         resources:
           requests:
-            cpu: "1"
-            memory: 1Gi
+            cpu: "0.5"
+            memory: 0.5Gi
           limits:
             cpu: "4"
             memory: 10Gi
