@@ -139,7 +139,6 @@ ceph-csi-rbd:
         memory: 2Gi
     %{ endif }
 %{ endif }
-
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}
   %{ if cluster_autoscaler_cloudprovider == "paperspace" }
