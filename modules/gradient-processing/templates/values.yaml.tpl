@@ -38,6 +38,7 @@ global:
 
   api: ${paperspace_base_url}
   apiNext: ${paperspace_api_next_url}
+  dispatcherServerApiAddress: ${dispatcher_host}
 
   defaultStorageName: ${default_storage_name}
   sharedStorageName: ${shared_storage_name}
