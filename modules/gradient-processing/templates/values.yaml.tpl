@@ -433,9 +433,15 @@ victoria-metrics-k8s-stack:
           maxLabelsPerTimeseries: "70"
       vmselect:
         resources:
+        %{ if is_public_cluster }
+          limits:
+            cpu: "4"
+            memory: 10Gi
+        %{ else }
           limits:
             cpu: "2"
             memory: 4Gi
+        %{ endif }
         extraArgs:
           search.maxConcurrentRequests: "200"
           search.maxQueryDuration: "60s"
@@ -452,7 +458,7 @@ victoria-metrics-k8s-stack:
       vmstorage:
         extraArgs:
           search.maxUniqueTimeseries: "6000000"
-          memory.allowedPercent: "45.0"
+          memory.allowedPercent: "75.0"
         replicaCount: ${vm_storage_replica_count}
         storageDataPath: "/vm-data"
         nodeSelector:
@@ -468,11 +474,11 @@ victoria-metrics-k8s-stack:
             %{ endif }
         resources:
           requests:
-            cpu: "0.5"
+            cpu: "1"
             memory: 0.5Gi
           limits:
-            cpu: "4"
-            memory: 10Gi
+            cpu: 6
+            memory: 40Gi
     ingress:
       select:
         hosts:
@@ -516,8 +522,8 @@ victoria-metrics-k8s-stack:
           cpu: 1000m
           memory: 2Gi
         limits:
-          cpu: 1000m
-          memory: 2Gi
+          cpu: 2000m
+          memory: 4Gi
       %{ endif }
 
 traefik:
