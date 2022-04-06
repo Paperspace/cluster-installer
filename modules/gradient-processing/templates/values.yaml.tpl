@@ -521,10 +521,11 @@ victoria-metrics-k8s-stack:
           memory: 2Gi
       %{ endif }
 
-    kubelet:
-        spec:
-          interval: 10s
-          scrapeTimeout: 6s
+  kubelet:
+    enabled: true
+    spec:
+      interval: 10s
+      scrapeTimeout: 6s
 traefik:
   replicas: ${lb_count}
   nodeSelector:
