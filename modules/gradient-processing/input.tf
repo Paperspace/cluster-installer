@@ -377,7 +377,7 @@ variable "victoria_metrics_vmcluster_service_endpoint" {
 variable "victoria_metrics_vmcluster_vmselect_replicacount" {
   description = "How many vmselect replicas do you want running?"
   type        = number
-  default     = 3
+  default     = 2
 }
 
 variable "victoria_metrics_vmcluster_vmstorage_replicacount" {
