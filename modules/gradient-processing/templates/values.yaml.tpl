@@ -512,9 +512,9 @@ victoria-metrics-k8s-stack:
 
 
   vmagent:
-    enabled: true
+    enabled: false
     extraArgs:
-      promscrape.streamParse: true
+      promscrape.streamParse: false
     spec:
       externalLabels:
         cluster: ${cluster_handle}
