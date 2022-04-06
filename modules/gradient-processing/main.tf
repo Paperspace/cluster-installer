@@ -200,8 +200,8 @@ resource "helm_release" "gradient_processing" {
       gradient_metrics_conn_str             = local.gradient-metrics-victoria-endpoint
       enable_victoria_metrics_vm_single     = var.victoria_metrics_vmsingle_enabled
       enable_victoria_metrics_vm_cluster    = var.victoria_metrics_vmcluster_enabled
-      vm_select_replica_count               = var.victoria_metrics_vmcluster_vmselect_replicacount
-      vm_storage_replica_count              = var.victoria_metrics_vmcluster_vmstorage_replicacount
+      vm_select_replica_count               = var.cluster_handle == "clw6rxq2s" ? 1 : var.victoria_metrics_vmcluster_vmselect_replicacount
+      vm_storage_replica_count              = var.cluster_handle == "clw6rxq2s" ? 1 : var.victoria_metrics_vmcluster_vmstorage_replicacount
     })
   ]
 }

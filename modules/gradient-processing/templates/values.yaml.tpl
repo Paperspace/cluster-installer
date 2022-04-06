@@ -510,6 +510,7 @@ victoria-metrics-k8s-stack:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
+
   vmagent:
     spec:
       externalLabels:
@@ -526,6 +527,11 @@ victoria-metrics-k8s-stack:
           memory: 4Gi
       %{ endif }
 
+  kubelet:
+    enabled: true
+    spec:
+      interval: 10s
+      scrapeTimeout: 6s
 traefik:
   replicas: ${lb_count}
   nodeSelector:
