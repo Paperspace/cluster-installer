@@ -507,10 +507,6 @@ victoria-metrics-k8s-stack:
 
   vmagent:
     spec:
-      kubelet:
-        spec:
-          interval: 10s
-          scrapeTimeout: 6s
       externalLabels:
         cluster: ${cluster_handle}
       nodeSelector:
@@ -525,6 +521,10 @@ victoria-metrics-k8s-stack:
           memory: 2Gi
       %{ endif }
 
+    kubelet:
+        spec:
+          interval: 10s
+          scrapeTimeout: 6s
 traefik:
   replicas: ${lb_count}
   nodeSelector:
