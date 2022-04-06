@@ -506,6 +506,10 @@ victoria-metrics-k8s-stack:
 
   vmagent:
     spec:
+      kubelet:
+        spec:
+          interval: 10s
+          scrapeTimeout: 6s
       externalLabels:
         cluster: ${cluster_handle}
       nodeSelector:
