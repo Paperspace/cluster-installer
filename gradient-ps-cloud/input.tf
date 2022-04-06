@@ -214,7 +214,7 @@ variable "rbd_storage_config" {
 
 variable "ccm_chart_version" {
   description = "Cloud Controller Manager chart version"
-  default     = "v0.1.0"
+  default     = "v0.1.1"
 }
 
 variable "ccm_image_tag" {
