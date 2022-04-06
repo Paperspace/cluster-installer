@@ -512,7 +512,7 @@ victoria-metrics-k8s-stack:
 
 
   vmagent:
-    enabled: false
+    enabled: true
     extraArgs:
       promscrape.streamParse: false
     spec:
