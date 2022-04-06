@@ -514,7 +514,7 @@ victoria-metrics-k8s-stack:
   vmagent:
     enabled: true
     extraArgs:
-      promscrape.streamParse: false
+      promscrape.streamParse: true
     spec:
       externalLabels:
         cluster: ${cluster_handle}
@@ -533,8 +533,9 @@ victoria-metrics-k8s-stack:
   kubelet:
     enabled: true
     spec:
-      interval: 20s
-      scrapeTimeout: 10s
+      interval: 10s
+      scrapeTimeout: 9s
+
 traefik:
   replicas: ${lb_count}
   nodeSelector:
