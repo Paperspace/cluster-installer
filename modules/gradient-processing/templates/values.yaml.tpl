@@ -433,9 +433,15 @@ victoria-metrics-k8s-stack:
           maxLabelsPerTimeseries: "70"
       vmselect:
         resources:
+        %{ if is_public_cluster }
+          limits:
+            cpu: "4"
+            memory: 10Gi
+        %{ else }
           limits:
             cpu: "2"
             memory: 4Gi
+        %{ endif }
         extraArgs:
           search.maxConcurrentRequests: "200"
           search.maxQueryDuration: "60s"
@@ -471,7 +477,7 @@ victoria-metrics-k8s-stack:
             cpu: "1"
             memory: 0.5Gi
           limits:
-            cpu: "4"
+            cpu: 6
             memory: 40Gi
     ingress:
       select:
