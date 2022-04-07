@@ -513,6 +513,7 @@ victoria-metrics-k8s-stack:
 
 
   vmagent:
+    enabled: true
     spec:
       externalLabels:
         cluster: ${cluster_handle}
@@ -531,8 +532,9 @@ victoria-metrics-k8s-stack:
   kubelet:
     enabled: true
     spec:
-      interval: 10s
-      scrapeTimeout: 6s
+      interval: 20s
+      scrapeTimeout: 10s
+
 traefik:
   replicas: ${lb_count}
   nodeSelector:
