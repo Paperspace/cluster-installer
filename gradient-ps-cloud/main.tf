@@ -737,5 +737,5 @@ module "pool_overprovisioner" {
   helm_repo_url      = var.helm_repo_url == "" ? "https://infrastructure-public-chart-museum-repository.storage.googleapis.com" : var.helm_repo_url
   helm_repo_username = var.helm_repo_username
   helm_repo_password = var.helm_repo_password
-  chart_version      = var.ccm_chart_version
+  chart_version      = var.pop_chart_version
 }
