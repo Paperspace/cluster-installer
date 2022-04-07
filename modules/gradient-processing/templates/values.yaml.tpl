@@ -39,7 +39,6 @@ global:
   api: ${paperspace_base_url}
   apiNext: ${paperspace_api_next_url}
   dispatcherServerApiAddress: ${dispatcher_host}:443
-  workspaceUploadUseSSL: true
 
   defaultStorageName: ${default_storage_name}
   sharedStorageName: ${shared_storage_name}
@@ -235,6 +234,7 @@ fluent-bit:
 gradient-operator:
   config:
     ingressHost: ${domain}
+    workspaceUploadUseSSL: true
     usePodAntiAffinity: ${use_pod_anti_affinity}
 
     %{ if is_public_cluster }
