@@ -287,74 +287,7 @@ gradient-operator:
       %{ endif }
 
     %{ if label_selector_cpu != "" && label_selector_gpu != "" }
-    modelDeploymentConfig:
-      labelName: paperspace.com/pool-name
-      cpu:
-        small:
-          label: ${label_selector_cpu}
-        medium:
-          label: ${label_selector_cpu}
-        large:
-          label: ${label_selector_cpu}
-      gpu:
-        small:
-          label: ${label_selector_gpu}
-          requests:
-            memory: 5Gi
-        medium:
-          label: ${label_selector_gpu}
-          requests:
-            memory: 20Gi
-        large:
-          label: ${label_selector_gpu}
-          requests:
-            memory: 58Gi
-
-    experimentConfig:
-      labelName: paperspace.com/pool-name
-      cpu:
-        small:
-          label: ${label_selector_cpu}
-        medium:
-          label: ${label_selector_cpu}
-        large:
-          label: ${label_selector_cpu}
-      gpu:
-        small:
-          label: ${label_selector_gpu}
-          requests:
-            memory: 5Gi
-        medium:
-          label: ${label_selector_gpu}
-          requests:
-            memory: 20Gi
-        large:
-          label: ${label_selector_gpu}
-          requests:
-            memory: 58Gi
     notebookConfig:
-      labelName: paperspace.com/pool-name
-      cpu:
-        small:
-          label: ${label_selector_cpu}
-        medium:
-          label: ${label_selector_cpu}
-        large:
-          label: ${label_selector_cpu}
-      gpu:
-        small:
-          label: ${label_selector_gpu}
-          requests:
-            memory: 5Gi
-        medium:
-          label: ${label_selector_gpu}
-          requests:
-            memory: 20Gi
-        large:
-          label: ${label_selector_gpu}
-          requests:
-            memory: 58Gi
-    tensorboardConfig:
       labelName: paperspace.com/pool-name
       cpu:
         small:
@@ -425,7 +358,6 @@ victoria-metrics-k8s-stack:
     ingress:
       hosts:
         - ${domain}
-        
   vmcluster:
     enabled: ${enable_victoria_metrics_vm_cluster}
     spec:
@@ -654,15 +586,3 @@ recycleBin:
       cpu: 500m
       memory: 1Gi
   %{ endif }
-
-
-%{ if is_public_cluster }
-gradient-experiment-watcher:
-  enabled: false
-
-gradient-model-deployment-watcher:
-  enabled: false
-
-gradient-model-deployment-autoscaler:
-  enabled: false
-%{ endif }
