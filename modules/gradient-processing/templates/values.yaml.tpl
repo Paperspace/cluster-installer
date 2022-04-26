@@ -561,6 +561,8 @@ imageCacher:
 volumeController:
   enabled: true
   config:
+    useSSL: true
+    apiAddress: ${dispatcher_host}
     gradientTeamsPersistentVolumeClaimName: ${shared_storage_name}
     %{ if local_storage_type == "ceph-csi-fs" }
     volumeType: cephfs
