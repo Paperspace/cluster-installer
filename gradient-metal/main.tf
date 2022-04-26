@@ -138,4 +138,7 @@ module "gradient_processing" {
     cert_manager_enabled = var.cert_manager_enabled
     image_cache_enabled = var.image_cache_enabled
     image_cache_list = var.image_cache_list
+    metrics_server_enabled = false
+    victoria_metrics_vmcluster_enabled = false
+    victoria_metrics_vmsingle_enabled = true
 }
