@@ -30,6 +30,9 @@ locals {
     "Free-A100" = {
       type = "gpu"
     }
+    "Free-A100-80G" = {
+      type = "gpu"
+    }
   }) : local.base_asg_types
 
   base_asg_types = {
@@ -140,7 +143,19 @@ locals {
     },
     "V100-32Gx4" = {
       type = "gpu"
-    }
+    },
+    "A100-80G" = {
+      type = "gpu"
+    },
+    "A100-80Gx2" = {
+      type = "gpu"
+    },
+    "A100-80Gx4" = {
+      type = "gpu"
+    },
+    "A100-80Gx8" = {
+      type = "gpu"
+    },
   }
 
   region_to_mirror = {
@@ -160,9 +175,7 @@ locals {
     "Free-A5000"   = 0,
     "Free-A6000"   = 0,
     "Free-A100"    = 0,
-    "V100-32G"     = 25
-    "V100-32Gx2"   = 0
-    "V100-32Gx4"   = 0
+    "Free-A100-80G" = 0,
   }) : local.base_asg_max_sizes
   base_asg_max_sizes = merge({
     "C3"        = 10,
@@ -198,9 +211,13 @@ locals {
     "A100x2"    = 0,
     "A100x4"    = 0,
     "A100x8"    = 0,
-    "V100-32G"    = 0
-    "V100-32Gx2"  = 0
-    "V100-32Gx4"  = 0
+    "V100-32G"    = 0,
+    "V100-32Gx2"  = 0,
+    "V100-32Gx4"  = 0,
+    "A100-80G"    = 0,
+    "A100-80Gx2"  = 0,
+    "A100-80Gx4"  = 0,
+    "A100-80Gx8"  = 0,
   }, var.asg_min_sizes)
 
   asg_min_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_min_sizes, {
@@ -214,9 +231,7 @@ locals {
     "Free-A5000"   = 0,
     "Free-A6000"   = 0,
     "Free-A100"    = 0,
-    "V100-32G"     = 0
-    "V100-32Gx2"   = 0
-    "V100-32Gx4"   = 0
+    "Free-A100-80G" = 0,
   }) : local.base_asg_min_sizes
   base_asg_min_sizes = merge({
     "C3"        = 0,
@@ -252,9 +267,13 @@ locals {
     "A100x2"    = 0,
     "A100x4"    = 0,
     "A100x8"    = 0,
-    "V100-32G"     = 0
-    "V100-32Gx2"   = 0
-    "V100-32Gx4"   = 0
+    "V100-32G"     = 0,
+    "V100-32Gx2"   = 0,
+    "V100-32Gx4"   = 0,
+    "A100-80G"     = 0,
+    "A100-80Gx2"   = 0,
+    "A100-80Gx4"   = 0,
+    "A100-80Gx8"   = 0,
   }, var.asg_min_sizes)
 
   is_public_cluster = var.gradient_machine_config == "paperspace-public"
