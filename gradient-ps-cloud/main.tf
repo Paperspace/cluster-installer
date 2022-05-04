@@ -570,7 +570,7 @@ module "gradient_processing" {
     # Ordered by most used
     "paperspace/nb-pytorch:22.02-py3",
     "paperspace/nb-tensorflow:22.02-tf2-py3",
-    "paperspace/fastai:2.0-fastbook-2022-04-04",
+    "paperspace/fastai:2.0-fastbook-2022-05-04-rc2",
     "paperspace/nb-rapids:22.02-cuda11.2-runtime-ubuntu20.04-py3.9",
     "paperspace/nb-transformers:4.17.0",
     "paperspace/nb-data-science:python-3.9.10",
