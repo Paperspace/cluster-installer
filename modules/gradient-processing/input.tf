@@ -383,3 +383,16 @@ variable "volume_fs_new_relic_app_name" {
   type        = string
   default     = ""
 }
+
+# Graphcore Specific
+variable "ipu_controller_server" {
+  description = "IPU Controller Server Hostname"
+  type        = string
+  default     = ""
+}
+
+variable "victoria_metrics_prometheus_node_exporter_host_port" {
+  description = "Victoria Metrics Prometheus Node Exporter"
+  type        = number
+  default     = 9100
+}
