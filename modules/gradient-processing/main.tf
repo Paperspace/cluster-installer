@@ -108,6 +108,18 @@ resource "helm_release" "gradient_processing" {
     name  = "gradient-metrics.config.newRelicKey"
     value = var.metrics_new_relic_key
   }
+  set_sensitive {
+    name  = "secrets.googleDriveIntegrationClientId"
+    value = var.google_drive_integration_client_id
+  }
+  set_sensitive {
+    name  = "secrets.googleDriveIntegrationClientSecret"
+    value = var.google_drive_integration_client_secret
+  }
+  set_sensitive {
+    name  = "secrets.googleDriveIntegrationRedirectUri"
+    value = var.google_drive_integration_redirect_uri
+  }
 
   dynamic "set_sensitive" {
     for_each = lookup(local.local_storage_secrets, var.local_storage_type, {})
