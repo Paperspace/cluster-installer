@@ -12,6 +12,4 @@ systemctl enable rke2-server.service
 
 systemctl start rke2-server.service
 # https://docs.rke2.io/install/install_options/server_config/
-   --cluster-cidr value                          (networking) IPv4/IPv6 network CIDRs to use for pod IPs (default: 10.42.0.0/16)
-   --service-cidr value
-#journalctl -u rke2-server -f
+# journalctl -u rke2-server -f
