@@ -45,7 +45,7 @@ variable "gradient_processing_enabled" {
 // Gradient
 module "gradient_processing" {
   source  = "../modules/gradient-processing"
-  enabled = module.kubernetes.k8s_host == "" ? false : true
+  enabled = var.gradient_processing_enabled == 0 ? false : true
 
   amqp_hostname                         = var.amqp_hostname
   amqp_port                             = var.amqp_port
