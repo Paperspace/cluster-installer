@@ -22,7 +22,7 @@ locals {
   shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
 
   is_single_node    = length(var.k8s_workers) == 0
-  service_pool_name = local.is_single_node == true && !var.cluster_autoscaler_enabled ? var.k8s_master_node["pool-name"] : var.service_pool_name
+  service_pool_name = var.service_pool_name
 }
 
 
