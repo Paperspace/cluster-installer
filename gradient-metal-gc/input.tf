@@ -17,6 +17,14 @@ variable "cluster_autoscaler_enabled" {
   default     = false
 }
 
+/*
+  k8s_master_node schema:
+    {
+        "ip": {{ ip address }},
+        "pool-name": "{{ host }}",
+        "pool-type": "{{ pool type name }}"
+    }
+*/
 variable "k8s_master_node" {
   type        = map(any)
   description = "Kubernetes master node"
@@ -27,6 +35,11 @@ variable "k8s_sans" {
   description = "List of hostname or IPs used for Kubernetes authentications"
   default     = []
 }
+
+/*
+  k8s_workers schema
+  ["ipv4 address worker a", "ipv4 address worker b"]
+*/
 
 variable "k8s_workers" {
   type        = list(any)
