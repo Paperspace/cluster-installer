@@ -385,3 +385,18 @@ variable "victoria_metrics_vmcluster_vmstorage_replicacount" {
   type        = number
   default     = 3
 }
+
+variable "google_drive_integration_client_id" {
+  description = "client id for google drive notebook mounting integration - this is currently only supported on managed clusters"
+  default     = "00000-aaaaaa.apps.googleusercontent.com"
+}
+
+variable "google_drive_integration_client_secret" {
+  description = "client secret for google drive notebook mounting integration - this is currently only supported on managed clusters"
+  default     = "AAAAA-BBBBBBBBBBB"
+}
+
+variable "google_drive_integration_redirect_uri" {
+  description = "client uri for google drive notebook mounting integration - this is currently only supported on managed clusters"
+  default     = "http://localhost:8080/oauth/redirect"
+}

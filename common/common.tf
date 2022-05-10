@@ -224,18 +224,3 @@ variable "image_cache_list" {
   type        = list(string)
   default     = []
 }
-
-variable "google_drive_integration_client_id" {
-  description = "client id for google drive notebook mounting integration"
-  default     = ""
-}
-
-variable "google_drive_integration_client_secret" {
-  description = "client secret for google drive notebook mounting integration"
-  default     = ""
-}
-
-variable "google_drive_integration_redirect_uri" {
-  description = "client uri for google drive notebook mounting integration"
-  default     = ""
-}
