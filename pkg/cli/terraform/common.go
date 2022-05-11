@@ -153,7 +153,7 @@ func (c *Common) UpdateSourcePrefix(prefix string, platform paperspace.ClusterPl
 	case paperspace.ClusterPlatformDGX:
 		suffix = "gradient-metal"
 	case paperspace.ClusterPlatformGraphcore:
-		suffix = "gradient-metal-gc"
+		suffix = "gradient-metal"
 	case paperspace.ClusterPlatformSambaNova:
 		suffix = "gradient-metal"
 	}
