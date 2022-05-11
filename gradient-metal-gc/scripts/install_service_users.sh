@@ -1,4 +1,5 @@
 #!/bin/bash
+# ToDo, revise this as RKE2 does its own containerd wrangling
 
 # Pro Tip: Run as root
 if [ "$EUID" -ne 0 ]
@@ -24,6 +25,3 @@ if [[ ! $(stat ${containerd_sudoers_file}) ]]; then
   printf 'Creating conatinerd group sudoers file at [%s]\n', ${containerd_sudoers_file}
   echo "%${containerd_group} ALL=(ALL) NOPASSWD:ALL" > ${containerd_sudoers_file}
 fi
-
-# Set this as containerd user
-export XDG_RUNTIME_DIR=/run/user/$(id -u)
