@@ -575,7 +575,7 @@ volumeController:
       memory: 3072Mi
     limits:
       cpu: 500m
-      memory: 3072Mi
+      memory: 4072Mi
   %{ endif }
 
 recycleBin:
