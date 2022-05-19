@@ -3,6 +3,8 @@
 # Locks RKE2 Release Version
 export INSTALL_RKE2_VERSION=v1.21.12+rke2r2
 SYS_D_SERVICE=rke2-server.service
+CONFIG_PATH=/etc/rancher/rke2/config.yaml
+
 # Pro Tip: Run as root
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
@@ -10,6 +12,12 @@ if [ "$EUID" -ne 0 ]
 fi
 
 curl -sfL https://get.rke2.io | sh -
+
+# ToDo, yaml generators
+cat << EOF > ${CONFIG_PATH}
+disable:
+  - rke2-ingress-nginx
+EOF
 
 systemctl enable ${SYS_D_SERVICE}
 systemctl daemon-reload
