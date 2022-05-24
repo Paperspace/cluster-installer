@@ -571,10 +571,10 @@ volumeController:
   %{ if is_public_cluster }
   resources:
     requests:
-      cpu: 500m
+      cpu: 1000m
       memory: 3072Mi
     limits:
-      cpu: 500m
+      cpu: 1000m
       memory: 4072Mi
   %{ endif }
 
