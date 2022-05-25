@@ -107,7 +107,7 @@ variable "helm_repo_url" {
 
 variable "logs_host" {
   description = "Logs host"
-  default     = "logs.paperspace.io"
+  default     = "staging-logs.paperspace.io"
 }
 
 variable "k8s_endpoint" {
