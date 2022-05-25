@@ -20,6 +20,8 @@ mkdir -p ${CONFIG_PATH}
 
   # ToDo, yaml generators
 cat << EOF > ${CONFIG_PATH}/${CONFIG_FILE}
+tls-san:
+  - kubernetes.local.com
 disable:
   - rke2-ingress-nginx
 EOF
