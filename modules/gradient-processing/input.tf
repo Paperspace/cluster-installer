@@ -383,3 +383,10 @@ variable "volume_fs_new_relic_app_name" {
   type        = string
   default     = ""
 }
+
+# Graphcore Specific
+variable "ipu_controller_server" {
+  description = "IPU Controller Server Hostname"
+  type        = string
+  default     = ""
+}

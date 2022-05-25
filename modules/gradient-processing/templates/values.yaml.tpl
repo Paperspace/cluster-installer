@@ -233,6 +233,7 @@ gradient-operator:
     notebookPendingTimeout: 60
     %{ endif }
 
+    IPU_CONTROLLER_SERVER: ${ipu_controller_server}
     %{ if is_public_cluster }
     controller:
       resources:

@@ -78,3 +78,9 @@ variable "paperspace_api_next_url" {
   description = "Paperspace API next URL"
   default     = "https://staging-api.paperspace.com"
 }
+
+variable "ipu_controller_server" {
+  description = "IPU Controller Server Hostname"
+  type        = string
+  default     = ""
+}
