@@ -101,5 +101,6 @@ module "gradient_processing" {
   metrics_server_enabled             = false
   victoria_metrics_vmcluster_enabled = false
   victoria_metrics_vmsingle_enabled  = true
+  ipu_controller_server              = var.ipu_controller_server
 }
 

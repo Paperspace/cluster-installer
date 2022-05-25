@@ -385,3 +385,10 @@ variable "victoria_metrics_vmcluster_vmstorage_replicacount" {
   type        = number
   default     = 3
 }
+
+# Graphcore Specific
+variable "ipu_controller_server" {
+  description = "IPU Controller Server Hostname"
+  type = string
+  default = ""
+}
