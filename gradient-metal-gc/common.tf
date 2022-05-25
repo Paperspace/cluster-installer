@@ -1,6 +1,6 @@
 variable "amqp_hostname" {
   description = "AMQP hostname"
-  default     = "broker.paperspace.io"
+  default     = "staging-broker.paperspace.io"
 }
 
 variable "amqp_port" {
@@ -48,7 +48,7 @@ variable "cluster_handle" {
 
 variable "dispatcher_host" {
   description = "Dispatcher host"
-  default     = "dispatcher.paperspace.com"
+  default     = "staging-dispatcher.paperspace.com"
 }
 
 variable "domain" {
