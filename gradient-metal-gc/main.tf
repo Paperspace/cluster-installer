@@ -22,7 +22,7 @@ locals {
   shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
 
   is_single_node    = length(var.k8s_workers) == 0
-  service_pool_name = var.service_pool_name
+  service_pool_name = "lb"
 
   tls_cert = var.is_tls_config_from_file ? file(var.tls_cert) : var.tls_cert
   tls_key  = var.is_tls_config_from_file ? file(var.tls_key) : var.tls_key
