@@ -16,16 +16,11 @@ terraform {
 }
 
 locals {
-  has_k8s             = var.k8s_endpoint == "" ? false : true
-  has_shared_storage  = var.shared_storage_path == "" ? false : true
-  k8s_version         = var.k8s_version == "" ? "1.20.8" : var.k8s_version
   shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
-
-  is_single_node    = length(var.k8s_workers) == 0
-  service_pool_name = "lb"
-
-  tls_cert = var.is_tls_config_from_file ? file(var.tls_cert) : var.tls_cert
-  tls_key  = var.is_tls_config_from_file ? file(var.tls_key) : var.tls_key
+  is_single_node      = length(var.k8s_workers) == 0
+  service_pool_name   = "lb"
+  tls_cert            = var.is_tls_config_from_file ? file(var.tls_cert) : var.tls_cert
+  tls_key             = var.is_tls_config_from_file ? file(var.tls_key) : var.tls_key
 }
 
 

@@ -110,11 +110,6 @@ variable "logs_host" {
   default     = "staging-logs.paperspace.io"
 }
 
-variable "k8s_endpoint" {
-  description = "Kubernetes endpoint (https://k8s_endpoint:6443)"
-  default     = ""
-}
-
 variable "k8s_version" {
   description = "Kubernetes version"
   default     = ""
