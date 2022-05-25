@@ -236,7 +236,7 @@ gradient-operator:
     ingressHost: ${domain}
     workspaceUploadUseSSL: true
     usePodAntiAffinity: ${use_pod_anti_affinity}
-    IPU_CONTROLLER_SERVER: ${ipu_controller_server}
+    ipuControllerServer: ${ipu_controller_server}
     %{ if is_public_cluster }
     controller:
       resources:
