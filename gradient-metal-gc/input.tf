@@ -69,8 +69,9 @@ variable "ssh_user" {
 
 variable "cpu_selector" {
   description = "Node CPU selector"
-  default     = "metal-cpu"
+  default     = "ipu-host"
 }
+
 variable "gpu_selector" {
   description = "Node GPU selector"
   default     = "metal-gpu"
