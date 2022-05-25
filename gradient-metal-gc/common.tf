@@ -196,6 +196,11 @@ variable "tls_key" {
   default     = ""
 }
 
+variable "is_tls_config_from_file" {
+  description = "Are the variables tls_cert and tls_key files and not strings"
+  default     = false
+}
+
 variable "traefik_prometheus_auth" {
   description = "Traefik basic auth for ingress `htpasswd user:pass`"
   default     = ""
