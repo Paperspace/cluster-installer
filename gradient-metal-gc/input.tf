@@ -1,17 +1,14 @@
-variable "become_ssh_user" {
-  description = "Remote ssh user with elevated privileges"
-  default     = "root"
-}
-
 variable "cluster_autoscaler_autoscaling_groups" {
   type        = list(any)
   description = "Cluster autoscaler autoscaling groups"
   default     = []
 }
+
 variable "cluster_autoscaler_cloudprovider" {
   description = "Cluster autoscaler cloud provider"
   default     = ""
 }
+
 variable "cluster_autoscaler_enabled" {
   description = "Cluster autoscaler enabled"
   default     = false
@@ -25,16 +22,7 @@ variable "cluster_autoscaler_enabled" {
         "pool-type": "{{ pool type name }}"
     }
 */
-variable "k8s_master_node" {
-  type        = map(any)
-  description = "Kubernetes master node"
-}
 
-variable "k8s_sans" {
-  type        = list(any)
-  description = "List of hostname or IPs used for Kubernetes authentications"
-  default     = []
-}
 
 /*
   k8s_workers schema
@@ -44,12 +32,6 @@ variable "k8s_sans" {
 variable "k8s_workers" {
   type        = list(any)
   description = "Kubernetes workers"
-}
-
-variable "reboot_gpu_nodes" {
-  type        = bool
-  description = "Reboot GPU nodes"
-  default     = false
 }
 
 variable "ssh_key" {
@@ -64,7 +46,7 @@ variable "ssh_key_path" {
 
 variable "ssh_user" {
   description = "SSH user"
-  default     = "ubuntu"
+  default     = "upaperspace"
 }
 
 variable "cpu_selector" {
@@ -75,16 +57,6 @@ variable "cpu_selector" {
 variable "gpu_selector" {
   description = "Node GPU selector"
   default     = "metal-gpu"
-}
-
-variable "setup_docker" {
-  description = "Setup docker"
-  default     = false
-}
-
-variable "setup_nvidia" {
-  description = "Setup NVIDIA Cuda drivers, docker, and kubernetes integrations (Requires reboot)"
-  default     = false
 }
 
 variable "service_pool_name" {
