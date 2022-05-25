@@ -198,7 +198,7 @@ variable "tls_key" {
 
 variable "is_tls_config_from_file" {
   description = "Are the variables tls_cert and tls_key files and not strings"
-  default     = false
+  default     = true
 }
 
 variable "traefik_prometheus_auth" {
