@@ -98,10 +98,10 @@ variable "use_pod_anti_affinity" {
 
 variable "api_host" {
   description = "api host"
-  default     = "https://api.paperspace.io"
+  default     = "https://staging-api.paperspace.io"
 }
 
 variable "paperspace_api_next_url" {
   description = "Paperspace API next URL"
-  default     = "https://api.paperspace.com"
+  default     = "https://staging-api.paperspace.com"
 }
