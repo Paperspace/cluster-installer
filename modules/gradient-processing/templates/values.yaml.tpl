@@ -337,7 +337,8 @@ victoria-metrics-k8s-stack:
   prometheus-node-exporter:
     enabled: true
     service:
-      hostPort: ${victoria_metrics_prometheus_node_exporter_host_port}
+      port: ${victoria_metrics_prometheus_node_exporter_host_port}
+      targetPort: ${victoria_metrics_prometheus_node_exporter_host_port}
 
   vmsingle:
     enabled: ${enable_victoria_metrics_vm_single}
