@@ -203,6 +203,7 @@ resource "helm_release" "gradient_processing" {
       vm_select_replica_count               = var.cluster_handle == "clw6rxq2s" ? 1 : var.victoria_metrics_vmcluster_vmselect_replicacount
       vm_storage_replica_count              = var.cluster_handle == "clw6rxq2s" ? 1 : var.victoria_metrics_vmcluster_vmstorage_replicacount
       ipu_controller_server                 = var.ipu_controller_server
+      victoria_metrics_prometheus_node_exporter_host_port = var.victoria_metrics_prometheus_node_exporter_host_port
     })
   ]
 }

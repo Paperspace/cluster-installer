@@ -334,6 +334,11 @@ nfs-subdir-external-provisioner:
     paperspace.com/pool-name: ${service_pool_name}
 
 victoria-metrics-k8s-stack:
+  prometheus-node-exporter:
+    enabled: true
+    service:
+      hostPort: ${victoria_metrics_prometheus_node_exporter_host_port}
+
   vmsingle:
     enabled: ${enable_victoria_metrics_vm_single}
     spec:
