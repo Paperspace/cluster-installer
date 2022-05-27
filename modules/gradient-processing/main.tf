@@ -108,6 +108,10 @@ resource "helm_release" "gradient_processing" {
     name  = "gradient-metrics.config.newRelicKey"
     value = var.metrics_new_relic_key
   }
+  set_sensitive {
+    name  = "volumeFs.newRelic.accessKey"
+    value = var.volume_fs_new_relic_access_key
+  }
 
   dynamic "set_sensitive" {
     for_each = lookup(local.local_storage_secrets, var.local_storage_type, {})
@@ -202,6 +206,8 @@ resource "helm_release" "gradient_processing" {
       enable_victoria_metrics_vm_cluster    = var.victoria_metrics_vmcluster_enabled
       vm_select_replica_count               = var.cluster_handle == "clw6rxq2s" ? 1 : var.victoria_metrics_vmcluster_vmselect_replicacount
       vm_storage_replica_count              = var.cluster_handle == "clw6rxq2s" ? 1 : var.victoria_metrics_vmcluster_vmstorage_replicacount
+      volume_fs_new_relic_enabled           = var.volume_fs_new_relic_enabled
+      volume_fs_new_relic_app_name          = var.volume_fs_new_relic_app_name
     })
   ]
 }

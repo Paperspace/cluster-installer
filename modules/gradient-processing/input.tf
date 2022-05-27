@@ -385,3 +385,18 @@ variable "victoria_metrics_vmcluster_vmstorage_replicacount" {
   type        = number
   default     = 3
 }
+
+variable "volume_fs_new_relic_access_key" {
+  description = "New Relic access key"
+  default     = ""
+}
+
+variable "volume_fs_new_relic_enabled" {
+  description = "Enables New Relic monitoring on the Volume FS API"
+  default     = "false"
+}
+
+variable "volume_fs_new_relic_app_name" {
+  description = "Postfix for New Relic application name"
+  default     = ""
+}
