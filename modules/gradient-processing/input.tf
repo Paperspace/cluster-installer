@@ -386,8 +386,8 @@ variable "victoria_metrics_vmcluster_vmstorage_replicacount" {
   default     = 3
 }
 
-variable "volume_fs_new_relic_access_key" {
-  description = "New Relic access key"
+variable "volume_fs_new_relic_license_key" {
+  description = "New Relic license key"
   default     = ""
 }
 
