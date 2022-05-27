@@ -26,4 +26,18 @@ EOF
   sysctl --system
 }
 
+function sidestep_network_manager() {
+  # Reference
+  # https://docs.rke2.io/known_issues/#networkmanager
+  response=$(systemctl is-active NetworkManager)
+
+  if [ "${response}" == 'active' ]; then
+cat << EOF | sudo tee /etc/NetworkManager/conf.d/rke2-canal.conf
+  [keyfile]
+  unmanaged-devices=interface-name:cali*;interface-name:flannel*
+EOF
+
+fi
+}
 install_container_d_kube_reqs
+sidestep_network_manager
