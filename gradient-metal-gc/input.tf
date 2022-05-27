@@ -94,5 +94,5 @@ variable "victoria_metrics_prometheus_node_exporter_host_port" {
 variable "prometheus_pool_name" {
   description = "Victoria Metrics Kubernetes Node Selector Identifier"
   type = string
-  default = metrics
+  default = "metrics"
 }
