@@ -106,7 +106,7 @@ resource "helm_release" "gradient_processing" {
   }
   set_sensitive {
     name  = "gradient-metrics.config.newRelicKey"
-    value = var.metrics_new_relic_key
+    value = var.metrics_new_relic_key == "" ? "null" : var.metrics_new_relic_key
   }
   set_sensitive {
     name  = "volumeFs.newRelic.licenseKey"
