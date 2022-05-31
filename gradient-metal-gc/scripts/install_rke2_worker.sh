@@ -33,6 +33,8 @@ EOF
   chmod 700 ${CONFIG_PATH}
   systemctl start ${SYS_D_SERVICE}
 }
+
+
 # Tail daemon logs
 # journalctl -u rke2-agent -f
 
