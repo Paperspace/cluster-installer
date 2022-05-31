@@ -589,3 +589,10 @@ recycleBin:
       cpu: 500m
       memory: 1Gi
   %{ endif }
+
+volumeFs:
+  %{ if volume_fs_new_relic_enabled }
+  newRelic:
+    enabled: true
+    appName: ${volume_fs_new_relic_app_name}
+  %{ endif }

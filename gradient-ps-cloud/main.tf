@@ -600,6 +600,9 @@ module "gradient_processing" {
     "paperspace/notebook_idle:v1.0.5",
   ]
   metrics_server_enabled = false
+  volume_fs_new_relic_license_key = var.volume_fs_new_relic_license_key
+  volume_fs_new_relic_enabled     = var.volume_fs_new_relic_enabled
+  volume_fs_new_relic_app_name    = var.volume_fs_new_relic_app_name
 }
 
 resource "rancher2_cluster" "main" {
