@@ -591,8 +591,8 @@ recycleBin:
   %{ endif }
 
 volumeFs:
-  %{ if volume_fs_new_relic_enabled }
+  %{ if volume_fs_new_relic_enabled == "true"}
   newRelic:
-    enabled: ${volume_fs_new_relic_enabled}
+    enabled: true
     appName: ${volume_fs_new_relic_app_name}
   %{ endif }

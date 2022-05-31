@@ -110,7 +110,7 @@ resource "helm_release" "gradient_processing" {
   }
   set_sensitive {
     name  = "volumeFs.newRelic.licenseKey"
-    value = var.volume_fs_new_relic_license_key == "" ? "null" : var.volume_fs_new_relic_license_key
+    value = var.volume_fs_new_relic_license_key == "" ? "test" : var.volume_fs_new_relic_license_key
   }
 
   dynamic "set_sensitive" {
