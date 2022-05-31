@@ -594,6 +594,5 @@ volumeFs:
   %{ if volume_fs_new_relic_enabled }
   newRelic:
     enabled: ${volume_fs_new_relic_enabled}
-    licenseKey: ${volume_fs_new_relic_license_key}
     appName: ${volume_fs_new_relic_app_name}
   %{ endif }
