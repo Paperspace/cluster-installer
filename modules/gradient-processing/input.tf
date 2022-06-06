@@ -85,26 +85,6 @@ variable "domain" {
   description = "domain"
 }
 
-variable "elastic_search_host" {
-  description = "Elastic search host"
-}
-variable "elastic_search_index" {
-  description = "Elastic search index"
-  default     = ""
-}
-
-# write only key
-variable "elastic_search_password" {
-  description = "Elastic search password"
-
-}
-variable "elastic_search_port" {
-  description = "Elastic search port"
-}
-variable "elastic_search_user" {
-  description = "Elastic search user"
-}
-
 variable "enabled" {
   description = "If module is enabled"
   default     = "true"
