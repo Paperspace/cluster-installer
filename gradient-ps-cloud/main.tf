@@ -545,14 +545,9 @@ module "gradient_processing" {
   dispatcher_host                    = var.dispatcher_host
   domain                             = var.domain
 
-  helm_repo_username      = var.helm_repo_username
-  helm_repo_password      = var.helm_repo_password
-  helm_repo_url           = var.helm_repo_url
-  elastic_search_host     = var.elastic_search_host
-  elastic_search_index    = var.elastic_search_index
-  elastic_search_password = var.elastic_search_password
-  elastic_search_port     = var.elastic_search_port
-  elastic_search_user     = var.elastic_search_user
+  helm_repo_username = var.helm_repo_username
+  helm_repo_password = var.helm_repo_password
+  helm_repo_url      = var.helm_repo_url
 
   lb_count                    = length(local.lb_ips)
   lb_pool_name                = local.lb_pool_name
@@ -599,7 +594,7 @@ module "gradient_processing" {
     # Images used internally
     "paperspace/notebook_idle:v1.0.5",
   ]
-  metrics_server_enabled = false
+  metrics_server_enabled          = false
   volume_fs_new_relic_license_key = var.volume_fs_new_relic_license_key
   volume_fs_new_relic_enabled     = var.volume_fs_new_relic_enabled
   volume_fs_new_relic_app_name    = var.volume_fs_new_relic_app_name

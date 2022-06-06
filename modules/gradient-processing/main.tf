@@ -60,10 +60,6 @@ resource "helm_release" "gradient_processing" {
   version             = var.gradient_processing_version
 
   set_sensitive {
-    name  = "global.elasticSearch.password"
-    value = var.elastic_search_password
-  }
-  set_sensitive {
     name  = "global.artifactsAccessKeyId"
     value = var.artifacts_access_key_id
   }
@@ -155,12 +151,6 @@ resource "helm_release" "gradient_processing" {
       default_storage_name                  = local.local_storage_name
       dispatcher_host                       = var.dispatcher_host
       efs_provisioner_enabled               = var.shared_storage_type == "efs" || var.local_storage_type == "efs"
-      elastic_search_enabled                = var.elastic_search_password != ""
-      elastic_search_host                   = var.elastic_search_host
-      elastic_search_index                  = var.elastic_search_index
-      elastic_search_port                   = var.elastic_search_port
-      elastic_search_sha                    = sha256("${var.elastic_search_host}${var.elastic_search_password}${var.elastic_search_port}${var.elastic_search_user}")
-      elastic_search_user                   = var.elastic_search_user
       is_public_cluster                     = var.is_public_cluster
       domain                                = var.domain
       global_selector                       = var.global_selector
