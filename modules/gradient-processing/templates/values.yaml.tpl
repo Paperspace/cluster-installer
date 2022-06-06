@@ -229,6 +229,9 @@ gradient-operator:
     ingressHost: ${domain}
     workspaceUploadUseSSL: true
     usePodAntiAffinity: ${use_pod_anti_affinity}
+    %{ if is_public_cluster}
+    notebookPendingTimeout: 60
+    %{ endif }
 
     %{ if is_public_cluster }
     controller:
