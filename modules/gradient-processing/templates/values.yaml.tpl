@@ -5,13 +5,6 @@ global:
   cluster:
     handle: ${cluster_handle}
     name: ${name}
-  %{ if elastic_search_enabled }
-  elasticSearch:
-    host: ${elastic_search_host}
-    index: ${elastic_search_index}
-    port: ${elastic_search_port}
-    user: ${elastic_search_user}
-  %{ endif }
 
   logs:
     host: ${logs_host}
