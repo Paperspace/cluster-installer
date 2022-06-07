@@ -286,7 +286,7 @@ locals {
   enable_gradient_prometheus_pool  = local.is_public_cluster ? 1 : 0
   gradient_prometheus_pool_count   = local.enable_gradient_prometheus_pool == 1 ? 1 : 0
   prometheus_pool_name             = local.enable_gradient_prometheus_pool == 1 ? "prometheus" : "services-small"
-  gradient_lb_count                = var.kind == "multinode" ? 1 : 0
+  gradient_lb_count                = var.kind == "multinode" ? 2 : 0
   gradient_main_count              = local.is_public_cluster ? 5 : var.kind == "multinode" ? 3 : 1
 
   gradient_controlplane_count = local.is_public_cluster ? 3 : 0

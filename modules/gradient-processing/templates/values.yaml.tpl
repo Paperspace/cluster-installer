@@ -507,6 +507,9 @@ traefik:
       - 8.8.8.8:53
     persistence:
       storageClass: ${shared_storage_name}
+      %{ if is_public_cluster }
+      accessMode: ReadWriteMany
+      %{ endif }
   %{ endif }
 
   %{ if is_public_cluster }
