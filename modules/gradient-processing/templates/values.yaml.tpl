@@ -315,6 +315,16 @@ gradient-metrics:
     connectionString: ${gradient_metrics_conn_str}
     newRelicEnabled: ${metrics_new_relic_enabled}
     newRelicName: ${metrics_new_relic_name}
+    
+  %{ if is_public_cluster }
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+  %{ endif }
 
 gradient-operator-dispatcher:
   config:
