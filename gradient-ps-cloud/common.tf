@@ -133,9 +133,6 @@ variable "name" {
   description = "Name"
 }
 
-variable "admin-machine-name-suffix" {
-  default = "bastion-host"
-}
 variable "public_key_path" {
   description = "Login key path"
   default     = ""

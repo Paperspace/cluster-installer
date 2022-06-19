@@ -95,6 +95,10 @@ variable "machine_type_admin" {
   default     = "C5"
 }
 
+variable "admin-machine-name-suffix" {
+  default = "bastion-host"
+}
+
 variable "machine_storage_admin" {
   type        = number
   description = "admin storage"
