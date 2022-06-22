@@ -76,6 +76,38 @@ global:
 
       %{ endif }
 
+      %{ if shared_storage_type == "csi-driver-nfs" }
+      mountOptions:
+        # internal nfs only supports nfsvers 3 currently...
+        - soft
+        - nfsvers=3
+        - nolock
+      # we hardcode this to point to our internal nfs share
+      server: nfs-service.default.svc.cluster.local
+      share: /exports
+      %{ endif }
+
+    %{ if shared_storage_type == "csi-driver-nfs" }
+    gradient-processing-images:
+      class: gradient-processing-images
+      type: ${shared_storage_type}
+      mountOptions:
+        %{ for mountOption in split(",", lookup(shared_storage_config, "mount_options")) }
+        - ${ mountOption }
+        %{ endfor }
+      server: ${shared_storage_config["server"]}
+      share: ${shared_storage_config["share"]}
+    %{ endif }
+
+csi-driver-nfs:
+  enabled: ${shared_storage_type == "csi-driver-nfs" ? true : false }
+
+  controller:
+    hostNetwork: false
+
+  node:
+    hostNetwork: false
+
 ceph-csi-cephfs:
   enabled: ${local_storage_type == "ceph-csi-fs" || shared_storage_type == "ceph-csi-fs" ? true : false }
   csiConfig:
@@ -573,6 +605,13 @@ volumeController:
     gradientTeamsPersistentVolumeClaimName: ${shared_storage_name}
     %{ if local_storage_type == "ceph-csi-fs" }
     volumeType: cephfs
+    %{ endif }
+
+    %{ if shared_storage_type == "csi-driver-nfs" }
+    # example: /paperspace1 or /exports
+    exportPath: ${shared_storage_config["share"]}
+    volumeType: disk-image
+    imagesVolumeClaimName: gradient-processing-images
     %{ endif }
   %{ if is_public_cluster }
   resources:
