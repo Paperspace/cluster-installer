@@ -582,15 +582,19 @@ module "gradient_processing" {
   image_cache_enabled         = true
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
     # Ordered by most used
+    "paperspace/fastai:2.0-fastbook-2022-06-29",
+    "paperspace/gradient-base:tf29-pt112-py39-2022-06-29",
+    "paperspace/nb-rapids:22.02-cuda11.2-runtime-ubuntu20.04-py3.9",
+
+    # deprecated but still used by many
     "paperspace/nb-pytorch:22.02-py3",
     "paperspace/nb-tensorflow:22.02-tf2-py3",
-    "paperspace/fastai:2.0-fastbook-2022-04-25-rc2",
     "paperspace/fastai:2.0-fastbook-2022-05-09-rc3",
-    "paperspace/nb-rapids:22.02-cuda11.2-runtime-ubuntu20.04-py3.9",
     "paperspace/nb-transformers:4.17.0",
+    "paperspace/gradient-base:lean-tf24-py36-0.10",
     "paperspace/nb-data-science:python-3.9.10",
     "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
-    "paperspace/gradient-base:tf24-py36-0.10",
+    
     # Images used internally
     "paperspace/notebook_idle:v1.0.5",
   ]
