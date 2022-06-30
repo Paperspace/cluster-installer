@@ -189,7 +189,7 @@ variable "cert_manager_enabled" {
 
 
 variable "image_cache_enabled" {
-  description = "enable caching of common workload images on your nodes"
+  description = "enable installation of the kubefledged operator to cache basic workload images on your nodes"
   type        = bool
   default     = false
 }

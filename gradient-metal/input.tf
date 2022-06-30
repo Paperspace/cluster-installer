@@ -60,7 +60,7 @@ variable "cpu_selector" {
 }
 variable "gpu_selector" {
     description = "Node GPU selector"
-    default = "metal-gpu"
+    default = "A100-80G-PCIe"
 }
 
 variable "setup_docker" {
