@@ -174,7 +174,7 @@ variable "shared_storage_server" {
 }
 variable "shared_storage_path" {
   description = "Shared storage path to be used for Gradient"
-  default     = "/"
+  default     = ""
 }
 variable "shared_storage_type" {
   description = "Shared storage type"

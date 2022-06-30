@@ -92,6 +92,7 @@ module "gradient_processing" {
   shared_storage_server              = var.shared_storage_server
   shared_storage_path                = var.shared_storage_path
   shared_storage_type                = local.shared_storage_type
+  shared_storage_config              = var.shared_storage_config
   tls_cert                           = local.tls_cert
   tls_key                            = local.tls_key
   use_pod_anti_affinity              = var.use_pod_anti_affinity
