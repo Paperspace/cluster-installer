@@ -133,9 +133,6 @@ variable "name" {
   description = "Name"
 }
 
-variable "admin-machine-name-suffix" {
-  default = "bastion-host"
-}
 variable "public_key_path" {
   description = "Login key path"
   default     = ""
@@ -192,7 +189,7 @@ variable "cert_manager_enabled" {
 
 
 variable "image_cache_enabled" {
-  description = "enable installation of the kubefledged operator to cache basic workload images on your nodes"
+  description = "enable caching of common workload images on your nodes"
   type        = bool
   default     = false
 }
