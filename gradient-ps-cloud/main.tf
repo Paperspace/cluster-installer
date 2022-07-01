@@ -590,8 +590,6 @@ module "gradient_processing" {
     "paperspace/nb-pytorch:22.02-py3",
     "paperspace/nb-tensorflow:22.02-tf2-py3",
     "paperspace/fastai:2.0-fastbook-2022-05-09-rc3",
-    "paperspace/nb-transformers:4.17.0",
-    "paperspace/gradient-base:lean-tf24-py36-0.10",
     "paperspace/nb-data-science:python-3.9.10",
     "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
     
