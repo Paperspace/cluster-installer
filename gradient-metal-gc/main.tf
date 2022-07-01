@@ -63,47 +63,47 @@ module "gradient_processing" {
   dispatcher_host                       = var.dispatcher_host
   domain                                = var.domain
 
-  helm_repo_username      = var.helm_repo_username
-  helm_repo_password      = var.helm_repo_password
-  helm_repo_url           = var.helm_repo_url
-  elastic_search_host     = var.elastic_search_host
-  elastic_search_index    = var.elastic_search_index
-  elastic_search_password = var.elastic_search_password
-  elastic_search_port     = var.elastic_search_port
-  elastic_search_user     = var.elastic_search_user
+  helm_repo_username = var.helm_repo_username
+  helm_repo_password = var.helm_repo_password
+  helm_repo_url      = var.helm_repo_url
+  //elastic_search_host     = var.elastic_search_host
+  //elastic_search_index    = var.elastic_search_index
+  //elastic_search_password = var.elastic_search_password
+  //elastic_search_port     = var.elastic_search_port
+  //elastic_search_user     = var.elastic_search_user
 
   label_selector_cpu       = var.cpu_selector
   label_selector_gpu       = var.gpu_selector
   letsencrypt_dns_name     = var.letsencrypt_dns_name
   letsencrypt_dns_settings = var.letsencrypt_dns_settings
   // Use shared storage by default for now
-  local_storage_server               = var.local_storage_server == "" ? var.shared_storage_server : var.local_storage_server
-  local_storage_path                 = var.local_storage_path == "" ? var.shared_storage_path : var.local_storage_path
-  local_storage_type                 = var.local_storage_type == "" ? local.shared_storage_type : var.local_storage_type
-  logs_host                          = var.logs_host
-  paperspace_base_url                = var.api_host
-  paperspace_api_next_url            = var.paperspace_api_next_url
-  gradient_processing_version        = var.gradient_processing_version
-  name                               = var.name
-  sentry_dsn                         = var.sentry_dsn
-  service_pool_name                  = local.service_pool_name
-  lb_count                           = 1
-  lb_pool_name                       = local.load_balancer_pool_name
-  shared_storage_server              = var.shared_storage_server
-  shared_storage_path                = var.shared_storage_path
-  shared_storage_type                = local.shared_storage_type
-  shared_storage_config              = var.shared_storage_config
-  tls_cert                           = local.tls_cert
-  tls_key                            = local.tls_key
-  use_pod_anti_affinity              = var.use_pod_anti_affinity
-  cert_manager_enabled               = var.cert_manager_enabled
-  image_cache_enabled                = var.image_cache_enabled
-  image_cache_list                   = var.image_cache_list
-  metrics_server_enabled             = false
-  victoria_metrics_vmcluster_enabled = false
-  victoria_metrics_vmsingle_enabled  = true
-  ipu_controller_server              = var.ipu_controller_server
+  local_storage_server                                = var.local_storage_server == "" ? var.shared_storage_server : var.local_storage_server
+  local_storage_path                                  = var.local_storage_path == "" ? var.shared_storage_path : var.local_storage_path
+  local_storage_type                                  = var.local_storage_type == "" ? local.shared_storage_type : var.local_storage_type
+  logs_host                                           = var.logs_host
+  paperspace_base_url                                 = var.api_host
+  paperspace_api_next_url                             = var.paperspace_api_next_url
+  gradient_processing_version                         = var.gradient_processing_version
+  name                                                = var.name
+  sentry_dsn                                          = var.sentry_dsn
+  service_pool_name                                   = local.service_pool_name
+  lb_count                                            = 1
+  lb_pool_name                                        = local.load_balancer_pool_name
+  shared_storage_server                               = var.shared_storage_server
+  shared_storage_path                                 = var.shared_storage_path
+  shared_storage_type                                 = local.shared_storage_type
+  shared_storage_config                               = var.shared_storage_config
+  tls_cert                                            = local.tls_cert
+  tls_key                                             = local.tls_key
+  use_pod_anti_affinity                               = var.use_pod_anti_affinity
+  cert_manager_enabled                                = var.cert_manager_enabled
+  image_cache_enabled                                 = var.image_cache_enabled
+  image_cache_list                                    = var.image_cache_list
+  metrics_server_enabled                              = false
+  victoria_metrics_vmcluster_enabled                  = false
+  victoria_metrics_vmsingle_enabled                   = true
+  ipu_controller_server                               = var.ipu_controller_server
   victoria_metrics_prometheus_node_exporter_host_port = var.victoria_metrics_prometheus_node_exporter_host_port
-  prometheus_pool_name               = var.prometheus_pool_name
+  prometheus_pool_name                                = var.prometheus_pool_name
 }
 
