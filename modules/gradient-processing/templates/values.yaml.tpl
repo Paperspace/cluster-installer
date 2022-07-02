@@ -562,7 +562,7 @@ argo-rollouts:
 imageCacher:
   enabled: true
   config:
-    maxParallelism: 10
+    maxParallelism: 20
     images: ${image_cache_list}
 %{ endif }
 
