@@ -77,9 +77,7 @@ module "gradient_processing" {
   letsencrypt_dns_name     = var.letsencrypt_dns_name
   letsencrypt_dns_settings = var.letsencrypt_dns_settings
   // Use shared storage by default for now
-  local_storage_server                                = var.local_storage_server == "" ? var.shared_storage_server : var.local_storage_server
-  local_storage_path                                  = var.local_storage_path == "" ? var.shared_storage_path : var.local_storage_path
-  local_storage_type                                  = var.local_storage_type == "" ? local.shared_storage_type : var.local_storage_type
+  local_storage_enabled                               = false
   logs_host                                           = var.logs_host
   paperspace_base_url                                 = var.api_host
   paperspace_api_next_url                             = var.paperspace_api_next_url
@@ -102,6 +100,7 @@ module "gradient_processing" {
   metrics_server_enabled                              = false
   victoria_metrics_vmcluster_enabled                  = false
   victoria_metrics_vmsingle_enabled                   = true
+  metrics_storage_class                               = "gradient-processing-images"
   ipu_controller_server                               = var.ipu_controller_server
   victoria_metrics_prometheus_node_exporter_host_port = var.victoria_metrics_prometheus_node_exporter_host_port
   prometheus_pool_name                                = var.prometheus_pool_name
