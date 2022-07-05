@@ -24,8 +24,8 @@ locals {
   prometheus_pool_name               = var.prometheus_pool_name != "" ? var.prometheus_pool_name : var.service_pool_name
   gradient-metrics-victoria-endpoint = var.victoria_metrics_vmcluster_enabled ? var.victoria_metrics_vmcluster_service_endpoint : var.victoria_metrics_vmsingle_service_endpoint
 
-  nfs_subdir_external_provisioner_path   = var.nfs_subdir_external_provisioner_path ? var.nfs_subdir_external_provisioner_path : var.shared_storage_path
-  nfs_subdir_external_provisioner_server = var.nfs_subdir_external_provisioner_server ? var.nfs_subdir_external_provisioner_server : var.shared_storage_server
+  nfs_subdir_external_provisioner_path   = var.nfs_subdir_external_provisioner_path != "" ? var.nfs_subdir_external_provisioner_path : var.shared_storage_path
+  nfs_subdir_external_provisioner_server = var.nfs_subdir_external_provisioner_server != "" ? var.nfs_subdir_external_provisioner_server : var.shared_storage_server
 }
 
 resource "helm_release" "cert_manager" {
