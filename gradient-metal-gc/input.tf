@@ -71,12 +71,12 @@ variable "use_pod_anti_affinity" {
 
 variable "api_host" {
   description = "api host"
-  default     = "https://staging-api.paperspace.io"
+  default     = "https://api.paperspace.io"
 }
 
 variable "paperspace_api_next_url" {
   description = "Paperspace API next URL"
-  default     = "https://staging-api.paperspace.com"
+  default     = "https://api.paperspace.com"
 }
 
 variable "ipu_controller_server" {

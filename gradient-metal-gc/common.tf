@@ -1,6 +1,6 @@
 variable "amqp_hostname" {
   description = "AMQP hostname"
-  default     = "staging-broker.paperspace.io"
+  default     = "broker.paperspace.io"
 }
 
 variable "amqp_port" {
@@ -48,36 +48,11 @@ variable "cluster_handle" {
 
 variable "dispatcher_host" {
   description = "Dispatcher host"
-  default     = "staging-dispatcher.paperspace.com"
+  default     = "dispatcher.paperspace.com"
 }
 
 variable "domain" {
   description = "Domain used to host gradient"
-}
-
-variable "elastic_search_host" {
-  description = "Elastic search host"
-  default     = "b35b1cdf227c418b8353fd3b282527c5.us-east-1.aws.found.io"
-}
-
-variable "elastic_search_index" {
-  description = "Elastic search index"
-  default     = ""
-}
-
-variable "elastic_search_password" {
-  description = "Elastic search password"
-  default     = "6qKRFJHBXygLfTtLTTnn2!yH"
-}
-
-variable "elastic_search_port" {
-  description = "Elastic search port"
-  default     = 9243
-}
-
-variable "elastic_search_user" {
-  description = "Elastic search user"
-  default     = "gradient"
 }
 
 variable "gradient_processing_chart" {
@@ -107,7 +82,7 @@ variable "helm_repo_url" {
 
 variable "logs_host" {
   description = "Logs host"
-  default     = "staging-logs.paperspace.io"
+  default     = "logs.paperspace.io"
 }
 
 variable "k8s_version" {
