@@ -656,4 +656,4 @@ volumeFs:
 
 
 nodeHealthChecks:
-  enabled: %{ node_health_check_enabled }
+  enabled: ${ node_health_check_enabled }
