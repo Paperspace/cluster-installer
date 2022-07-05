@@ -402,3 +402,16 @@ variable "node_health_check_enabled" {
   type        = bool
   default     = true
 }
+
+
+variable "nfs_subdir_external_provisioner_path" {
+  description = "Path of share on external nfs server (default var.shared_storage_path)"
+  type        = string
+  default     = ""
+}
+
+variable "nfs_subdir_external_provisioner_server" {
+  description = "Address of external nfs server (default var.shared_storage_server)"
+  type        = string
+  default     = ""
+}
