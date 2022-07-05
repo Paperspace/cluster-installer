@@ -368,7 +368,7 @@ nfs-subdir-external-provisioner:
   enabled: ${nfs_client_provisioner_enabled}
   nfs:
     path: ${nfs_subdir_external_provisioner_path}
-    server: ${nfs_subdir_external_provisioner_path}
+    server: ${nfs_subdir_external_provisioner_server}
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
 
