@@ -159,7 +159,7 @@ resource "helm_release" "gradient_processing" {
       lb_count                                            = var.lb_count
       lb_pool_name                                        = var.lb_pool_name
       letsencrypt_enabled                                 = local.letsencrypt_enabled
-      local_storage_enable                                = val.local_storage_enabled
+      local_storage_enabled                               = var.local_storage_enabled
       local_storage_config                                = local.local_storage_config
       local_storage_config                                = local.local_storage_config
       local_storage_name                                  = local.local_storage_name
