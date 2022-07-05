@@ -365,7 +365,8 @@ gradient-operator-dispatcher:
     sentryDSN: ${sentry_dsn}
 
 nfs-subdir-external-provisioner:
-  enabled: ${nfs_client_provisioner_enabled}
+  #enabled: ${nfs_client_provisioner_enabled}
+  enabled: true
   nfs:
     path: ${nfs_subdir_external_provisioner_path}
     server: ${nfs_subdir_external_provisioner_server}
