@@ -77,7 +77,6 @@ module "gradient_processing" {
   letsencrypt_dns_name     = var.letsencrypt_dns_name
   letsencrypt_dns_settings = var.letsencrypt_dns_settings
   // Use shared storage by default for now
-  local_storage_enabled                               = true
   local_storage_server                                = var.local_storage_server
   local_storage_path                                  = var.local_storage_path
   local_storage_type                                  = var.local_storage_type
