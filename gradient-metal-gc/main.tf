@@ -107,5 +107,6 @@ module "gradient_processing" {
   ipu_controller_server                               = var.ipu_controller_server
   victoria_metrics_prometheus_node_exporter_host_port = var.victoria_metrics_prometheus_node_exporter_host_port
   prometheus_pool_name                                = var.prometheus_pool_name
+  node_health_check_enabled                           = false
 }
 

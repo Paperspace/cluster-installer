@@ -402,3 +402,9 @@ variable "victoria_metrics_prometheus_node_exporter_host_port" {
   type        = number
   default     = 9100
 }
+
+variable "node_health_check_enabled" {
+  description = "Enable extra node health checking"
+  type        = bool
+  default     = true
+}

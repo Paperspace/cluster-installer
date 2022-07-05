@@ -653,3 +653,7 @@ volumeFs:
     enabled: true
     appName: ${volume_fs_new_relic_app_name}
 %{ endif }
+
+
+nodeHealthChecks:
+  enabled: %{ node_health_check_enabled }
