@@ -25,7 +25,7 @@ locals {
   gradient-metrics-victoria-endpoint = var.victoria_metrics_vmcluster_enabled ? var.victoria_metrics_vmcluster_service_endpoint : var.victoria_metrics_vmsingle_service_endpoint
 
   nfs_subdir_external_provisioner_path   = var.nfs_subdir_external_provisioner_path ? var.nfs_subdir_external_provisioner_path : var.shared_storage_path
-  nfs_subdir_external_provisioner_server = var.nfs_subdir_external_provisioner_server ? var.nfs_subdir_external_provisioner_path : var.shared_storage_server
+  nfs_subdir_external_provisioner_server = var.nfs_subdir_external_provisioner_server ? var.nfs_subdir_external_provisioner_server : var.shared_storage_server
 }
 
 resource "helm_release" "cert_manager" {
@@ -162,8 +162,8 @@ resource "helm_release" "gradient_processing" {
       lb_count                                            = var.lb_count
       lb_pool_name                                        = var.lb_pool_name
       letsencrypt_enabled                                 = local.letsencrypt_enabled
-      nfs_subdir_external_provisioner_server              = local.nfs_subdir_dir_external_provisioner_server
-      nfs_subdir_external_provisioner_path                = local.nfs_subdir_dir_external_provisioner_path
+      nfs_subdir_external_provisioner_server              = local.nfs_subdir_external_provisioner_server
+      nfs_subdir_external_provisioner_path                = local.nfs_subdir_external_provisioner_path
       local_storage_config                                = local.local_storage_config
       local_storage_name                                  = local.local_storage_name
       local_storage_path                                  = var.local_storage_path
