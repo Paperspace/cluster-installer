@@ -36,7 +36,6 @@ global:
   defaultStorageName: ${default_storage_name}
   sharedStorageName: ${shared_storage_name}
   storage:
-    %{ if local_storage_enabled }
     gradient-processing-local:
       class: gradient-processing-local
       path: ${local_storage_path}
@@ -53,7 +52,6 @@ global:
       password: ${local_storage_config["password"]}
       fsName: ${local_storage_config["fsName"]}
       %{ endif }
-    %{ endif }
     gradient-processing-shared:
       class: gradient-processing-shared
       path: ${shared_storage_path}

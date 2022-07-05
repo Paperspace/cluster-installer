@@ -126,12 +126,6 @@ variable "name" {
   description = "Cloud provider name"
 }
 
-variable "local_storage_enabled" {
-  description = "Enable local storage"
-  type        = bool
-  default     = true
-}
-
 variable "local_storage_config" {
   description = "Local storage config json"
   default     = ""
