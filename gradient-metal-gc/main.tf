@@ -77,9 +77,7 @@ module "gradient_processing" {
   letsencrypt_dns_name     = var.letsencrypt_dns_name
   letsencrypt_dns_settings = var.letsencrypt_dns_settings
   // Use shared storage by default for now
-  local_storage_server                                = var.local_storage_server == "" ? var.shared_storage_server : var.local_storage_server
-  local_storage_path                                  = var.local_storage_path == "" ? var.shared_storage_path : var.local_storage_path
-  local_storage_type                                  = var.local_storage_type == "" ? local.shared_storage_type : var.local_storage_type
+  local_storage_enabled                               = false
   logs_host                                           = var.logs_host
   paperspace_base_url                                 = var.api_host
   paperspace_api_next_url                             = var.paperspace_api_next_url

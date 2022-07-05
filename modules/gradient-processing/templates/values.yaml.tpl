@@ -36,6 +36,7 @@ global:
   defaultStorageName: ${default_storage_name}
   sharedStorageName: ${shared_storage_name}
   storage:
+    %{ if local_storage_enabled }
     gradient-processing-local:
       class: gradient-processing-local
       path: ${local_storage_path}
@@ -52,6 +53,7 @@ global:
       password: ${local_storage_config["password"]}
       fsName: ${local_storage_config["fsName"]}
       %{ endif }
+    %{ endif }
     gradient-processing-shared:
       class: gradient-processing-shared
       path: ${shared_storage_path}
@@ -348,7 +350,7 @@ gradient-metrics:
     connectionString: ${gradient_metrics_conn_str}
     newRelicEnabled: ${metrics_new_relic_enabled}
     newRelicName: ${metrics_new_relic_name}
-    
+
   %{ if is_public_cluster }
   resources:
     requests:
@@ -430,7 +432,7 @@ victoria-metrics-k8s-stack:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: "gradient-processing-local"
+              storageClassName: ${metrics_storage_class}
               resources:
                 requests:
                   storage: 2Gi
