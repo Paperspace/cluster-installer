@@ -204,6 +204,7 @@ resource "helm_release" "gradient_processing" {
       volume_fs_new_relic_enabled                         = var.volume_fs_new_relic_enabled
       volume_fs_new_relic_app_name                        = var.volume_fs_new_relic_app_name
       ipu_controller_server                               = var.ipu_controller_server
+      ipu_model_cache_pvc_name                            = var.ipu_model_cache_pvc_name
       victoria_metrics_prometheus_node_exporter_host_port = var.victoria_metrics_prometheus_node_exporter_host_port
       node_health_check_enabled                           = var.node_health_check_enabled
     })

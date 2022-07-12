@@ -266,6 +266,7 @@ gradient-operator:
     %{ endif }
 
     ipuControllerServer: ${ipu_controller_server}
+    ipuModelCachePVCName: ${ipu_model_cache_pvc_name}
     %{ if is_public_cluster }
     controller:
       resources:

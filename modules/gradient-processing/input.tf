@@ -391,6 +391,12 @@ variable "ipu_controller_server" {
   default     = ""
 }
 
+variable "ipu_model_cache_pvc_name" {
+  description = "PVC containing precompiled models for IPU hosts"
+  type        = string
+  default     = ""
+}
+
 variable "victoria_metrics_prometheus_node_exporter_host_port" {
   description = "Victoria Metrics Prometheus Node Exporter"
   type        = number
