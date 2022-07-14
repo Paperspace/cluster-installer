@@ -397,6 +397,12 @@ variable "ipu_model_cache_pvc_name" {
   default     = ""
 }
 
+variable "is_graphcore" {
+  description = "Is a cluster on graphcore hardware"
+  type        = bool
+  default     = false
+}
+
 variable "victoria_metrics_prometheus_node_exporter_host_port" {
   description = "Victoria Metrics Prometheus Node Exporter"
   type        = number
