@@ -103,6 +103,7 @@ module "gradient_processing" {
   victoria_metrics_vmcluster_enabled                  = false
   victoria_metrics_vmsingle_enabled                   = true
   metrics_storage_class                               = "gradient-processing-local"
+  pod_assignment_label_name                           = "paperspace.com/pool-name"
   ipu_controller_server                               = var.ipu_controller_server
   ipu_model_cache_pvc_name                            = var.ipu_model_cache_pvc_name
   is_graphcore                                        = true

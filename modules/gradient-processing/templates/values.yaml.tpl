@@ -642,6 +642,11 @@ volumeController:
       cpu: 1000m
       memory: 4072Mi
 
+  %{ if shared_storage_type == "csi-driver-nfs" }
+  strategy:
+    type: Recreate
+  %{ endif }
+
 recycleBin:
   enabled: true
   %{ if is_public_cluster }
