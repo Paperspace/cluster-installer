@@ -104,6 +104,8 @@ module "gradient_processing" {
   victoria_metrics_vmsingle_enabled                   = true
   metrics_storage_class                               = "gradient-processing-local"
   ipu_controller_server                               = var.ipu_controller_server
+  ipu_model_cache_pvc_name                            = var.ipu_model_cache_pvc_name
+  is_graphcore                                        = true
   victoria_metrics_prometheus_node_exporter_host_port = var.victoria_metrics_prometheus_node_exporter_host_port
   prometheus_pool_name                                = var.prometheus_pool_name
   node_health_check_enabled                           = false // only needed on ps clouds

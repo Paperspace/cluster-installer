@@ -265,7 +265,12 @@ gradient-operator:
     notebookPendingTimeout: 60
     %{ endif }
 
+    %{ if is_graphcore }
     ipuControllerServer: ${ipu_controller_server}
+    ipuModelCachePVCName: ${ipu_model_cache_pvc_name}
+    graphcoreCluster: true
+    %{ endif }
+
     %{ if is_public_cluster }
     controller:
       resources:
