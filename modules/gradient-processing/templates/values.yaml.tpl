@@ -71,13 +71,13 @@ global:
 
       %{ if shared_storage_type == "csi-driver-nfs" }
       mountOptions:
-        # internal nfs only supports nfsvers 3 currently...
-        - soft
         - nfsvers=3
         - nolock
+        - soft
+        - lookupcache=none
       # we hardcode this to point to our internal nfs share
       server: nfs-service.default.svc.cluster.local
-      share: /exports
+      share: /opt/gradient-team-data
       %{ endif }
 
     %{ if shared_storage_type == "csi-driver-nfs" }
@@ -623,7 +623,12 @@ volumeController:
     volumeType: disk-image
     imagesVolumeClaimName: gradient-processing-images
     %{ endif }
-  %{ if is_public_cluster }
+
+  %{ if shared_storage_type == "csi-driver-nfs" }
+  strategy:
+    type: Recreate
+  %{ endif }
+
   resources:
     requests:
       cpu: 1000m
@@ -631,7 +636,6 @@ volumeController:
     limits:
       cpu: 1000m
       memory: 4072Mi
-  %{ endif }
 
 recycleBin:
   enabled: true

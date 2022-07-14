@@ -109,5 +109,6 @@ module "gradient_processing" {
   node_health_check_enabled                           = false // only needed on ps clouds
   nfs_subdir_external_provisioner_path                = var.local_storage_path
   nfs_subdir_external_provisioner_server              = var.local_storage_server
+  pod_assignment_label_name                           = "paperspace.com/pool-name"
 }
 
