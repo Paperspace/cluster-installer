@@ -77,28 +77,36 @@ module "gradient_processing" {
   letsencrypt_dns_name     = var.letsencrypt_dns_name
   letsencrypt_dns_settings = var.letsencrypt_dns_settings
   // Use shared storage by default for now
-  local_storage_server                                = var.local_storage_server
-  local_storage_path                                  = var.local_storage_path
-  local_storage_type                                  = var.local_storage_type
-  logs_host                                           = var.logs_host
-  paperspace_base_url                                 = var.api_host
-  paperspace_api_next_url                             = var.paperspace_api_next_url
-  gradient_processing_version                         = var.gradient_processing_version
-  name                                                = var.name
-  sentry_dsn                                          = var.sentry_dsn
-  service_pool_name                                   = local.service_pool_name
-  lb_count                                            = 1
-  lb_pool_name                                        = local.load_balancer_pool_name
-  shared_storage_server                               = var.shared_storage_server
-  shared_storage_path                                 = var.shared_storage_path
-  shared_storage_type                                 = local.shared_storage_type
-  shared_storage_config                               = var.shared_storage_config
-  tls_cert                                            = local.tls_cert
-  tls_key                                             = local.tls_key
-  use_pod_anti_affinity                               = var.use_pod_anti_affinity
-  cert_manager_enabled                                = var.cert_manager_enabled
-  image_cache_enabled                                 = var.image_cache_enabled
-  image_cache_list                                    = var.image_cache_list
+  local_storage_server        = var.local_storage_server
+  local_storage_path          = var.local_storage_path
+  local_storage_type          = var.local_storage_type
+  logs_host                   = var.logs_host
+  paperspace_base_url         = var.api_host
+  paperspace_api_next_url     = var.paperspace_api_next_url
+  gradient_processing_version = var.gradient_processing_version
+  name                        = var.name
+  sentry_dsn                  = var.sentry_dsn
+  service_pool_name           = local.service_pool_name
+  lb_count                    = 1
+  lb_pool_name                = local.load_balancer_pool_name
+  shared_storage_server       = var.shared_storage_server
+  shared_storage_path         = var.shared_storage_path
+  shared_storage_type         = local.shared_storage_type
+  shared_storage_config       = var.shared_storage_config
+  tls_cert                    = local.tls_cert
+  tls_key                     = local.tls_key
+  use_pod_anti_affinity       = var.use_pod_anti_affinity
+  cert_manager_enabled        = var.cert_manager_enabled
+  image_cache_enabled         = true
+  image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
+    # Ordered by most used
+    "graphcore/pytorch-jupyter:2.5.1-ubuntu-20.04",
+    "graphcore/tensorflow-jupyter:1-amd-2.5.1-ubuntu-20.04",
+    "graphcore/tensorflow-jupyter:2-amd-2.5.1-ubuntu-20.04",
+
+    # Images used internally
+    "paperspace/notebook_idle:v1.0.5",
+  ]
   metrics_server_enabled                              = false
   victoria_metrics_vmcluster_enabled                  = false
   victoria_metrics_vmsingle_enabled                   = true
