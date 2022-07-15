@@ -427,3 +427,9 @@ variable "nfs_subdir_external_provisioner_server" {
   type        = string
   default     = ""
 }
+
+variable "notebook_volume_type" {
+  description = "Flag to indicate which volume type notebooks are using"
+  type        = string
+  default     = "cephfs"
+}
