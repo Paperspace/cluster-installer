@@ -269,7 +269,7 @@ gradient-operator:
 
     %{ if is_graphcore }
     ipuControllerServer: ${ipu_controller_server}
-    ipuModelCachePVCName: ${ipu_model_cache_pvc_name}
+    ipuModelsCachePVCName: ${ipu_model_cache_pvc_name}
     graphcoreCluster: true
     %{ endif }
 
