@@ -265,6 +265,8 @@ gradient-operator:
     notebookPendingTimeout: 60
     %{ endif }
 
+    notebookVolumeType: ${notebook_volume_type}
+
     %{ if is_graphcore }
     ipuControllerServer: ${ipu_controller_server}
     ipuModelCachePVCName: ${ipu_model_cache_pvc_name}

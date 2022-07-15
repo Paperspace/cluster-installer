@@ -102,3 +102,9 @@ variable "prometheus_pool_name" {
   type        = string
   default     = "metrics"
 }
+
+variable "notebook_volume_type" {
+  description = "Flag to indicate which volume type notebooks are using"
+  type        = string
+  default     = "disk-image"
+}

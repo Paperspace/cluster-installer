@@ -208,6 +208,7 @@ resource "helm_release" "gradient_processing" {
       is_graphcore                                        = var.is_graphcore
       victoria_metrics_prometheus_node_exporter_host_port = var.victoria_metrics_prometheus_node_exporter_host_port
       node_health_check_enabled                           = var.node_health_check_enabled
+      notebook_volume_type                                = var.notebook_volume_type
     })
   ]
 }
