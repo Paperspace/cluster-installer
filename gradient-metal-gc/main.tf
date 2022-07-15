@@ -113,7 +113,7 @@ module "gradient_processing" {
   metrics_storage_class                               = "gradient-processing-local"
   pod_assignment_label_name                           = "paperspace.com/pool-name"
   ipu_controller_server                               = var.ipu_controller_server
-  ipu_model_cache_pvc_name                            = var.ipu_model_cache_pvc_name
+  ipu_model_cache_pvc_name                            = "gradient-processing-images"
   is_graphcore                                        = true
   victoria_metrics_prometheus_node_exporter_host_port = var.victoria_metrics_prometheus_node_exporter_host_port
   prometheus_pool_name                                = var.prometheus_pool_name
