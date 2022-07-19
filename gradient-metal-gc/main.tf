@@ -90,7 +90,7 @@ module "gradient_processing" {
   lb_count                    = 1
   lb_pool_name                = local.load_balancer_pool_name
   shared_storage_server       = var.shared_storage_server
-  shared_storage_path         = var.shared_storage_path
+  shared_storage_path         = ""
   shared_storage_type         = local.shared_storage_type
   shared_storage_config       = var.shared_storage_config
   tls_cert                    = local.tls_cert

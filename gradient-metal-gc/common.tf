@@ -85,6 +85,11 @@ variable "logs_host" {
   default     = "logs.paperspace.io"
 }
 
+variable "k8s_endpoint" {
+  description = "Kubernetes endpoint (https://k8s_endpoint:6443)"
+  default     = ""
+}
+
 variable "k8s_version" {
   description = "Kubernetes version"
   default     = ""
@@ -149,7 +154,7 @@ variable "shared_storage_server" {
 }
 variable "shared_storage_path" {
   description = "Shared storage path to be used for Gradient"
-  default     = ""
+  default     = "/"
 }
 variable "shared_storage_type" {
   description = "Shared storage type"
@@ -164,11 +169,6 @@ variable "tls_cert" {
 variable "tls_key" {
   description = "SSL key used for loadbalancers"
   default     = ""
-}
-
-variable "is_tls_config_from_file" {
-  description = "Are the variables tls_cert and tls_key files and not strings"
-  default     = true
 }
 
 variable "traefik_prometheus_auth" {
@@ -189,7 +189,7 @@ variable "cert_manager_enabled" {
 
 
 variable "image_cache_enabled" {
-  description = "enable installation of the kubefledged operator to cache basic workload images on your nodes"
+  description = "enable caching of common workload images on your nodes"
   type        = bool
   default     = false
 }
@@ -198,4 +198,10 @@ variable "image_cache_list" {
   description = "list of containers to cache on your worker nodes"
   type        = list(string)
   default     = []
+}
+
+variable "admin_team_handle" {
+  description = "Team handle that should have extra admin access on workloads executed on the cluster. This setting should only be used on multi-team clusters."
+  default     = ""
+  required    = false
 }

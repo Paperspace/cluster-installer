@@ -209,6 +209,7 @@ resource "helm_release" "gradient_processing" {
       victoria_metrics_prometheus_node_exporter_host_port = var.victoria_metrics_prometheus_node_exporter_host_port
       node_health_check_enabled                           = var.node_health_check_enabled
       notebook_volume_type                                = var.notebook_volume_type
+      admin_team_handle                                   = var.admin_team_handle
     })
   ]
 }

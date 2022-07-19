@@ -272,6 +272,7 @@ gradient-operator:
     ipuModelsCachePVCName: ${ipu_model_cache_pvc_name}
     graphcoreCluster: true
     %{ endif }
+    adminTeamHandle: ${admin_team_handle}
 
     %{ if is_public_cluster }
     controller:
