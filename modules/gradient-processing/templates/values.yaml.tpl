@@ -230,7 +230,7 @@ gradient-operator:
     workspaceUploadUseSSL: true
     usePodAntiAffinity: ${use_pod_anti_affinity}
     %{ if is_public_cluster}
-    notebookPendingTimeout: 60
+    notebookPendingTimeout: 900
     %{ endif }
 
     %{ if is_public_cluster }
