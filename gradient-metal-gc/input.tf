@@ -108,3 +108,9 @@ variable "notebook_volume_type" {
   type        = string
   default     = "disk-image"
 }
+
+variable "is_tls_config_from_file" {
+  description = "Are the variables tls_cert and tls_key files and not strings"
+  type        = bool
+  default     = true
+}
