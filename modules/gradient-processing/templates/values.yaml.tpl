@@ -191,7 +191,6 @@ cluster-autoscaler:
 
 dispatcher:
   config:
-    apiAddress: ${dispatcher_host}
     %{ if is_public_cluster }
     resources:
       requests:
@@ -571,7 +570,6 @@ volumeController:
   enabled: true
   config:
     useSSL: true
-    apiAddress: ${dispatcher_host}
     sharedStorageClaim: gradient-processing-shared
     gradientTeamsPersistentVolumeClaimName: ${shared_storage_name}
     %{ if local_storage_type == "ceph-csi-fs" }
