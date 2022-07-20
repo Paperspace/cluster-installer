@@ -433,3 +433,9 @@ variable "notebook_volume_type" {
   type        = string
   default     = "cephfs"
 }
+
+variable "admin_team_handle" {
+  description = "Team handle that should have extra admin access on workloads executed on the cluster. This setting should only be used on multi-team clusters."
+  type        = string
+  default     = ""
+}
