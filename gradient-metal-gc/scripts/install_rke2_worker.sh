@@ -19,6 +19,9 @@ install_rke2() {
 
   curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE="agent" sh -
 
+  rke2_unit="/usr/local/lib/systemd/system/rke2-agent.service"
+  grep -q '^LimitMEMLOCK' "$rke2_unit" && sed -i 's/^LimitMEMLOCK.*/LimitMEMLOCK=infinity/' "$rke2_unit" || echo 'LimitMEMLOCK=infinity' >> "$rke2_unit"
+
   systemctl enable ${SYS_D_SERVICE}
   systemctl daemon-reload
 
