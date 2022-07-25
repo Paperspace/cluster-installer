@@ -190,8 +190,8 @@ cluster-autoscaler:
     paperspace.com/pool-name: ${service_pool_name}
 
 dispatcher:
+  %{ if is_public_cluster }
   config:
-    %{ if is_public_cluster }
     resources:
       requests:
         cpu: 250m
@@ -199,7 +199,9 @@ dispatcher:
       limits:
         cpu: 250m
         memory: 800Mi
-    %{ endif }
+  %{ else }
+  config: {}
+  %{ endif }
 
 
 efs-provisioner:
