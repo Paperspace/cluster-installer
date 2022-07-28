@@ -42,3 +42,7 @@ ingress:
 
   hosts:
   - ${hostname}
+
+
+nodeSelector:
+  paperspace.com/pool-name: ${pool_name}

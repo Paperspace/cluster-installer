@@ -124,3 +124,9 @@ variable "docker_hub_password" {
   description = "Password for docker hub"
   type        = string
 }
+
+variable "registry_pool_name" {
+  description = "What node pool to run the docker registry mirror on"
+  type        = string
+  default     = ""
+}

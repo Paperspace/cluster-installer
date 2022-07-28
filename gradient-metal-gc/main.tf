@@ -129,4 +129,5 @@ module "container_registry_mirror" {
     size           = "10Gi"
     storage_class  = ""
   }
+  pool_name = var.registry_pool_name != "" ? var.registry_pool_name : var.service_pool_name
 }
