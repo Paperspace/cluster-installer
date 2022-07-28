@@ -18,7 +18,6 @@ resource "helm_release" "docker_mirror" {
   version    = "1.10.3"
   repository = "https://t83714.github.io/docker-registry-mirror"
   chart      = "docker-registry-mirror"
-  namespace  = kubernetes_namespace.docker_registry.metadata[0].name
 
   values = [
     templatefile("${path.module}/files/docker-registry-mirror.yaml.tpl", {
