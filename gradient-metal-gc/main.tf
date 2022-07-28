@@ -127,7 +127,7 @@ module "container_registry_mirror" {
   pvc_storage = {
     size           = "500Gi"
     storage_class  = "gradient-processing-images"
-    existing_claim = null
+    existing_claim = ""
   }
   pool_name = var.registry_pool_name != "" ? var.registry_pool_name : var.service_pool_name
 }
