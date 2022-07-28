@@ -66,11 +66,6 @@ module "gradient_processing" {
   helm_repo_username = var.helm_repo_username
   helm_repo_password = var.helm_repo_password
   helm_repo_url      = var.helm_repo_url
-  //elastic_search_host     = var.elastic_search_host
-  //elastic_search_index    = var.elastic_search_index
-  //elastic_search_password = var.elastic_search_password
-  //elastic_search_port     = var.elastic_search_port
-  //elastic_search_user     = var.elastic_search_user
 
   label_selector_cpu       = var.cpu_selector
   label_selector_gpu       = var.gpu_selector
@@ -123,3 +118,13 @@ module "gradient_processing" {
   notebook_volume_type                                = var.notebook_volume_type
 }
 
+
+module "gradient_processing" {
+  source              = "../modules/container-registry-mirror"
+  docker_hub_username = var.docker_hub_username
+  docker_hub_password = var.docker_hub_password
+  hostname            = "container-registry-mirror.${var.domain}"
+  docker_registry_pvc_storage = {
+    existing_claim = "gradient-processing-images"
+  }
+}
