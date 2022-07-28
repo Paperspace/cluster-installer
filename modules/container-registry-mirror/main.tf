@@ -14,7 +14,6 @@ resource "kubernetes_namespace" "docker_registry" {
 }
 
 resource "helm_release" "docker_mirror" {
-  depends_on = [helm_release.cert_manager]
   name       = "docker-registry-mirror"
   version    = "1.10.3"
   repository = "https://t83714.github.io/docker-registry-mirror"
