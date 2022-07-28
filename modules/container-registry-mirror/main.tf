@@ -21,13 +21,6 @@ resource "helm_release" "docker_mirror" {
   chart      = "docker-registry-mirror"
   namespace  = kubernetes_namespace.docker_registry.metadata[0].name
 
-  lifecycle {
-    precondition {
-      condition     = var.docker_registry_s3_storage != null || var.docker_registry_pvc_storage != null
-      error_message = "You must provide mirror storage configuration"
-    }
-  }
-
   values = [
     templatefile("${path.module}/files/docker-registry-mirror.yaml.tpl", {
       fullname        = var.service_name
