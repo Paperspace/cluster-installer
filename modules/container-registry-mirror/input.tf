@@ -46,3 +46,8 @@ variable "pvc_storage" {
     existing_claim = string
   })
 }
+
+variable "pool_name" {
+  description = "Name of the node pool to run the mirror on"
+  type        = string
+}
