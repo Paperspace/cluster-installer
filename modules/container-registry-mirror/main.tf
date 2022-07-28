@@ -36,29 +36,3 @@ resource "helm_release" "docker_mirror" {
     })
   ]
 }
-
-resource "kubernetes_ingress" "docker_registry_mirror_debug" {
-  metadata {
-    name      = "${local.docker_registry_mirror_name}-debug"
-    namespace = kubernetes_namespace.docker_registry.metadata[0].name
-    annotations = {
-      "nginx.ingress.kubernetes.io/auth-type" : "basic"
-      "nginx.ingress.kubernetes.io/auth-secret" : kubernetes_secret.docker_registry_mirror_debug_auth.metadata[0].name
-      "nginx.ingress.kubernetes.io/force-ssl-redirect" : "false"
-    }
-  }
-  spec {
-    rule {
-      host = local.docker_registry_mirror_hostname
-      http {
-        path {
-          path = "/metrics"
-          backend {
-            service_name = kubernetes_service.docker_registry_mirror_debug.metadata[0].name
-            service_port = kubernetes_service.docker_registry_mirror_debug.spec[0].port[0].port
-          }
-        }
-      }
-    }
-  }
-}

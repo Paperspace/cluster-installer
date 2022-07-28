@@ -126,5 +126,7 @@ module "container_registry_mirror" {
   hostname            = "container-registry-mirror.${var.domain}"
   docker_registry_pvc_storage = {
     existing_claim = "gradient-processing-images"
+    size           = "10Gi"
+    storage_class  = ""
   }
 }
