@@ -3,7 +3,7 @@ fullnameOverride: ${fullname}
 
 replicaCount: ${replica_count}
 
-storage: s3
+storage: ${storage}
 
 %{ if s3 != null }
 s3:

@@ -30,8 +30,9 @@ resource "helm_release" "docker_mirror" {
 
       ha_shared_secret = random_string.ha_shared_secret.result
 
-      s3  = var.docker_registry_s3_storage
-      pvc = var.docker_registry_pvc_storage
+      storage = s3 != null ? "s3" : "filesystem"
+      s3      = var.docker_registry_s3_storage
+      pvc     = var.docker_registry_pvc_storage
     })
   ]
 }
