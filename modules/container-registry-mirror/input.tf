@@ -25,7 +25,7 @@ variable "service_name" {
   type        = string
 }
 
-variable "docker_registry_s3_storage" {
+variable "s3_storage" {
   description = "S3 configuration for mirror storage"
   default     = null
   type = object({
@@ -37,7 +37,7 @@ variable "docker_registry_s3_storage" {
   })
 }
 
-variable "docker_registry_pvc_storage" {
+variable "pvc_storage" {
   description = "Persistent volume configuration for mirror storage"
   default     = null
   type = object({
