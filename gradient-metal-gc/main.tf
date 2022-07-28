@@ -124,7 +124,7 @@ module "container_registry_mirror" {
   docker_hub_username = var.docker_hub_username
   docker_hub_password = var.docker_hub_password
   hostname            = "container-registry-mirror.${var.domain}"
-  storage = {
+  pvc = {
     existing_claim = "gradient-processing-images"
     size           = "10Gi"
     storage_class  = ""
