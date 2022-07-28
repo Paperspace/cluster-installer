@@ -5,11 +5,11 @@ replicaCount: ${replica_count}
 
 storage: s3
 
-%{ if docker_registry_s3_storage != null }
+%{ if s3 != null }
 s3:
-    region: "${docker_registry_s3_storage.region}"
-    regionEndpoint: "${docker_registry_s3_storage.region_endpoint}"
-    bucket: "${docker_registry_s3_storage.bucket}"
+    region: "${s3.region}"
+    regionEndpoint: "${s3.region_endpoint}"
+    bucket: "${s3.bucket}"
 %{ endif }
 
 proxy:
@@ -18,20 +18,20 @@ proxy:
 
 haSharedSecret: "${ha_shared_secret}"
 
-%{ if docker_registry_s3_storage != null }
+%{ if s3 != null }
 secrets:
     s3:
-        accessKey: "${docker_registry_s3_storage.access_key}"
-        secretKey: "${docker_registry_s3_storage.secret_key}"
+        accessKey: "${s3.access_key}"
+        secretKey: "${s3.secret_key}"
 %{ endif }
 
 persistence:
     deleteEnabled: true
-%{ if docker_registry_pvc_storage != null }
+%{ if pvc != null }
     enabled: true
-    size: ${docker_registry_pvc_storage.size}
-    storageClass: ${docker_registry_pvc_storage.storage_class}
-    existingClaim: ${docker_registry_pvc_storage.existing_claim}
+    size: ${pvc.size}
+    storageClass: ${pvc.storage_class}
+    existingClaim: ${pvc.existing_claim}
 %{ endif }
 
 
