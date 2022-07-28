@@ -119,7 +119,7 @@ module "gradient_processing" {
 }
 
 
-module "gradient_processing" {
+module "container_registry_mirror" {
   source              = "../modules/container-registry-mirror"
   docker_hub_username = var.docker_hub_username
   docker_hub_password = var.docker_hub_password

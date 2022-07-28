@@ -114,3 +114,13 @@ variable "is_tls_config_from_file" {
   type        = bool
   default     = true
 }
+
+variable "docker_hub_username" {
+  description = "Username for docker hub. Must be associated with a paid account"
+  type        = string
+}
+
+variable "docker_hub_password" {
+  description = "Password for docker hub"
+  type        = string
+}
