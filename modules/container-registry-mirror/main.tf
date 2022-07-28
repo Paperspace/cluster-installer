@@ -25,8 +25,8 @@ resource "helm_release" "docker_mirror" {
       fullname        = var.service_name
       hostname        = var.hostname
       replica_count   = var.replica_count
-      docker_username = var.docker_registry_mirror_docker_username
-      docker_password = var.docker_registry_mirror_docker_password
+      docker_username = var.docker_hub_username
+      docker_password = var.docker_hub_password
 
       ha_shared_secret = random_string.ha_shared_secret.result
 
