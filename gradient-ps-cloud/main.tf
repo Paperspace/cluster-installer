@@ -151,12 +151,15 @@ locals {
     },
     "A100-80Gx2" = {
       type = "gpu"
+      template_id = "tlwkbhba"
     },
     "A100-80Gx4" = {
       type = "gpu"
+      template_id = "tlwkbhba"
     },
     "A100-80Gx8" = {
       type = "gpu"
+      template_id = "tlwkbhba"
     },
   }
 
