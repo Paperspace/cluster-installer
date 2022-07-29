@@ -39,7 +39,7 @@ token: ${RKE2_CLUSTER_TOKEN}
 mirrors:
   docker.io:
     endpoint:
-      - "https://docker-registry-mirror.${CLUSTER_DOMAIN}"
+      - "https://container-registry-mirror.${CLUSTER_DOMAIN}"
 EOF
 
   chmod 700 ${CONFIG_PATH}
