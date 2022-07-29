@@ -594,7 +594,7 @@ module "gradient_processing" {
     "paperspace/nb-tensorflow:22.02-tf2-py3",
     "paperspace/fastai:2.0-fastbook-2022-05-09-rc3",
     "paperspace/nb-data-science:python-3.9.10",
-    
+
     # Images used internally
     "paperspace/notebook_idle:v1.0.5",
   ]
@@ -666,7 +666,7 @@ resource "paperspace_autoscaling_group" "main" {
   name              = "${var.cluster_handle}-${each.key}"
   cluster_id        = var.cluster_handle
   machine_type      = each.key
-  template_id       = each.value["template_id"] != null ? each.value["template_id"] : each.value.type == "cpu" ? var.machine_template_id_cpu : var.machine_template_id_gpu
+  template_id       = lookup(each.value, "template_id", each.value.type == "cpu" ? var.machine_template_id_cpu : var.machine_template_id_gpu)
   max               = local.asg_max_sizes[each.key]
   min               = local.asg_min_sizes[each.key]
   network_id        = paperspace_network.network.handle
