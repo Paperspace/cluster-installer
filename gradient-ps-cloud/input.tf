@@ -147,7 +147,7 @@ variable "machine_storage_worker_gpu" {
 }
 variable "machine_template_id_gpu" {
   description = "GPU template id"
-  default     = "tlwkbhba"
+  default     = "tmun4o2g"
 }
 
 variable "prometheus_resources" {
