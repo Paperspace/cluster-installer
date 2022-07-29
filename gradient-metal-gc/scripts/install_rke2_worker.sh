@@ -40,7 +40,6 @@ mirrors:
   docker.io:
     endpoint:
       - "https://docker-registry-mirror.${CLUSTER_DOMAIN}"
-      - "https://index.docker.io"
 EOF
 
   chmod 700 ${CONFIG_PATH}
