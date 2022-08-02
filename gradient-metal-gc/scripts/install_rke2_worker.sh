@@ -11,7 +11,7 @@ fi
 install_rke2() {
   # Locks RKE2 Release Version
   export INSTALL_RKE2_VERSION=v1.21.12+rke2r2
-  CONFIG_PATH=/etc/rancher/rke2/config.yaml
+  CONFIG_PATH=/etc/rancher/rke2/
   SYS_D_SERVICE=rke2-agent.service
 
   RKE2_CONTROL_PLANE_HOST=${1}
@@ -33,14 +33,17 @@ install_rke2() {
   # Create Rancher Agent Configuration Directory
   mkdir -p /etc/rancher/rke2/
 
-cat << EOF > ${CONFIG_PATH}
+  cat << EOF > "${CONFIG_PATH}/config.yaml"
 server: https://${RKE2_CONTROL_PLANE_HOST}:9345
 token: ${RKE2_CLUSTER_TOKEN}
+EOF
+
+  cat <<EOF > "${CONFIG_PATH}/registries.yaml"
 mirrors:
   docker.io:
     endpoint:
       - "https://container-registry-mirror.${CLUSTER_DOMAIN}"
-#      - "https://index.docker.io"
+      - "https://index.docker.io"
 EOF
 
   chmod 700 ${CONFIG_PATH}
