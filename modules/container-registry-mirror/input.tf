@@ -14,7 +14,7 @@ variable "docker_hub_password" {
   type        = string
 }
 
-variable "version" {
+variable "chart_version" {
   description = "Version of the docker-registry-mirror chart"
   default     = "1.10.3"
   type        = string
