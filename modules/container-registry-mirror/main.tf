@@ -15,7 +15,7 @@ resource "kubernetes_namespace" "docker_registry" {
 
 resource "helm_release" "docker_mirror" {
   name       = "docker-registry-mirror"
-  version    = "1.10.3"
+  version    = var.version
   repository = "https://t83714.github.io/docker-registry-mirror"
   chart      = "docker-registry-mirror"
 

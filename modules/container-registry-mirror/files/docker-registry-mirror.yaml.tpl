@@ -10,6 +10,10 @@ s3:
     region: "${s3.region}"
     regionEndpoint: "${s3.region_endpoint}"
     bucket: "${s3.bucket}"
+secrets:
+    s3:
+        accessKey: "${s3.access_key}"
+        secretKey: "${s3.secret_key}"
 %{ endif }
 
 proxy:
@@ -17,13 +21,6 @@ proxy:
     password: "${docker_password}"
 
 haSharedSecret: "${ha_shared_secret}"
-
-%{ if s3 != null }
-secrets:
-    s3:
-        accessKey: "${s3.access_key}"
-        secretKey: "${s3.secret_key}"
-%{ endif }
 
 persistence:
     deleteEnabled: true

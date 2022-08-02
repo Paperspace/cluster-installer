@@ -14,6 +14,12 @@ variable "docker_hub_password" {
   type        = string
 }
 
+variable "version" {
+  description = "Version of the docker-registry-mirror chart"
+  default     = "1.10.3"
+  type        = string
+}
+
 variable "hostname" {
   description = "Externally accessible hostname for the mirror"
   type        = string
