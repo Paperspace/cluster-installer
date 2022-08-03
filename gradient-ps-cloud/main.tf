@@ -596,7 +596,6 @@ module "gradient_processing" {
     "paperspace/nb-pytorch:22.02-py3",
     "paperspace/nb-tensorflow:22.02-tf2-py3",
     "paperspace/fastai:2.0-fastbook-2022-05-09-rc3",
-    "paperspace/nb-data-science:python-3.9.10",
 
     # Images used internally
     "paperspace/notebook_idle:v1.0.5",
