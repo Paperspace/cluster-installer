@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+set -x
 
 
 # Pro Tip: Run as root
@@ -9,7 +10,7 @@ if [ "${EUID:-}" -ne 0 ]
 fi
 
 install_estargz() {
-  arch="linux-amd64"
+  arch="amd64"
   version="v0.12.0"
 
   apt-get install fuse
