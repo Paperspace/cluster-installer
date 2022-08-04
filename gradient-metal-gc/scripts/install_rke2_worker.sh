@@ -14,7 +14,9 @@ install_estargz() {
 
   apt-get install fuse
   modprobe fuse
-  tar -C /usr/local/bin -xvf "stargz-snapshotter-${version}-linux-${arch}.tar.gz" stargz-store
+  tar_file="stargz-snapshotter-${version}-linux-${arch}.tar.gz"
+  wget -O "${tar_file}" "https://github.com/containerd/stargz-snapshotter/releases/download/${version}/${tar_file}"
+  tar -C /usr/local/bin -xvf "$tar_file" stargz-store
   wget -O /etc/systemd/system/stargz-store.service https://raw.githubusercontent.com/containerd/stargz-snapshotter/main/script/config-cri-o/etc/systemd/system/stargz-store.service
   systemctl enable --now stargz-store
 
