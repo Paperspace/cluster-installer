@@ -8,6 +8,46 @@ if [ "${EUID:-}" -ne 0 ]
   exit
 fi
 
+install_estargz() {
+  arch="linux-amd64"
+  version="v0.12.0"
+
+  apt-get install fuse
+  modprobe fuse
+  tar -C /usr/local/bin -xvf "stargz-snapshotter-${version}-linux-${arch}.tar.gz" stargz-store
+  wget -O /etc/systemd/system/stargz-store.service https://raw.githubusercontent.com/containerd/stargz-snapshotter/main/script/config-cri-o/etc/systemd/system/stargz-store.service
+  systemctl enable --now stargz-store
+
+  CONTAINERD_CONFIG=/var/lib/rancher/rke2/agent/etc/containerd/config.toml.tmpl
+  cat <<EOF > "${CONTAINERD_CONFIG}"
+version = 2
+
+# Plug stargz snapshotter into containerd
+# Containerd recognizes stargz snapshotter through specified socket address.
+# The specified address below is the default which stargz snapshotter listen to.
+[proxy_plugins]
+  [proxy_plugins.stargz]
+    type = "snapshot"
+    address = "/run/containerd-stargz-grpc/containerd-stargz-grpc.sock"
+
+# Use stargz snapshotter through CRI
+[plugins."io.containerd.grpc.v1.cri".containerd]
+  snapshotter = "stargz"
+  disable_snapshot_annotations = false
+EOF
+
+#  CONTAINER_STORAGE=/etc/containers/storage.conf
+#  cat <<EOF > "${CONTAINER_STORAGE}"
+#[storage]
+#driver = "overlay"
+#graphroot = "/var/lib/containers/storage"
+#runroot = "/run/containers/storage"
+#
+#[storage.options]
+#additionallayerstores = ["/var/lib/stargz-store/store:ref"]
+#EOF
+}
+
 install_rke2() {
   # Locks RKE2 Release Version
   export INSTALL_RKE2_VERSION=v1.21.12+rke2r2
@@ -32,6 +72,7 @@ install_rke2() {
 
   # Create Rancher Agent Configuration Directory
   mkdir -p /etc/rancher/rke2/
+  install_estargz
 
   cat << EOF > "${CONFIG_PATH}/config.yaml"
 server: https://${RKE2_CONTROL_PLANE_HOST}:9345
