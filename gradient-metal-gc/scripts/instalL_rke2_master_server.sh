@@ -16,14 +16,16 @@ install_rke2() {
 
   curl -sfL https://get.rke2.io | sh -
 
-mkdir -p ${CONFIG_PATH}
+  mkdir -p ${CONFIG_PATH}
 
   # ToDo, yaml generators
-cat << EOF > ${CONFIG_PATH}/${CONFIG_FILE}
+  cat << EOF > ${CONFIG_PATH}/${CONFIG_FILE}
 tls-san:
   - kubernetes.local.com
 disable:
   - rke2-ingress-nginx
+node-taint:
+  - "CriticalAddonsOnly=true:NoExecute"
 EOF
 
   echo "Enabling and starting RKE2 Master Daemon"
@@ -38,7 +40,7 @@ while getopts ":r:l" option; do
    case $option in
       r) # install remote
          echo "Attempting to install RKE2 master server remotely on host ${OPTARG}"
-         nc -zv ${OPTARG} 22 2>&1
+         nc -zv "${OPTARG}" 22 2>&1
          echo "Executing scp ${0} ${OPTARG}:/tmp"
          scp -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${0} ${OPTARG}:/tmp
          echo "Executing ssh -n -t -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${OPTARG} sudo chmod /tmp/${0} && sudo /tmp/${0}"
