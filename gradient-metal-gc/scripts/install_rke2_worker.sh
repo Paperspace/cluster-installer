@@ -14,10 +14,12 @@ fix_mounts() {
   containerd_stargz_data='/var/lib/docker/containerd-stargz-grpc'
   containerd='/var/lib/rancher/rke2/agent/containerd'
   containerd_stargz='/var/lib/containerd-stargz-grpc'
+
+  systemctl stop rke2-agent || true
   mkdir -p "$containerd_data"
   mkdir -p "$containerd_stargz_data"
-  rsync -ay "$containerd" "$containerd_data"
-  rsync -ay "$containerd_stargz" "$containerd_stargz_data"
+  rsync -ay --delete-after "$containerd" "$containerd_data"
+  rsync -ay --delete-after "$containerd_stargz" "$containerd_stargz_data"
 
   grep -q 'containerd-data' /etc/fstab || \
     printf "# containerd-data\n%s    %s    none    defaults,bind    0    2\n" \
@@ -32,6 +34,7 @@ fix_mounts() {
     >> /etc/fstab
 
   mount -a
+  systemctl start rke2-agent || true
 }
 
 install_estargz() {
