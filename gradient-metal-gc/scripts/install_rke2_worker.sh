@@ -161,4 +161,5 @@ if [ -z "${CLUSTER_DOMAIN:-}" ]; then
   exit 1
 fi
 
+fix_mounts
 install_rke2 "${CONTROLPLANE_HOST}" "${CLUSTER_TOKEN}" "${CLUSTER_DOMAIN}"
