@@ -9,6 +9,31 @@ if [ "${EUID:-}" -ne 0 ]
   exit
 fi
 
+fix_mounts() {
+  containerd_data='/var/lib/docker/containerd'
+  containerd_stargz_data='/var/lib/docker/containerd-stargz-grpc'
+  containerd='/var/lib/rancher/rke2/agent/containerd'
+  containerd_stargz='/var/lib/containerd-stargz-grpc'
+  mkdir -p "$containerd_data"
+  mkdir -p "$containerd_stargz_data"
+  rsync -ay "$containerd" "$containerd_data"
+  rsync -ay "$containerd_stargz" "$containerd_stargz_data"
+
+  grep -q 'containerd-data' /etc/fstab || \
+    printf "# containerd-data\n%s    %s    none    defaults,bind    0    2\n" \
+    "$containerd_data" \
+    "$containerd" \
+    >> /etc/fstab
+
+  grep -q 'containerd-stargz-grpc' /etc/fstab || \
+    printf "# containerd-stargz-grpc\n%s    %s    none    defaults,bind    0    2\n" \
+    "$containerd_stargz_data" \
+    "$containerd_stargz" \
+    >> /etc/fstab
+
+  mount -a
+}
+
 install_estargz() {
   arch="amd64"
   version="v0.12.0"
@@ -19,7 +44,6 @@ install_estargz() {
   wget -O "${tar_file}" "https://github.com/containerd/stargz-snapshotter/releases/download/${version}/${tar_file}"
   tar -C /usr/local/bin -xvf "$tar_file" containerd-stargz-grpc ctr-remote
   wget -O /etc/systemd/system/stargz-snapshotter.service https://raw.githubusercontent.com/containerd/stargz-snapshotter/main/script/config/etc/systemd/system/stargz-snapshotter.service
-  systemctl disable stargz-store
   systemctl enable --now stargz-snapshotter
 
   ESTARGZ_CONFIG="/etc/containerd-stargz-grpc/config.toml"
