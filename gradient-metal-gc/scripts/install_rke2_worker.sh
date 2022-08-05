@@ -17,7 +17,7 @@ install_estargz() {
   modprobe fuse
   tar_file="stargz-snapshotter-${version}-linux-${arch}.tar.gz"
   wget -O "${tar_file}" "https://github.com/containerd/stargz-snapshotter/releases/download/${version}/${tar_file}"
-  tar -C /usr/local/bin -xvf "$tar_file" stargz-snapshotter
+  tar -C /usr/local/bin -xvf "$tar_file" containerd-stargz-grpc ctr-remote
   wget -O /etc/systemd/system/stargz-snapshotter.service https://raw.githubusercontent.com/containerd/stargz-snapshotter/main/script/config/etc/systemd/system/stargz-snapshotter.service
   systemctl disable stargz-store
   systemctl enable --now stargz-snapshotter
