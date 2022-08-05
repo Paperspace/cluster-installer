@@ -17,9 +17,25 @@ install_estargz() {
   modprobe fuse
   tar_file="stargz-snapshotter-${version}-linux-${arch}.tar.gz"
   wget -O "${tar_file}" "https://github.com/containerd/stargz-snapshotter/releases/download/${version}/${tar_file}"
-  tar -C /usr/local/bin -xvf "$tar_file" stargz-store
-  wget -O /etc/systemd/system/stargz-store.service https://raw.githubusercontent.com/containerd/stargz-snapshotter/main/script/config-cri-o/etc/systemd/system/stargz-store.service
-  systemctl enable --now stargz-store
+  tar -C /usr/local/bin -xvf "$tar_file" stargz-snapshotter
+  wget -O /etc/systemd/system/stargz-snapshotter.service https://raw.githubusercontent.com/containerd/stargz-snapshotter/main/script/config/etc/systemd/system/stargz-snapshotter.service
+  systemctl disable stargz-store
+  systemctl enable --now stargz-snapshotter
+
+  ESTARGZ_CONFIG="/etc/containerd-stargz-grpc/config.toml"
+  mkdir -p "$(dirname "${ESTARGZ_CONFIG}")"
+  cat <<EOF > "${ESTARGZ_CONFIG}"
+# Append configurations for Stargz Snapshotter in TOML format.
+
+# Enables CRI-based keychain
+# Stargz Snapshotter works as a proxy of CRI.
+# kubelet MUST listen stargz snapshotter's socket (unix:///run/containerd-stargz-grpc/containerd-stargz-grpc.sock)
+# instead of containerd for image service.
+# i.e. add `--image-service-endpoint=unix:///run/containerd-stargz-grpc/containerd-stargz-grpc.sock` option to kubelet.
+[cri_keychain]
+enable_keychain = true
+image_service_path = "/run/k3s/containerd/containerd.sock"
+EOF
 
   CONTAINERD_CONFIG=/var/lib/rancher/rke2/agent/etc/containerd/config.toml.tmpl
   cat <<EOF > "${CONTAINERD_CONFIG}"
