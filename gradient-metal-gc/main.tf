@@ -96,7 +96,7 @@ module "gradient_processing" {
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
     # Ordered by most used
     "graphcore/tensorflow-jupyter:2-amd-2.6.0-ubuntu-20.04-20220804",
-    "graphcore/tensorflow-jupyter:1-amd-2.6.0-ubuntu-20.04-20220804",
+    "graphcore/tensorflow-jupyter:1-amd-2.6.0-ubuntu-18.04-20220804",
     "graphcore/pytorch-jupyter:2.6.0-ubuntu-20.04-20220804",
 
     # Images used internally
