@@ -69,6 +69,38 @@ global:
 
       %{ endif }
 
+      %{ if shared_storage_type == "csi-driver-nfs" }
+      mountOptions:
+        - nfsvers=3
+        - nolock
+        - soft
+        - lookupcache=none
+      # we hardcode this to point to our internal nfs share
+      server: nfs-service.default.svc.cluster.local
+      share: /opt/gradient-team-data
+      %{ endif }
+
+    %{ if shared_storage_type == "csi-driver-nfs" }
+    gradient-processing-images:
+      class: gradient-processing-images
+      type: ${shared_storage_type}
+      mountOptions:
+        %{ for mountOption in split(",", lookup(shared_storage_config, "mount_options")) }
+        - ${ mountOption }
+        %{ endfor }
+      server: ${shared_storage_config["server"]}
+      share: ${shared_storage_config["share"]}
+    %{ endif }
+
+csi-driver-nfs:
+  enabled: ${shared_storage_type == "csi-driver-nfs" ? true : false }
+
+  controller:
+    hostNetwork: false
+
+  node:
+    hostNetwork: false
+
 ceph-csi-cephfs:
   enabled: ${local_storage_type == "ceph-csi-fs" || shared_storage_type == "ceph-csi-fs" ? true : false }
   csiConfig:
@@ -234,6 +266,15 @@ gradient-operator:
     notebookPendingTimeout: 900
     %{ endif }
 
+    notebookVolumeType: ${notebook_volume_type}
+
+    %{ if is_graphcore }
+    ipuControllerServer: ${ipu_controller_server}
+    ipuModelsCachePVCName: ${ipu_model_cache_pvc_name}
+    graphcoreCluster: true
+    %{ endif }
+    adminTeamHandle: ${admin_team_handle}
+
     %{ if is_public_cluster }
     controller:
       resources:
@@ -316,7 +357,7 @@ gradient-metrics:
     connectionString: ${gradient_metrics_conn_str}
     newRelicEnabled: ${metrics_new_relic_enabled}
     newRelicName: ${metrics_new_relic_name}
-    
+
   %{ if is_public_cluster }
   resources:
     requests:
@@ -335,12 +376,18 @@ gradient-operator-dispatcher:
 nfs-subdir-external-provisioner:
   enabled: ${nfs_client_provisioner_enabled}
   nfs:
-    path: ${shared_storage_path}
-    server: ${shared_storage_server}
+    path: ${nfs_subdir_external_provisioner_path}
+    server: ${nfs_subdir_external_provisioner_server}
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
 
 victoria-metrics-k8s-stack:
+  prometheus-node-exporter:
+    enabled: true
+    service:
+      port: ${victoria_metrics_prometheus_node_exporter_host_port}
+      targetPort: ${victoria_metrics_prometheus_node_exporter_host_port}
+
   vmsingle:
     enabled: ${enable_victoria_metrics_vm_single}
     spec:
@@ -392,7 +439,7 @@ victoria-metrics-k8s-stack:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: "gradient-processing-local"
+              storageClassName: ${metrics_storage_class}
               resources:
                 requests:
                   storage: 2Gi
@@ -577,7 +624,14 @@ volumeController:
     %{ if local_storage_type == "ceph-csi-fs" }
     volumeType: cephfs
     %{ endif }
-  %{ if is_public_cluster }
+
+    %{ if shared_storage_type == "csi-driver-nfs" }
+    # example: /paperspace1 or /exports
+    exportPath: ${shared_storage_config["share"]}
+    volumeType: disk-image
+    imagesVolumeClaimName: gradient-processing-images
+    %{ endif }
+
   resources:
     requests:
       cpu: 1000m
@@ -585,6 +639,12 @@ volumeController:
     limits:
       cpu: 1000m
       memory: 4072Mi
+
+  %{ if shared_storage_type == "csi-driver-nfs" }
+  # if we are using nfs, we want to allow all connections to drops in VC..
+  # before rolling out a new pod
+  strategy:
+    type: Recreate
   %{ endif }
 
 recycleBin:
@@ -605,3 +665,7 @@ volumeFs:
     enabled: true
     appName: ${volume_fs_new_relic_app_name}
 %{ endif }
+
+
+nodeHealthChecks:
+  enabled: ${ node_health_check_enabled }

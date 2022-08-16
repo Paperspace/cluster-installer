@@ -383,3 +383,59 @@ variable "volume_fs_new_relic_app_name" {
   type        = string
   default     = ""
 }
+
+# Graphcore Specific
+variable "ipu_controller_server" {
+  description = "IPU Controller Server Hostname"
+  type        = string
+  default     = ""
+}
+
+variable "ipu_model_cache_pvc_name" {
+  description = "PVC containing precompiled models for IPU hosts"
+  type        = string
+  default     = ""
+}
+
+variable "is_graphcore" {
+  description = "Is a cluster on graphcore hardware"
+  type        = bool
+  default     = false
+}
+
+variable "victoria_metrics_prometheus_node_exporter_host_port" {
+  description = "Victoria Metrics Prometheus Node Exporter"
+  type        = number
+  default     = 9100
+}
+
+variable "node_health_check_enabled" {
+  description = "Enable extra node health checking"
+  type        = bool
+  default     = true
+}
+
+
+variable "nfs_subdir_external_provisioner_path" {
+  description = "Path of share on external nfs server (default var.shared_storage_path)"
+  type        = string
+  default     = ""
+}
+
+variable "nfs_subdir_external_provisioner_server" {
+  description = "Address of external nfs server (default var.shared_storage_server)"
+  type        = string
+  default     = ""
+}
+
+variable "notebook_volume_type" {
+  description = "Flag to indicate which volume type notebooks are using"
+  type        = string
+  default     = "cephfs"
+}
+
+variable "admin_team_handle" {
+  description = "Team handle that should have extra admin access on workloads executed on the cluster. This setting should only be used on multi-team clusters."
+  type        = string
+  default     = ""
+}
