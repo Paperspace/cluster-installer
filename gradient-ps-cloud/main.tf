@@ -31,8 +31,7 @@ locals {
       type = "gpu"
     }
     "Free-A100-80G" = {
-      type        = "gpu"
-      template_id = "tlwkbhba"
+      type = "gpu"
     }
   }) : local.base_asg_types
 
@@ -146,20 +145,16 @@ locals {
       type = "gpu"
     },
     "A100-80G" = {
-      type        = "gpu"
-      template_id = "tlwkbhba"
+      type = "gpu"
     },
     "A100-80Gx2" = {
       type = "gpu"
-      template_id = "tlwkbhba"
     },
     "A100-80Gx4" = {
       type = "gpu"
-      template_id = "tlwkbhba"
     },
     "A100-80Gx8" = {
       type = "gpu"
-      template_id = "tlwkbhba"
     },
   }
 
