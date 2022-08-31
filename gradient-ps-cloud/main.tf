@@ -584,17 +584,14 @@ module "gradient_processing" {
     # Ordered by most used
     "paperspace/fastai:2.0-fastbook-2022-06-29",
     "paperspace/gradient-base:tf29-pt112-py39-2022-06-29",
-    "paperspace/nb-rapids:22.02-cuda11.2-runtime-ubuntu20.04-py3.9",
+    "rapidsai/rapidsai:22.06-cuda11.0-runtime-ubuntu18.04-py3.8",
+    "paperspace/gradient-base:pt112-tf29-jax0314-py39-20220803",
 
     # deprecated but still used by many
     "paperspace/nb-pytorch:22.02-py3",
     "paperspace/nb-tensorflow:22.02-tf2-py3",
     "paperspace/fastai:2.0-fastbook-2022-05-09-rc3",
-    "paperspace/nb-transformers:4.17.0",
-    "paperspace/gradient-base:lean-tf24-py36-0.10",
-    "paperspace/nb-data-science:python-3.9.10",
-    "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
-    
+
     # Images used internally
     "paperspace/notebook_idle:v1.0.5",
   ]
@@ -666,7 +663,7 @@ resource "paperspace_autoscaling_group" "main" {
   name              = "${var.cluster_handle}-${each.key}"
   cluster_id        = var.cluster_handle
   machine_type      = each.key
-  template_id       = each.value.type == "cpu" ? var.machine_template_id_cpu : var.machine_template_id_gpu
+  template_id       = lookup(each.value, "template_id", each.value.type == "cpu" ? var.machine_template_id_cpu : var.machine_template_id_gpu)
   max               = local.asg_max_sizes[each.key]
   min               = local.asg_min_sizes[each.key]
   network_id        = paperspace_network.network.handle

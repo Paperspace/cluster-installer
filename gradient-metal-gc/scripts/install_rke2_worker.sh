@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-set -x
 
 
 # Pro Tip: Run as root
@@ -163,6 +162,7 @@ if [ -z "${CLUSTER_DOMAIN:-}" ]; then
   usage
   exit 1
 fi
+
 
 fix_mounts
 install_rke2 "${CONTROLPLANE_HOST}" "${CLUSTER_TOKEN}" "${CLUSTER_DOMAIN}"

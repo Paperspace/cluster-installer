@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 sudo su -
+set -x
 
 # disable apt auto update to reduce chance of apt conflicts
 sed -i 's/APT::Periodic::Update-Package-Lists "1"/APT::Periodic::Update-Package-Lists "0"/' /etc/apt/apt.conf.d/10periodic
@@ -34,7 +35,7 @@ cat <<EOL > /etc/docker/daemon.json
         }
     },
 %{ endif ~}
-    "registry-mirrors": ["${registry_mirror}", "https://mirror.gcr.io"]
+    "registry-mirrors": ["${registry_mirror}"]
 }
 EOL
 

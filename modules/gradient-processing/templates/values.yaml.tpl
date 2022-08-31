@@ -222,9 +222,8 @@ cluster-autoscaler:
     paperspace.com/pool-name: ${service_pool_name}
 
 dispatcher:
+  %{ if is_public_cluster }
   config:
-    apiAddress: ${dispatcher_host}
-    %{ if is_public_cluster }
     resources:
       requests:
         cpu: 250m
@@ -232,7 +231,9 @@ dispatcher:
       limits:
         cpu: 250m
         memory: 800Mi
-    %{ endif }
+  %{ else }
+  config: {}
+  %{ endif }
 
 
 efs-provisioner:
@@ -262,7 +263,7 @@ gradient-operator:
     workspaceUploadUseSSL: true
     usePodAntiAffinity: ${use_pod_anti_affinity}
     %{ if is_public_cluster}
-    notebookPendingTimeout: 60
+    notebookPendingTimeout: 900
     %{ endif }
 
     notebookVolumeType: ${notebook_volume_type}
@@ -618,7 +619,6 @@ volumeController:
   enabled: true
   config:
     useSSL: true
-    apiAddress: ${dispatcher_host}
     sharedStorageClaim: gradient-processing-shared
     gradientTeamsPersistentVolumeClaimName: ${shared_storage_name}
     %{ if local_storage_type == "ceph-csi-fs" }
