@@ -209,6 +209,26 @@ variable "helm_repo_url" {
   default     = ""
 }
 
+variable "volume_controller_cpu_request" {
+  description = "CPU request for volume controller"
+  default     = "1000m"
+}
+
+variable "volume_controller_memory_request" {
+  description = "Memory request for volume controller"
+  default     = "3072Mi"
+}
+
+variable "volume_controller_cpu_limit" {
+  description = "CPU limit for volume controller"
+  default     = "1000m"
+}
+
+variable "volume_controller_memory_limit" {
+  description = "Memory limit for volume controller"
+  default     = "4072Mi"
+}
+
 # tls
 variable "tls_cert" {
   description = "TLS certificate"

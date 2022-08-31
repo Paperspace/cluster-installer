@@ -210,6 +210,11 @@ resource "helm_release" "gradient_processing" {
       node_health_check_enabled                           = var.node_health_check_enabled
       notebook_volume_type                                = var.notebook_volume_type
       admin_team_handle                                   = var.admin_team_handle
+
+      volume_controller_memory_limit                      = var.volume_controller_memory_limit
+      volume_controller_cpu_limit                         = var.volume_controller_cpu_limit
+      volume_controller_memory_request                    = var.volume_controller_memory_request
+      volume_controller_cpu_request                       = var.volume_controller_cpu_request
     })
   ]
 }

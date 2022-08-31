@@ -634,11 +634,11 @@ volumeController:
 
   resources:
     requests:
-      cpu: 1000m
-      memory: 3072Mi
+      cpu: ${volume_controller_cpu_request}
+      memory: ${volume_controller_memory_request}
     limits:
-      cpu: 1000m
-      memory: 4072Mi
+      cpu: ${volume_controller_cpu_limit}
+      memory: ${volume_controller_memory_limit}
 
   %{ if shared_storage_type == "csi-driver-nfs" }
   # if we are using nfs, we want to allow all connections to drops in VC..

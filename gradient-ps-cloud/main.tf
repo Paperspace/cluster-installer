@@ -319,6 +319,12 @@ locals {
     "1.16.15" = "v1.16.15-rancher1-4",
     "1.15.12" = "v1.15.12-rancher2-7",
   }
+
+  // double default limits for beefy clusters
+  volume_controller_cpu_request    = var.kind == "multinode" ? "2000m" : "1000m"
+  volume_controller_memory_request = var.kind == "multinode" ? "6144Mi" : "3072m"
+  volume_controller_cpu_limit      = var.kind == "multinode" ? "2000m" : "1000m"
+  volume_controller_memory_limit   = var.kind == "multinode" ? "8144Mi" : "4072m"
 }
 
 provider "cloudflare" {
@@ -580,6 +586,12 @@ module "gradient_processing" {
   rbd_storage_config          = var.rbd_storage_config
   cert_manager_enabled        = true
   image_cache_enabled         = true
+
+  volume_controller_memory_limit   = local.volume_controller_memory_limit
+  volume_controller_cpu_limit      = local.volume_controller_cpu_limit
+  volume_controller_memory_request = local.volume_controller_memory_request
+  volume_controller_cpu_request    = local.volume_controller_cpu_request
+
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
     # Ordered by most used
     "paperspace/fastai:2.0-fastbook-2022-06-29",
