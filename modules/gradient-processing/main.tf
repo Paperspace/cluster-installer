@@ -103,14 +103,6 @@ resource "helm_release" "gradient_processing" {
     name  = "traefik.ssl.defaultKey"
     value = var.tls_key == "" ? "null" : base64encode(var.tls_key)
   }
-  set_sensitive {
-    name  = "gradient-metrics.config.newRelicKey"
-    value = var.metrics_new_relic_key == "" ? "null" : var.metrics_new_relic_key
-  }
-  set_sensitive {
-    name  = "volumeFs.newRelic.licenseKey"
-    value = var.volume_fs_new_relic_license_key == "" ? "null" : var.volume_fs_new_relic_license_key
-  }
 
   dynamic "set_sensitive" {
     for_each = lookup(local.local_storage_secrets, var.local_storage_type, {})
@@ -183,8 +175,6 @@ resource "helm_release" "gradient_processing" {
       shared_storage_type                                 = var.shared_storage_type
       tls_secret_name                                     = local.tls_secret_name
       use_pod_anti_affinity                               = var.use_pod_anti_affinity
-      metrics_new_relic_enabled                           = var.metrics_new_relic_enabled
-      metrics_new_relic_name                              = var.metrics_new_relic_name
       pod_assignment_label_name                           = var.pod_assignment_label_name
       legacy_datasets_host_path                           = var.legacy_datasets_host_path
       legacy_datasets_sub_path                            = var.legacy_datasets_sub_path
@@ -201,8 +191,6 @@ resource "helm_release" "gradient_processing" {
       enable_victoria_metrics_vm_cluster                  = var.victoria_metrics_vmcluster_enabled
       vm_select_replica_count                             = var.cluster_handle == "clw6rxq2s" ? 1 : var.victoria_metrics_vmcluster_vmselect_replicacount
       vm_storage_replica_count                            = var.cluster_handle == "clw6rxq2s" ? 1 : var.victoria_metrics_vmcluster_vmstorage_replicacount
-      volume_fs_new_relic_enabled                         = var.volume_fs_new_relic_enabled
-      volume_fs_new_relic_app_name                        = var.volume_fs_new_relic_app_name
       ipu_controller_server                               = var.ipu_controller_server
       ipu_model_cache_pvc_name                            = var.ipu_model_cache_pvc_name
       is_graphcore                                        = var.is_graphcore
@@ -211,10 +199,10 @@ resource "helm_release" "gradient_processing" {
       notebook_volume_type                                = var.notebook_volume_type
       admin_team_handle                                   = var.admin_team_handle
 
-      volume_controller_memory_limit                      = var.volume_controller_memory_limit
-      volume_controller_cpu_limit                         = var.volume_controller_cpu_limit
-      volume_controller_memory_request                    = var.volume_controller_memory_request
-      volume_controller_cpu_request                       = var.volume_controller_cpu_request
+      volume_controller_memory_limit   = var.volume_controller_memory_limit
+      volume_controller_cpu_limit      = var.volume_controller_cpu_limit
+      volume_controller_memory_request = var.volume_controller_memory_request
+      volume_controller_cpu_request    = var.volume_controller_cpu_request
     })
   ]
 }
