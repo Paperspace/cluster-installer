@@ -353,6 +353,8 @@ gradient-metrics:
   ingress:
     hostPath:
       ${domain}: /metrics
+  config:
+    connectionString: ${gradient_metrics_conn_str}
 
   %{ if is_public_cluster }
   resources:
