@@ -242,23 +242,6 @@ variable "use_pod_anti_affinity" {
   default     = "false"
 }
 
-# Metrics New Relic
-
-variable "metrics_new_relic_key" {
-  description = "New Relic access key"
-  default     = ""
-}
-
-variable "metrics_new_relic_enabled" {
-  description = "Enables New Relic monitoring on the metrics API"
-  default     = "false"
-}
-
-variable "metrics_new_relic_name" {
-  description = "Postfix for New Relic application name"
-  default     = ""
-}
-
 variable "pod_assignment_label_name" {
   description = "Label that your nodes will be selected against"
   default     = ""
@@ -384,24 +367,6 @@ variable "victoria_metrics_vmcluster_vmstorage_replicacount" {
   description = "How many vmstorage replicas do you want running?"
   type        = number
   default     = 3
-}
-
-variable "volume_fs_new_relic_license_key" {
-  description = "New Relic license key"
-  type        = string
-  default     = ""
-}
-
-variable "volume_fs_new_relic_enabled" {
-  description = "Enables New Relic monitoring on the Volume FS API"
-  type        = bool
-  default     = false
-}
-
-variable "volume_fs_new_relic_app_name" {
-  description = "Postfix for New Relic application name"
-  type        = string
-  default     = ""
 }
 
 # Graphcore Specific

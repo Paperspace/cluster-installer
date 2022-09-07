@@ -353,10 +353,6 @@ gradient-metrics:
   ingress:
     hostPath:
       ${domain}: /metrics
-  config:
-    connectionString: ${gradient_metrics_conn_str}
-    newRelicEnabled: ${metrics_new_relic_enabled}
-    newRelicName: ${metrics_new_relic_name}
 
   %{ if is_public_cluster }
   resources:
@@ -659,13 +655,7 @@ recycleBin:
       memory: 1Gi
   %{ endif }
 
-%{ if volume_fs_new_relic_enabled }
-volumeFs:
-  newRelic:
-    enabled: true
-    appName: ${volume_fs_new_relic_app_name}
-%{ endif }
-
+volumeFs: {}
 
 nodeHealthChecks:
   enabled: ${ node_health_check_enabled }

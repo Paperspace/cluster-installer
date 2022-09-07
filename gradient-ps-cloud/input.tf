@@ -235,21 +235,3 @@ variable "paperspace_api_next_url" {
   description = "Paperspace API next URL"
   default     = "https://api.paperspace.com"
 }
-
-variable "volume_fs_new_relic_license_key" {
-  description = "New Relic license key"
-  type        = string
-  default     = ""
-}
-
-variable "volume_fs_new_relic_enabled" {
-  description = "Enables New Relic monitoring on the Volume FS API"
-  type        = bool
-  default     = false
-}
-
-variable "volume_fs_new_relic_app_name" {
-  description = "Postfix for New Relic application name"
-  type        = string
-  default     = ""
-}

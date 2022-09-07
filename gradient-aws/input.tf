@@ -84,21 +84,6 @@ variable "subnet_netmask" {
   default     = "18"
 }
 
-variable "metrics_new_relic_key" {
-  description = "New Relic access key"
-  default     = ""
-}
-
-variable "metrics_new_relic_enabled" {
-  description = "Enables New Relic monitoring on the metrics API"
-  default     = "false"
-}
-
-variable "metrics_new_relic_name" {
-  description = "Postfix for New Relic application name"
-  default     = ""
-}
-
 variable "api_host" {
   description = "api host"
   default     = "https://api.paperspace.io"

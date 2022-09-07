@@ -607,10 +607,7 @@ module "gradient_processing" {
     # Images used internally
     "paperspace/notebook_idle:v1.0.5",
   ]
-  metrics_server_enabled          = false
-  volume_fs_new_relic_license_key = var.volume_fs_new_relic_license_key
-  volume_fs_new_relic_enabled     = var.volume_fs_new_relic_enabled
-  volume_fs_new_relic_app_name    = var.volume_fs_new_relic_app_name
+  metrics_server_enabled = false
 }
 
 resource "rancher2_cluster" "main" {
