@@ -605,6 +605,7 @@ module "gradient_processing" {
     "paperspace/fastai:2.0-fastbook-2022-05-09-rc3",
 
     # Images used internally
+    "bitnami/git",
     "paperspace/notebook_idle:v1.0.5",
   ]
   metrics_server_enabled = false
