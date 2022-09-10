@@ -440,7 +440,7 @@ victoria-metrics-k8s-stack:
               storageClassName: ${metrics_storage_class}
               resources:
                 requests:
-                  storage: 2Gi
+                  storage: 20Gi
       vmstorage:
         extraArgs:
           search.maxUniqueTimeseries: "6000000"
