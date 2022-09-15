@@ -534,8 +534,10 @@ traefik:
 
   %{ if (label_selector_cpu != "" && label_selector_gpu != "") || cluster_autoscaler_cloudprovider == "paperspace" }
   serviceType: NodePort
+  %{ if !is_public_cluster }
   deploymentStrategy:
     type: Recreate
+  %{ endif }
   deployment:
     hostNetwork: true
     hostPort:
@@ -571,11 +573,11 @@ traefik:
   %{ if is_public_cluster }
   resources:
     requests:
-      cpu: 2
-      memory: 2Gi
+      cpu: 10
+      memory: 28Gi
     limits:
-      cpu: 2
-      memory: 2Gi
+      cpu: 10
+      memory: 28Gi
   %{ endif }
 
 argo:
