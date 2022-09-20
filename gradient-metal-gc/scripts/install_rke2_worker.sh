@@ -21,6 +21,7 @@ setup_mounts() {
   containerd='/var/lib/rancher/rke2/agent/containerd'
 
   mkdir -p "$containerd_data"
+  mkdir -p "$containerd"
 
   grep -q 'containerd-data' /etc/fstab || \
     printf "# containerd-data\n%s    %s    none    defaults,bind    0    2\n" \
@@ -40,6 +41,7 @@ install_rke2() {
   RKE2_CONTROL_PLANE_HOST=${1}
   RKE2_CLUSTER_TOKEN=${2}
   CLUSTER_DOMAIN=${3}
+  POOL_NAME=${4}
 
   curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE="agent" sh -
 
@@ -64,6 +66,8 @@ kubelet-arg:
   - kube-reserved-cgroup=/podruntime.slice
   - system-reserved=cpu=500m,memory=256Mi,ephemeral-storage=5Gi
   - system-reserved-cgroup=/system.slice
+node-label:
+  - paperspace.com/pool-name=${POOL_NAME}
 EOF
 
   cat <<EOF > "${CONFIG_PATH}/registries.yaml"
@@ -84,7 +88,7 @@ EOF
 
 
 usage() {
-  echo "usage: install_rke2_worker.sh <control-plane-host> <cluster-token> <cluster-domain>"
+  echo "usage: install_rke2_worker.sh <control-plane-host> <cluster-token> <cluster-domain> <pool-name>"
 }
 
 CONTROLPLANE_HOST=${1}
@@ -105,6 +109,12 @@ if [ -z "${CLUSTER_DOMAIN:-}" ]; then
   exit 1
 fi
 
+POOL_NAME=${4}
+if [ -z "${POOL_NAME:-}" ]; then
+  usage
+  exit 1
+fi
+
 setup_mounts
 setup_cgroups
-install_rke2 "${CONTROLPLANE_HOST}" "${CLUSTER_TOKEN}" "${CLUSTER_DOMAIN}"
+install_rke2 "${CONTROLPLANE_HOST}" "${CLUSTER_TOKEN}" "${CLUSTER_DOMAIN}" "${POOL_NAME}"
