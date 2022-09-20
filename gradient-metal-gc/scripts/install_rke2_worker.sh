@@ -1,12 +1,35 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-
 # Pro Tip: Run as root
-if [ "${EUID:-}" -ne 0 ]
-  then echo "Please run as root"
-  exit
+if [ "${EUID:-}" -ne 0 ]; then
+  echo "Please run as root"
+  exit 1
 fi
+
+setup_cgroups() {
+  mkdir -p /sys/fs/cgroup/pids/podruntime.slice
+  mkdir -p /sys/fs/cgroup/hugetlb/podruntime.slice
+  mkdir -p /sys/fs/cgroup/cpuset/podruntime.slice
+  mkdir -p /sys/fs/cgroup/cpu/podruntime.slice
+  mkdir -p /sys/fs/cgroup/memory/podruntime.slice
+  mkdir -p /sys/fs/cgroup/systemd/podruntime.slice
+}
+
+setup_mounts() {
+  containerd_data='/var/lib/docker/containerd'
+  containerd='/var/lib/rancher/rke2/agent/containerd'
+
+  mkdir -p "$containerd_data"
+
+  grep -q 'containerd-data' /etc/fstab || \
+    printf "# containerd-data\n%s    %s    none    defaults,bind    0    2\n" \
+      "$containerd_data" \
+      "$containerd" \
+      >> /etc/fstab
+
+  mount -a
+}
 
 install_rke2() {
   # Locks RKE2 Release Version
@@ -36,6 +59,11 @@ install_rke2() {
   cat << EOF > "${CONFIG_PATH}/config.yaml"
 server: https://${RKE2_CONTROL_PLANE_HOST}:9345
 token: ${RKE2_CLUSTER_TOKEN}
+kubelet-arg:
+  - kube-reserved="cpu=500m,memory=256Mi,ephemeral-storage=10Gi"
+  - kube-reserved-cgroup=/podruntime.slice
+  - system-reserved=cpu=500m,memory=256Mi,ephemeral-storage=5Gi
+  - system-reserved-cgroup=/system.slice
 EOF
 
   cat <<EOF > "${CONFIG_PATH}/registries.yaml"
@@ -77,4 +105,6 @@ if [ -z "${CLUSTER_DOMAIN:-}" ]; then
   exit 1
 fi
 
+setup_mounts
+setup_cgroups
 install_rke2 "${CONTROLPLANE_HOST}" "${CLUSTER_TOKEN}" "${CLUSTER_DOMAIN}"
