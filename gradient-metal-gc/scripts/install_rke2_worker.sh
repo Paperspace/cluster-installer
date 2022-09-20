@@ -62,12 +62,12 @@ install_rke2() {
 server: https://${RKE2_CONTROL_PLANE_HOST}:9345
 token: ${RKE2_CLUSTER_TOKEN}
 kubelet-arg:
-  - kube-reserved="cpu=500m,memory=256Mi,ephemeral-storage=10Gi"
-  - kube-reserved-cgroup=/podruntime.slice
-  - system-reserved=cpu=500m,memory=256Mi,ephemeral-storage=5Gi
-  - system-reserved-cgroup=/system.slice
+  - "kube-reserved=cpu=500m,memory=256Mi,ephemeral-storage=10Gi"
+  - "kube-reserved-cgroup=/podruntime.slice"
+  - "system-reserved=cpu=500m,memory=256Mi,ephemeral-storage=5Gi"
+  - "system-reserved-cgroup=/system.slice"
 node-label:
-  - paperspace.com/pool-name=${POOL_NAME}
+  - "paperspace.com/pool-name=${POOL_NAME}"
 EOF
 
   cat <<EOF > "${CONFIG_PATH}/registries.yaml"
