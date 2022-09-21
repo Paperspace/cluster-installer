@@ -596,6 +596,7 @@ module "gradient_processing" {
     # Ordered by most used
     "paperspace/fastai:2.0-fastbook-2022-06-29",
     "paperspace/gradient-base:tf29-pt112-py39-2022-06-29",
+    "rapidsai/rapidsai:22.08-cuda11.2-runtime-ubuntu20.04-py3.9",
     "rapidsai/rapidsai:22.06-cuda11.0-runtime-ubuntu18.04-py3.8",
     "paperspace/gradient-base:pt112-tf29-jax0314-py39-20220803",
 
