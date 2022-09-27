@@ -456,7 +456,7 @@ victoria-metrics-k8s-stack:
             %{ if is_public_cluster }
               resources:
                 requests:
-                  storage: 100Gi
+                  storage: 250Gi
             %{ endif }
         resources:
           requests:
