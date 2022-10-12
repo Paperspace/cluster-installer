@@ -359,11 +359,11 @@ gradient-metrics:
   %{ if is_public_cluster }
   resources:
     requests:
-      cpu: 250m
-      memory: 256Mi
+      cpu: 1000m
+      memory: 512Mi
     limits:
-      cpu: 250m
-      memory: 256Mi
+      cpu: 1000m
+      memory: 512Mi
   %{ endif }
 
 gradient-operator-dispatcher:
