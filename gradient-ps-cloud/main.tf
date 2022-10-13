@@ -594,16 +594,11 @@ module "gradient_processing" {
 
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
     # Ordered by most used
-    "paperspace/fastai:2.0-fastbook-2022-06-29",
-    "paperspace/gradient-base:tf29-pt112-py39-2022-06-29",
-    "rapidsai/rapidsai:22.08-cuda11.2-runtime-ubuntu20.04-py3.9",
-    "rapidsai/rapidsai:22.06-cuda11.0-runtime-ubuntu18.04-py3.8",
     "paperspace/gradient-base:pt112-tf29-jax0314-py39-20220803",
+    "paperspace/fastai:2.0-fastbook-2022-06-29",
+    "paperspace/fastai:2.0-fastbook-2022-10-13",
 
-    # deprecated but still used by many
-    "paperspace/nb-pytorch:22.02-py3",
-    "paperspace/nb-tensorflow:22.02-tf2-py3",
-    "paperspace/fastai:2.0-fastbook-2022-05-09-rc3",
+    "rapidsai/rapidsai:22.08-cuda11.2-runtime-ubuntu20.04-py3.9",
 
     # Images used internally
     "bitnami/git",
