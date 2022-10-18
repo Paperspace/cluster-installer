@@ -343,13 +343,13 @@ variable "metrics_port" {
 
 # this defaults to clustered configuration
 variable "metrics_path" {
-  type    = "string"
+  type    = string
   default = "/select/0/prometheus"
 }
 
 # this defaults to clustered configuration
 variable "metrics_service_name" {
-  type    = "string"
+  type    = string
   default = "vmselect-gradient-processing-victoria-metrics"
 }
 
