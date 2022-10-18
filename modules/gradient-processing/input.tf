@@ -359,6 +359,12 @@ variable "victoria_metrics_vmcluster_enabled" {
   default     = true
 }
 
+variable "victoria_metrics_vmsingle_enabled" {
+  description = "Is VMSingle Enabled?"
+  type        = bool
+  default     = false
+}
+
 # this defaults to clustered configuration
 variable "metrics_request_protocol" {
   type    = string

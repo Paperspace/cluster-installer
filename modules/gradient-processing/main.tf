@@ -193,6 +193,7 @@ resource "helm_release" "gradient_processing" {
       gradient_metrics_adapter_endpoint                   = local.gradient_metrics_adapter_endpoint
       gradient_metrics_port                               = var.metrics_port
 
+      enable_victoria_metrics_vm_single                   = var.victoria_metrics_vmsingle_enabled
       enable_victoria_metrics_vm_cluster                  = var.victoria_metrics_vmcluster_enabled
       vm_select_replica_count                             = var.cluster_handle == "clw6rxq2s" ? 1 : var.victoria_metrics_vmcluster_vmselect_replicacount
       vm_storage_replica_count                            = var.cluster_handle == "clw6rxq2s" ? 1 : var.victoria_metrics_vmcluster_vmstorage_replicacount
