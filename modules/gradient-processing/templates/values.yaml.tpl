@@ -667,6 +667,7 @@ prometheus-adapter:
   prometheus:
     url: ${gradient_metrics_adapter_endpoint}
     port: ${gradient_metrics_port}
+    path: ${gradient_metrics_path}
 
 nodeHealthChecks:
   enabled: ${ node_health_check_enabled }
