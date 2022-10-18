@@ -134,6 +134,9 @@ module "gradient_processing" {
   image_cache_enabled                = var.image_cache_enabled
   image_cache_list                   = var.image_cache_list
   metrics_server_enabled             = false
+  metrics_port                       = 8429
+  metrics_service_name               = "vmsingle-gradient-processing-victoria-metrics"
+  metrics_path                       = "/prometheus"
   victoria_metrics_vmcluster_enabled = false
   victoria_metrics_vmsingle_enabled  = true
 }

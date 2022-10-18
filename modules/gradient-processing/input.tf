@@ -335,46 +335,28 @@ variable "paperspace_api_next_url" {
   default     = "https://api.paperspace.com"
 }
 
-variable "victoria_metrics_vmsingle_enabled" {
-  description = "Is VMSingle Enabled?"
-  type        = bool
-  default     = false
-}
-
-variable "victoria_metrics_vmsingle_service_endpoint" {
-  type    = string
-  default = "http://vmsingle-gradient-processing-victoria-metrics:8429/prometheus"
-}
-
-variable "victoria_metrics_vmcluster_enabled" {
-  description = "Is VMCluster Mode Enabled?"
-  type        = bool
-  default     = true
-}
-
-variable "victoria_metrics_vmcluster_service_endpoint" {
-  type    = string
-  default = "http://vmselect-gradient-processing-victoria-metrics:8481/select/0/prometheus"
-}
-
-variable "victoria_metrics_vmsingle_service_metrics_adapter_endpoint" {
-  type    = string
-  default = "http://vmsingle-gradient-processing-victoria-metrics/prometheus"
-}
-
-variable "victoria_metrics_vmcluster_service_metrics_adapter_endpoint" {
-  type    = string
-  default = "http://vmselect-gradient-processing-victoria-metrics/select/0/prometheus"
-}
-
-variable "victoria_metrics_vmcluster_service_metrics_adapter_port" {
-  type    = number
+# this defaults to clustered configuration
+variable "metrics_port" {
+  type = number
   default = 8481
 }
 
-variable "victoria_metrics_vmsingle_service_metrics_adapter_port" {
-  type    = number
-  default = 8429
+# this defaults to clustered configuration
+variable "metrics_path" {
+  type    = "string"
+  default = "/select/0/prometheus"
+}
+
+# this defaults to clustered configuration
+variable "metrics_service_name" {
+  type    = "string"
+  default = "vmselect-gradient-processing-victoria-metrics"
+}
+
+# this defaults to clustered configuration
+variable "metrics_request_protocol" {
+  type    = string
+  default = "http"
 }
 
 variable "victoria_metrics_vmcluster_vmselect_replicacount" {
