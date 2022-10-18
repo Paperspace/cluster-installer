@@ -661,5 +661,12 @@ recycleBin:
 
 volumeFs: {}
 
+prometheus-adapter:
+  enabled: true
+
+  prometheus:
+    url: ${gradient_metrics_victoria_metrics_adapter_endpoint}
+    port: ${gradient_metrics_victoria_metrics_adapter_port}
+
 nodeHealthChecks:
   enabled: ${ node_health_check_enabled }

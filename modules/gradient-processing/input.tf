@@ -357,6 +357,26 @@ variable "victoria_metrics_vmcluster_service_endpoint" {
   default = "http://vmselect-gradient-processing-victoria-metrics:8481/select/0/prometheus"
 }
 
+variable "victoria_metrics_vmsingle_service_metrics_adapter_endpoint" {
+  type    = string
+  default = "http://vmsingle-gradient-processing-victoria-metrics/prometheus"
+}
+
+variable "victoria_metrics_vmcluster_service_metrics_adapter_endpoint" {
+  type    = string
+  default = "http://vmselect-gradient-processing-victoria-metrics/select/0/prometheus"
+}
+
+variable "victoria_metrics_vmcluster_service_metrics_adapter_port" {
+  type    = number
+  default = 8481
+}
+
+variable "victoria_metrics_vmsingle_service_metrics_adapter_port" {
+  type    = number
+  default = 8429
+}
+
 variable "victoria_metrics_vmcluster_vmselect_replicacount" {
   description = "How many vmselect replicas do you want running?"
   type        = number
