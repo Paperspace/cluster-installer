@@ -353,6 +353,12 @@ variable "metrics_service_name" {
   default = "vmselect-gradient-processing-victoria-metrics"
 }
 
+variable "victoria_metrics_vmcluster_enabled" {
+  description = "Is VMCluster Mode Enabled?"
+  type        = bool
+  default     = true
+}
+
 # this defaults to clustered configuration
 variable "metrics_request_protocol" {
   type    = string
