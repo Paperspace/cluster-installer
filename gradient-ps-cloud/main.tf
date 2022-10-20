@@ -601,7 +601,7 @@ module "gradient_processing" {
     "rapidsai/rapidsai:22.08-cuda11.2-runtime-ubuntu20.04-py3.9",
 
     # Images used internally
-    "bitnami/git",
+    "bitnami/git:2.38.1",
     "paperspace/notebook_idle:v1.0.5",
   ]
   metrics_server_enabled = false
