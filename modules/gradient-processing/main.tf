@@ -22,7 +22,9 @@ locals {
 
   tls_secret_name                    = "gradient-processing-tls"
   prometheus_pool_name               = var.prometheus_pool_name != "" ? var.prometheus_pool_name : var.service_pool_name
-  gradient-metrics-victoria-endpoint = var.victoria_metrics_vmcluster_enabled ? var.victoria_metrics_vmcluster_service_endpoint : var.victoria_metrics_vmsingle_service_endpoint
+
+  gradient_metrics_endpoint = "${var.metrics_request_protocol}://${var.metrics_service_name}:${var.metrics_port}${var.metrics_path}"
+  gradient_metrics_adapter_endpoint = "${var.metrics_request_protocol}://${var.metrics_service_name}"
 
   nfs_subdir_external_provisioner_path   = var.nfs_subdir_external_provisioner_path != "" ? var.nfs_subdir_external_provisioner_path : var.shared_storage_path
   nfs_subdir_external_provisioner_server = var.nfs_subdir_external_provisioner_server != "" ? var.nfs_subdir_external_provisioner_server : var.shared_storage_server
@@ -186,7 +188,12 @@ resource "helm_release" "gradient_processing" {
       image_cache_list                                    = jsonencode(var.image_cache_list)
       metrics_storage_class                               = var.metrics_storage_class
       rbd_storage_config                                  = local.rbd_storage_config
-      gradient_metrics_conn_str                           = local.gradient-metrics-victoria-endpoint
+
+      gradient_metrics_conn_str                           = local.gradient_metrics_endpoint
+      gradient_metrics_adapter_endpoint                   = local.gradient_metrics_adapter_endpoint
+      gradient_metrics_port                               = var.metrics_port
+      gradient_metrics_path                               = var.metrics_path
+
       enable_victoria_metrics_vm_single                   = var.victoria_metrics_vmsingle_enabled
       enable_victoria_metrics_vm_cluster                  = var.victoria_metrics_vmcluster_enabled
       vm_select_replica_count                             = var.cluster_handle == "clw6rxq2s" ? 1 : var.victoria_metrics_vmcluster_vmselect_replicacount
