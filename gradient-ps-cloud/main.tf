@@ -598,6 +598,7 @@ module "gradient_processing" {
     "paperspace/fastai:2.0-fastbook-2022-06-29",
     "paperspace/fastai:2.0-fastbook-2022-10-13",
 
+    "nvcr.io/nvidia/rapidsai/rapidsai:22.10-cuda11.2-runtime-ubuntu20.04-py3.9",
     "rapidsai/rapidsai:22.08-cuda11.2-runtime-ubuntu20.04-py3.9",
 
     # Images used internally
