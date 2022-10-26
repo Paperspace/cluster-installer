@@ -598,7 +598,11 @@ module "gradient_processing" {
     "paperspace/fastai:2.0-fastbook-2022-06-29",
     "paperspace/fastai:2.0-fastbook-2022-10-13",
 
-    "nvcr.io/nvidia/rapidsai/rapidsai:22.10-cuda11.2-runtime-ubuntu20.04-py3.9",
+    # note nvidia will tell you to use the `nvcr.io/rapidsai/rapidsai` releases
+    # but the docker mirroring config only mirrors docker hub so we would not
+    # get data center wide caching. ContainerD will give us more flexility to configure
+    # a universal mirror, until then use the dockerhub hosted versions of images please
+    "rapidsai/rapidsai:22.10-cuda11.2-runtime-ubuntu20.04-py3.9",
     "rapidsai/rapidsai:22.08-cuda11.2-runtime-ubuntu20.04-py3.9",
 
     # Images used internally
