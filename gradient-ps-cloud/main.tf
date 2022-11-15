@@ -595,7 +595,6 @@ module "gradient_processing" {
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
     # Ordered by most used
     "paperspace/gradient-base:pt112-tf29-jax0314-py39-20220803",
-    "paperspace/fastai:2.0-fastbook-2022-06-29",
     "paperspace/fastai:2.0-fastbook-2022-10-13",
 
     # note nvidia will tell you to use the `nvcr.io/rapidsai/rapidsai` releases
@@ -603,7 +602,9 @@ module "gradient_processing" {
     # get data center wide caching. ContainerD will give us more flexility to configure
     # a universal mirror, until then use the dockerhub hosted versions of images please
     "rapidsai/rapidsai:22.10-cuda11.2-runtime-ubuntu20.04-py3.9",
-    "rapidsai/rapidsai:22.08-cuda11.2-runtime-ubuntu20.04-py3.9",
+    
+    # deployments
+    "paperspace/fastapi-deployment:2022-11-14",
 
     # Images used internally
     "bitnami/git:2.38.1",
