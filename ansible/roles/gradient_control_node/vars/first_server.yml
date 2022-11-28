@@ -1,0 +1,7 @@
+rke2_config:
+  tls-san:
+    - kubernetes.local.com
+  disable:
+    - rke2-ingress-nginx
+  node-taint:
+    - "CriticalAddonsOnly=true:NoExecute"

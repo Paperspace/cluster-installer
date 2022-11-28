@@ -1,0 +1,9 @@
+---
+- name: Gradient RKE2 Common Tasks
+  ansible.builtin.include_role:
+    name: gradient_common
+    tasks_from: '{{ item }}'
+  loop:
+    - main
+    - install_containerd_configuration
+    - install_rke2_agent
