@@ -285,6 +285,12 @@ variable "metrics_storage_class" {
   default     = "gradient-processing-local"
 }
 
+variable "nats_storage_class" {
+  description = "Name of the storage class for the nats server"
+  type        = string
+  default     = "gradient-processing-local"
+}
+
 variable "cert_manager_enabled" {
   description = "enable installation of the cert-manager operator"
   type        = bool
