@@ -671,3 +671,35 @@ prometheus-adapter:
 
 nodeHealthChecks:
   enabled: ${ node_health_check_enabled }
+
+nats:
+  enabled: true
+
+  nats:
+    cluster:
+      enabled: true
+      replicas: 3
+  
+    jetstream:
+      enabled: true
+
+      memStorage:
+        enabled: true
+        size: ${nats_mem_storage_size}
+
+      fileStorage:
+        enabled: true
+        size: ${nats_file_storage_size}
+        storageClassName: ${nats_storage_class}
+
+prometheusNatsBridge:
+  enabled: true
+
+telemetry:
+  enabled: true
+
+  replicaCount: 3
+
+  config:
+    logLeve: "info"
+    logsAPI: ${logs_host}
