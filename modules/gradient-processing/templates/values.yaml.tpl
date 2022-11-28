@@ -659,7 +659,12 @@ recycleBin:
       memory: 1Gi
   %{ endif }
 
-volumeFs: {}
+volumeFs:
+  %{ if is_public_cluster }
+  replicaCount: 4
+  %{ else }
+  replicaCount: 1
+  %{ endif }
 
 prometheus-adapter:
   enabled: true
