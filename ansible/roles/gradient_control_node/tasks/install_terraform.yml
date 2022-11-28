@@ -1,0 +1,27 @@
+---
+- name: Check for terraform install
+  shell: command -v terraform > /dev/null 2>&1
+  register: terraform_check
+  ignore_errors: true
+
+- name: Add signing key for terraform
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+  when: terraform_check.failed == true
+
+- name: Register lbs_release
+  ansible.builtin.shell:
+    cmd: lsb_release -cs
+  register: lsb_release
+
+- name: Add apt repository for terraform
+  ansible.builtin.apt_repository:
+    state: present
+    repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ lsb_release.stdout }} main
+  when: terraform_check.failed == true
+
+- name: Install required apt packages
+  ansible.builtin.apt:
+    pkg:
+      - terraform
+  when: terraform_check.failed == true

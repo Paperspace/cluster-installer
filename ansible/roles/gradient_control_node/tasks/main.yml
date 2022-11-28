@@ -1,0 +1,28 @@
+---
+- name: Gradient RKE2 Common Tasks
+  ansible.builtin.include_role:
+    name: gradient_common
+    tasks_from: '{{ item }}'
+  loop:
+    - main
+    - install_containerd_configuration
+
+- name: Install RKE2 for Initial Server
+  ansible.builtin.include_tasks: install_rke2_on_initial_server.yml
+  when: inventory_hostname in groups['gradient_control_nodes'][0]
+
+- name: Install RKE2 for Other Servers
+  ansible.builtin.include_tasks: install_rke2_on_other_servers.yml
+  when: inventory_hostname in groups['gradient_control_nodes'][1:]
+
+- name: Install Terraform
+  ansible.builtin.include_tasks: install_terraform.yml
+
+- name: Install Kubectl
+  ansible.builtin.include_tasks: install_kubectl.yml
+
+- name: Install Helm
+  ansible.builtin.include_tasks: install_helm.yml
+
+- name: Install Stern
+  ansible.builtin.include_tasks: install_stern.yml
