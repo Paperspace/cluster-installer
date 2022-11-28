@@ -514,8 +514,12 @@ victoria-metrics-k8s-stack:
           memory: 4Gi
       %{ endif }
 
+    additionalRemoteWrites:
+      - url: http://prometheus-nats-bridge:8080/receive
+
   kubelet:
     enabled: true
+    cadvisor: true
     spec:
       interval: 20s
       scrapeTimeout: 10s
@@ -684,12 +688,12 @@ nats:
       enabled: true
 
       memStorage:
-        enabled: true
-        size: ${nats_mem_storage_size}
+        enabled: false
+        size: 10Gi
 
       fileStorage:
         enabled: true
-        size: ${nats_file_storage_size}
+        size: 150Gi
         storageClassName: ${nats_storage_class}
 
 prometheusNatsBridge:
