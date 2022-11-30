@@ -24,6 +24,12 @@ variable "namespace" {
   default     = "default"
 }
 
+variable "custom_repsonse_headers" {
+  type        = list(string)
+  description = "Custom response headers to add to the ingress"
+  default     = []
+}
+
 locals {
   fqdn = "${var.host}.${var.cluster_domain}"
 }
@@ -71,6 +77,9 @@ resource "kubernetes_ingress" "ingress" {
   metadata {
     name      = var.host
     namespace = var.namespace
+    annotations = {
+      "traefik.ingress.kubernetes.io/custom-response-headers" = join("||", var.custom_repsonse_headers)
+    }
   }
 
   spec {
