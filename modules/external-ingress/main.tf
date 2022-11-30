@@ -38,7 +38,7 @@ resource "kubernetes_endpoints" "endpoints" {
     dynamic "address" {
       for_each = var.ip_addresses
       content {
-        ip = each.value
+        ip = address.value
       }
     }
 
