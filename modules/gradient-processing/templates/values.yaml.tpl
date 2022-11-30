@@ -621,7 +621,7 @@ volumeController:
     useSSL: true
     sharedStorageClaim: gradient-processing-shared
     gradientTeamsPersistentVolumeClaimName: ${shared_storage_name}
-    %{ if local_storage_type == "ceph-csi-fs" }
+    %{ if local_storage_type == "ceph-csi-fs" || shared_storage_type == "ceph-csi-fs" }
     volumeType: cephfs
     %{ endif }
 
