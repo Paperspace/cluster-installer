@@ -78,8 +78,7 @@ resource "kubernetes_ingress" "ingress" {
       host = local.fqdn
       http {
         path {
-          path      = "/"
-          path_type = "ImplementationSpecific"
+          path = "/"
           backend {
             service_name = var.host
             service_port = 80
