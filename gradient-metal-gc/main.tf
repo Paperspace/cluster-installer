@@ -120,6 +120,7 @@ module "gradient_processing" {
   nfs_subdir_external_provisioner_path                = var.local_storage_path
   nfs_subdir_external_provisioner_server              = var.local_storage_server
   notebook_volume_type                                = var.notebook_volume_type
+  ceph_provisioner_replicas                           = var.ceph_provisioner_replicas
 }
 
 
@@ -134,4 +135,20 @@ module "container_registry_mirror" {
     existing_claim = ""
   }
   pool_name = var.registry_pool_name != "" ? var.registry_pool_name : var.service_pool_name
+}
+
+module "s3_external_ingress" {
+  source = "../modules/external-ingress"
+
+  host           = "s3"
+  cluster_domain = var.domain
+  ip_addresses   = var.external_s3_ip_addresses
+  http_port      = var.external_s3_port
+  custom_repsonse_headers = [
+    "Access-Control-Allow-Origin:https://${var.console_host}",
+    "Access-Control-Allow-Methods:GET,PUT,POST,OPTIONS",
+    "Access-Control-Allow-Headers:*",
+    "Access-Control-Expose-Headers:Content-Length,Content-Range",
+    "Access-Control-Allow-Credentials:true",
+  ]
 }

@@ -119,6 +119,7 @@ ceph-csi-cephfs:
       %{ endfor }
     %{ endif }
   provisioner:
+    replicaCount: ${ceph_provisioner_replicas}
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 

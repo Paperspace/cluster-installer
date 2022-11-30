@@ -337,7 +337,7 @@ variable "paperspace_api_next_url" {
 
 # this defaults to clustered configuration
 variable "metrics_port" {
-  type = number
+  type    = number
   default = 8481
 }
 
@@ -437,4 +437,10 @@ variable "admin_team_handle" {
   description = "Team handle that should have extra admin access on workloads executed on the cluster. This setting should only be used on multi-team clusters."
   type        = string
   default     = ""
+}
+
+variable "ceph_provisioner_replicas" {
+  description = "Number of replicas to run for the cephfs-csi-provisioner"
+  type        = number
+  default     = 3
 }

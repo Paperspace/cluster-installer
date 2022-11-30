@@ -130,3 +130,14 @@ variable "registry_pool_name" {
   type        = string
   default     = ""
 }
+
+variable "external_s3_ip_addresses" {
+  description = "IP addresses for S3 datacenter local s3 service"
+  type        = list(string)
+  default     = []
+}
+
+variable "external_s3_port" {
+  description = "Port for http access to a datacenter local s3 service"
+  type        = number
+}
