@@ -205,3 +205,9 @@ variable "admin_team_handle" {
   type        = string
   default     = ""
 }
+
+variable "ceph_provisioner_replicas" {
+  description = "Number of replicas to run for the cephfs-csi-provisioner"
+  type        = number
+  default     = 3
+}

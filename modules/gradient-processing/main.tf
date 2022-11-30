@@ -20,10 +20,10 @@ locals {
   }
   rbd_storage_config = var.rbd_storage_config == "" ? {} : jsondecode(var.rbd_storage_config)
 
-  tls_secret_name                    = "gradient-processing-tls"
-  prometheus_pool_name               = var.prometheus_pool_name != "" ? var.prometheus_pool_name : var.service_pool_name
+  tls_secret_name      = "gradient-processing-tls"
+  prometheus_pool_name = var.prometheus_pool_name != "" ? var.prometheus_pool_name : var.service_pool_name
 
-  gradient_metrics_endpoint = "${var.metrics_request_protocol}://${var.metrics_service_name}:${var.metrics_port}${var.metrics_path}"
+  gradient_metrics_endpoint         = "${var.metrics_request_protocol}://${var.metrics_service_name}:${var.metrics_port}${var.metrics_path}"
   gradient_metrics_adapter_endpoint = "${var.metrics_request_protocol}://${var.metrics_service_name}"
 
   nfs_subdir_external_provisioner_path   = var.nfs_subdir_external_provisioner_path != "" ? var.nfs_subdir_external_provisioner_path : var.shared_storage_path
@@ -136,63 +136,64 @@ resource "helm_release" "gradient_processing" {
     templatefile("${path.module}/templates/values.yaml.tpl", {
       enabled = var.enabled
 
-      aws_region                                          = var.aws_region
-      artifacts_path                                      = var.artifacts_path
-      cluster_autoscaler_autoscaling_groups               = var.cluster_autoscaler_autoscaling_groups
-      cluster_autoscaler_cloudprovider                    = var.cluster_autoscaler_cloudprovider
-      cluster_autoscaler_enabled                          = var.cluster_autoscaler_enabled
-      cluster_autoscaler_delay_after_add                  = var.cluster_autoscaler_delay_after_add
-      cluster_autoscaler_unneeded_time                    = var.cluster_autoscaler_unneeded_time
-      cluster_handle                                      = var.cluster_handle
-      cluster_secret_checksum                             = sha256("${var.cluster_handle}${var.cluster_apikey}${var.cluster_authorization_token}")
-      default_storage_name                                = local.local_storage_name
-      dispatcher_host                                     = var.dispatcher_host
-      efs_provisioner_enabled                             = var.shared_storage_type == "efs" || var.local_storage_type == "efs"
-      is_public_cluster                                   = var.is_public_cluster
-      domain                                              = var.domain
-      global_selector                                     = var.global_selector
-      label_selector_cpu                                  = var.label_selector_cpu
-      label_selector_gpu                                  = var.label_selector_gpu
-      lb_count                                            = var.lb_count
-      lb_pool_name                                        = var.lb_pool_name
-      letsencrypt_enabled                                 = local.letsencrypt_enabled
-      nfs_subdir_external_provisioner_server              = local.nfs_subdir_external_provisioner_server
-      nfs_subdir_external_provisioner_path                = local.nfs_subdir_external_provisioner_path
-      local_storage_config                                = local.local_storage_config
-      local_storage_name                                  = local.local_storage_name
-      local_storage_path                                  = var.local_storage_path
-      local_storage_server                                = var.local_storage_server
-      local_storage_type                                  = var.local_storage_type
-      logs_host                                           = var.logs_host
-      name                                                = var.name
-      nfs_client_provisioner_enabled                      = var.shared_storage_type == "nfs" || var.local_storage_type == "nfs"
-      paperspace_base_url                                 = var.paperspace_base_url
-      paperspace_api_next_url                             = var.paperspace_api_next_url
-      sentry_dsn                                          = var.sentry_dsn
-      service_pool_name                                   = var.service_pool_name
-      shared_storage_config                               = local.shared_storage_config
-      shared_storage_name                                 = local.shared_storage_name
-      shared_storage_path                                 = var.shared_storage_path
-      shared_storage_server                               = var.shared_storage_server
-      shared_storage_type                                 = var.shared_storage_type
-      tls_secret_name                                     = local.tls_secret_name
-      use_pod_anti_affinity                               = var.use_pod_anti_affinity
-      pod_assignment_label_name                           = var.pod_assignment_label_name
-      legacy_datasets_host_path                           = var.legacy_datasets_host_path
-      legacy_datasets_sub_path                            = var.legacy_datasets_sub_path
-      legacy_datasets_pvc_name                            = var.legacy_datasets_pvc_name
-      anti_crypto_miner_regex                             = var.anti_crypto_miner_regex
-      prometheus_resources                                = var.prometheus_resources
-      prometheus_pool_name                                = local.prometheus_pool_name
-      image_cache_enabled                                 = var.image_cache_enabled
-      image_cache_list                                    = jsonencode(var.image_cache_list)
-      metrics_storage_class                               = var.metrics_storage_class
-      rbd_storage_config                                  = local.rbd_storage_config
+      aws_region                             = var.aws_region
+      artifacts_path                         = var.artifacts_path
+      cluster_autoscaler_autoscaling_groups  = var.cluster_autoscaler_autoscaling_groups
+      cluster_autoscaler_cloudprovider       = var.cluster_autoscaler_cloudprovider
+      cluster_autoscaler_enabled             = var.cluster_autoscaler_enabled
+      cluster_autoscaler_delay_after_add     = var.cluster_autoscaler_delay_after_add
+      cluster_autoscaler_unneeded_time       = var.cluster_autoscaler_unneeded_time
+      cluster_handle                         = var.cluster_handle
+      cluster_secret_checksum                = sha256("${var.cluster_handle}${var.cluster_apikey}${var.cluster_authorization_token}")
+      default_storage_name                   = local.local_storage_name
+      dispatcher_host                        = var.dispatcher_host
+      efs_provisioner_enabled                = var.shared_storage_type == "efs" || var.local_storage_type == "efs"
+      is_public_cluster                      = var.is_public_cluster
+      domain                                 = var.domain
+      global_selector                        = var.global_selector
+      label_selector_cpu                     = var.label_selector_cpu
+      label_selector_gpu                     = var.label_selector_gpu
+      lb_count                               = var.lb_count
+      lb_pool_name                           = var.lb_pool_name
+      letsencrypt_enabled                    = local.letsencrypt_enabled
+      nfs_subdir_external_provisioner_server = local.nfs_subdir_external_provisioner_server
+      nfs_subdir_external_provisioner_path   = local.nfs_subdir_external_provisioner_path
+      local_storage_config                   = local.local_storage_config
+      local_storage_name                     = local.local_storage_name
+      local_storage_path                     = var.local_storage_path
+      local_storage_server                   = var.local_storage_server
+      local_storage_type                     = var.local_storage_type
+      logs_host                              = var.logs_host
+      name                                   = var.name
+      nfs_client_provisioner_enabled         = var.shared_storage_type == "nfs" || var.local_storage_type == "nfs"
+      paperspace_base_url                    = var.paperspace_base_url
+      paperspace_api_next_url                = var.paperspace_api_next_url
+      sentry_dsn                             = var.sentry_dsn
+      service_pool_name                      = var.service_pool_name
+      shared_storage_config                  = local.shared_storage_config
+      shared_storage_name                    = local.shared_storage_name
+      shared_storage_path                    = var.shared_storage_path
+      shared_storage_server                  = var.shared_storage_server
+      shared_storage_type                    = var.shared_storage_type
+      tls_secret_name                        = local.tls_secret_name
+      use_pod_anti_affinity                  = var.use_pod_anti_affinity
+      pod_assignment_label_name              = var.pod_assignment_label_name
+      legacy_datasets_host_path              = var.legacy_datasets_host_path
+      legacy_datasets_sub_path               = var.legacy_datasets_sub_path
+      legacy_datasets_pvc_name               = var.legacy_datasets_pvc_name
+      anti_crypto_miner_regex                = var.anti_crypto_miner_regex
+      prometheus_resources                   = var.prometheus_resources
+      prometheus_pool_name                   = local.prometheus_pool_name
+      image_cache_enabled                    = var.image_cache_enabled
+      image_cache_list                       = jsonencode(var.image_cache_list)
+      metrics_storage_class                  = var.metrics_storage_class
+      rbd_storage_config                     = local.rbd_storage_config
+      ceph_provisioner_replicas              = var.ceph_provisioner_replicas
 
-      gradient_metrics_conn_str                           = local.gradient_metrics_endpoint
-      gradient_metrics_adapter_endpoint                   = local.gradient_metrics_adapter_endpoint
-      gradient_metrics_port                               = var.metrics_port
-      gradient_metrics_path                               = var.metrics_path
+      gradient_metrics_conn_str         = local.gradient_metrics_endpoint
+      gradient_metrics_adapter_endpoint = local.gradient_metrics_adapter_endpoint
+      gradient_metrics_port             = var.metrics_port
+      gradient_metrics_path             = var.metrics_path
 
       enable_victoria_metrics_vm_single                   = var.victoria_metrics_vmsingle_enabled
       enable_victoria_metrics_vm_cluster                  = var.victoria_metrics_vmcluster_enabled

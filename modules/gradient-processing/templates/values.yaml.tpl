@@ -103,6 +103,7 @@ csi-driver-nfs:
 
 ceph-csi-cephfs:
   enabled: ${local_storage_type == "ceph-csi-fs" || shared_storage_type == "ceph-csi-fs" ? true : false }
+  replicas: ${ceph_provisioner_replicas}
   csiConfig:
     %{ if local_storage_type == "ceph-csi-fs" }
     - clusterID: gradient-processing-local
