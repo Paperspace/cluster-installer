@@ -29,7 +29,7 @@ persistence:
     size: ${pvc.size}
     storageClass: ${pvc.storage_class}
     existingClaim: ${pvc.existing_claim}
-    accessMode: RWX
+    accessMode: ReadWriteMany
 %{ endif }
 
 
