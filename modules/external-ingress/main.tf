@@ -67,7 +67,7 @@ resource "kubernetes_service" "service" {
   }
 }
 
-resource "kubernetes_ingress" "ingress" {
+resource "kubernetes_ingress_v1" "ingress" {
   metadata {
     name      = var.host
     namespace = var.namespace
@@ -81,9 +81,9 @@ resource "kubernetes_ingress" "ingress" {
           path     = "/"
           pathType = "ImplementationSpecific"
           backend {
-            service = {
+            service {
               name = var.host
-              port = {
+              port {
                 number = 80
               }
             }
