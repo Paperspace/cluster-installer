@@ -29,6 +29,7 @@ persistence:
     size: ${pvc.size}
     storageClass: ${pvc.storage_class}
     existingClaim: ${pvc.existing_claim}
+    accessMode: ReadWriteMany
 %{ endif }
 
 # this should be the default, its a bug in the chart and prevents scheduling more than one instance per node

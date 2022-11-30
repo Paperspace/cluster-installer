@@ -130,7 +130,7 @@ module "container_registry_mirror" {
   hostname            = "container-registry-mirror.${var.domain}"
   pvc_storage = {
     size           = "500Gi"
-    storage_class  = "gradient-processing-images"
+    storage_class  = "gradient-processing-shared"
     existing_claim = ""
   }
   pool_name = var.registry_pool_name != "" ? var.registry_pool_name : var.service_pool_name
