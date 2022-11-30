@@ -135,3 +135,12 @@ module "container_registry_mirror" {
   }
   pool_name = var.registry_pool_name != "" ? var.registry_pool_name : var.service_pool_name
 }
+
+module "s3_external_ingress" {
+  source = "../modules/external-ingress"
+
+  host           = "s3"
+  cluster_domain = var.domain
+  ip_addresses   = var.external_s3_ip_addresses
+  http_port      = var.external_s3_port
+}
