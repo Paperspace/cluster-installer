@@ -44,7 +44,7 @@ resource "kubernetes_endpoints" "endpoints" {
 
     port {
       name     = "http"
-      port     = var.port
+      port     = var.http_port
       protocol = "TCP"
     }
   }
@@ -60,14 +60,14 @@ resource "kubernetes_service" "service" {
     type = "ClusterIP"
 
     port {
-      name       = "http"
-      port       = 80
-      targetPort = var.port
+      name        = "http"
+      port        = 80
+      target_port = var.http_port
     }
   }
 }
 
-resource "kubernetes_ingress_v1" "ingress" {
+resource "kubernetes_ingress" "ingress" {
   metadata {
     name      = var.host
     namespace = var.namespace
