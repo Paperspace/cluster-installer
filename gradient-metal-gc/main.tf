@@ -120,6 +120,7 @@ module "gradient_processing" {
   nfs_subdir_external_provisioner_path                = var.local_storage_path
   nfs_subdir_external_provisioner_server              = var.local_storage_server
   notebook_volume_type                                = var.notebook_volume_type
+  ceph_provisioner_replicas                           = var.ceph_provisioner_replicas
 }
 
 
