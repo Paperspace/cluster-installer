@@ -144,4 +144,11 @@ module "s3_external_ingress" {
   cluster_domain = var.domain
   ip_addresses   = var.external_s3_ip_addresses
   http_port      = var.external_s3_port
+  custom_repsonse_headers = [
+    "Access-Control-Allow-Origin:https://${var.console_host}",
+    "Access-Control-Allow-Methods:GET,PUT,POST,OPTIONS",
+    "Access-Control-Allow-Headers:*",
+    "Access-Control-Expose-Headers:Content-Length,Content-Range",
+    "Access-Control-Allow-Credentials:true",
+  ]
 }

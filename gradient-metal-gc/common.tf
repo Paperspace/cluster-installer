@@ -211,3 +211,9 @@ variable "ceph_provisioner_replicas" {
   type        = number
   default     = 3
 }
+
+variable "console_host" {
+  description = "Console host"
+  default     = "console.paperspace.com"
+  type        = string
+}
