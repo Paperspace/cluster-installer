@@ -75,7 +75,7 @@ resource "kubernetes_ingress" "ingress" {
 
   spec {
     rule {
-      host = var.fqdn
+      host = local.fqdn
       http {
         path {
           path     = "/"
