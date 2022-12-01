@@ -6,6 +6,8 @@ global:
     handle: ${cluster_handle}
     name: ${name}
 
+  natsAuthToken: ${nats_token}
+
   logs:
     host: ${logs_host}
   ingressHost: ${domain}
@@ -679,6 +681,10 @@ nodeHealthChecks:
 nats:
   enabled: true
 
+  auth:
+    enabled: true
+    token: ${nats_token}
+
   nats:
     cluster:
       enabled: true
@@ -696,14 +702,19 @@ nats:
         size: 150Gi
         storageClassName: ${nats_storage_class}
 
-prometheusNatsBridge:
-  enabled: true
-
 telemetry:
   enabled: true
 
-  replicaCount: 3
+  replicaCount: 4
 
   config:
-    logLeve: "info"
+    logLevel: "info"
     logsAPI: ${logs_host}
+
+natsBridge:
+  enabled: true
+
+  config:
+    port: 8085
+
+  replicaCount: 3
