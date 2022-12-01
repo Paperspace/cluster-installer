@@ -517,7 +517,7 @@ victoria-metrics-k8s-stack:
       %{ endif }
 
     additionalRemoteWrites:
-      - url: http://prometheus-nats-bridge:8080/receive
+      - url: http://gradient-nats-bridge:8085/prometheus
 
   kubelet:
     enabled: true
