@@ -291,11 +291,6 @@ variable "nats_storage_class" {
   default     = "gradient-processing-local"
 }
 
-variable "nats_token" {
-  description = "Token for nats token auth"
-  type        = string
-}
-
 variable "cert_manager_enabled" {
   description = "enable installation of the cert-manager operator"
   type        = bool
