@@ -710,6 +710,7 @@ telemetry:
   config:
     logLevel: "info"
     logsAPI: ${logs_host}
+    useSSL: true
 
 natsBridge:
   enabled: true
