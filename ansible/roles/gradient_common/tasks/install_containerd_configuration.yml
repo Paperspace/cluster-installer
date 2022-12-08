@@ -18,7 +18,7 @@
 
 - name: Create containerd cgroups
   ansible.builtin.file:
-    path: '/sys/fs/cgroup/{{ item }}'
+    path: '/sys/fs/cgroup/{{ containerd_cgroup_path }}'
     state: directory
     mode: 0755
   loop:
@@ -28,15 +28,19 @@
     - cpu/podruntime.slice
     - memory/podruntime.slice
     - systemd/podruntime.slice
+  loop_control:
+    loop_var: containerd_cgroup_path
 
 - name: Create dirs for containerd mount
   ansible.builtin.file:
-    path: '{{ item }}'
+    path: '{{ containerd_mount_dir }}'
     state: directory
     mode: 0755
   loop:
     - /var/lib/docker/containerd
     - /var/lib/rancher/rke2/agent/containerd
+  loop_control:
+    loop_var: containerd_mount_dir
 
 - name: Create mounts for containerd
   ansible.posix.mount:
@@ -47,6 +51,12 @@
     opts: defaults,bind
     backup: 0
     passno: 2
+
+- name: Create /etc/rancher/rke2 dir
+  ansible.builtin.file:
+    path: '/etc/rancher/rke2'
+    state: directory
+    mode: 0755
 
 - name: Setup containerd registries.yaml
   ansible.builtin.copy:

@@ -1,0 +1,20 @@
+---
+- name: Check for k9s install
+  shell: command -v k9s > /dev/null 2>&1
+  register: knines_check
+  ignore_errors: true
+
+- name: Install k9s
+  ansible.builtin.shell:
+    cmd: |
+      (
+        OS="$(uname)" &&
+        ARCH="$(uname -m | sed -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+        K9S="k9s_${OS}_${ARCH}" &&
+        curl -fsSLO "https://github.com/derailed/k9s/releases/download/v{{ knines_version }}/${K9S}.tar.gz" &&
+        tar zxvf "${K9S}.tar.gz" &&
+        mv k9s /usr/local/sbin
+      )
+  vars:
+    knines_version: '0.26.7'
+  when: knines_check.failed
