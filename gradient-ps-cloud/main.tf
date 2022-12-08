@@ -304,6 +304,7 @@ locals {
   legacy_datasets_pvc_name = var.gradient_machine_config == "paperspace-public" ? "gradient-processing-shared" : ""
   legacy_datasets_sub_path = var.gradient_machine_config == "paperspace-public" ? "datasets" : ""
   metrics_storage_class    = local.is_public_cluster ? "gradient-processing-rbd" : "gradient-processing-local"
+  nats_storage_class       = local.is_public_cluster ? "gradient-processing-rbd" : "gradient-processing-local"
   gradient_main_kind = (
     var.gradient_machine_config == "paperspace-public" ?
     "etcd"
@@ -583,6 +584,7 @@ module "gradient_processing" {
   prometheus_resources        = var.prometheus_resources
   prometheus_pool_name        = local.prometheus_pool_name
   metrics_storage_class       = local.metrics_storage_class
+  nats_storage_class          = local.nats_storage_class
   rbd_storage_config          = var.rbd_storage_config
   cert_manager_enabled        = true
   image_cache_enabled         = true

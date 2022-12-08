@@ -6,6 +6,8 @@ global:
     handle: ${cluster_handle}
     name: ${name}
 
+  natsAuthToken: ${nats_token}
+
   logs:
     host: ${logs_host}
   ingressHost: ${domain}
@@ -515,8 +517,12 @@ victoria-metrics-k8s-stack:
           memory: 4Gi
       %{ endif }
 
+    additionalRemoteWrites:
+      - url: http://gradient-nats-bridge:8085/prometheus
+
   kubelet:
     enabled: true
+    cadvisor: true
     spec:
       interval: 20s
       scrapeTimeout: 10s
@@ -677,3 +683,45 @@ prometheus-adapter:
 
 nodeHealthChecks:
   enabled: ${ node_health_check_enabled }
+
+nats:
+  enabled: true
+
+  auth:
+    enabled: true
+    token: ${nats_token}
+
+  nats:
+    cluster:
+      enabled: true
+      replicas: 3
+  
+    jetstream:
+      enabled: true
+
+      memStorage:
+        enabled: false
+        size: 10Gi
+
+      fileStorage:
+        enabled: true
+        size: 150Gi
+        storageClassName: ${nats_storage_class}
+
+telemetry:
+  enabled: true
+
+  replicaCount: 4
+
+  config:
+    logLevel: "info"
+    logsAPI: ${logs_host}
+    useSSL: true
+
+natsBridge:
+  enabled: true
+
+  config:
+    port: 8085
+
+  replicaCount: 3
