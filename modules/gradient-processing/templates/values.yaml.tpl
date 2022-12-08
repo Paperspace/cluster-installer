@@ -433,7 +433,12 @@ victoria-metrics-k8s-stack:
         %{ endif }
         extraArgs:
           search.maxConcurrentRequests: "200"
-          search.maxQueryDuration: "60s"
+          search.maxFederateSeries: "6000000"
+          search.maxPointsPerTimeseries: "6000000"
+          search.maxPointsSubqueryPerTimeseries: "6000000"
+          search.maxQueryDuration: 60s
+          search.maxSeries: "6000000"
+          search.maxUniqueTimeseries: "6000000"
         replicaCount: ${vm_select_replica_count}
         nodeSelector:
           paperspace.com/pool-name: ${prometheus_pool_name}
