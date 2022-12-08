@@ -2,10 +2,12 @@
 - name: Gradient RKE2 Common Tasks
   ansible.builtin.include_role:
     name: gradient_common
-    tasks_from: '{{ item }}'
+    tasks_from: '{{ gradient_common_task }}'
   loop:
     - main
     - install_containerd_configuration
+  loop_control:
+    loop_var: gradient_common_task
 
 - name: Install RKE2 for Initial Server
   ansible.builtin.include_tasks: install_rke2_on_initial_server.yml
@@ -26,3 +28,6 @@
 
 - name: Install Stern
   ansible.builtin.include_tasks: install_stern.yml
+
+- name: Install Stern
+  ansible.builtin.include_tasks: install_k9s.yml
