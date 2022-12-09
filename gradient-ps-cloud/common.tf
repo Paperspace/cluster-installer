@@ -217,3 +217,12 @@ variable "console_host" {
   default     = "console.paperspace.com"
   type        = string
 }
+
+variable "vmsingle_resources" {
+  description = "map of k8s resource requests for vmsingle"
+  type = object({
+    cpu    = string
+    memory = string
+  })
+  default = null
+}
