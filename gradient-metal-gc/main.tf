@@ -94,24 +94,27 @@ module "gradient_processing" {
   cert_manager_enabled        = var.cert_manager_enabled
   image_cache_enabled         = true
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
-    # Ordered by most used
-    "graphcore/tensorflow-jupyter:2-amd-2.6.0-ubuntu-20.04-20220804",
-    "graphcore/tensorflow-jupyter:1-amd-2.6.0-ubuntu-18.04-20220804",
-    "graphcore/pytorch-jupyter:2.6.0-ubuntu-20.04-20220804",
-
     # Images used internally
-    "paperspace/notebook_idle:v1.0.5",
+    # "paperspace/notebook_idle:v1.0.5",
+
+    # Ordered by most used
+    "graphcore/pytorch-jupyter:3.0.0-ubuntu-20.04-20221206",
+    "graphcore/tensorflow-jupyter:2-amd-3.0.0-ubuntu-20.04-20221206",
+    "graphcore/tensorflow-jupyter:2-amd-3.0.0-ubuntu-18.04-20221206",
+    "graphcore/tensorflow-jupyter:ogb-competition-2022-11-21"
   ]
   metrics_server_enabled                              = false
   victoria_metrics_vmcluster_enabled                  = false
+  victoria_metrics_vmcluster_vmstorage_replicacount   = var.victoria_metrics_vmcluster_vmstorage_replicacount
   metrics_port                                        = 8429
   metrics_service_name                                = "vmsingle-gradient-processing-victoria-metrics"
   metrics_path                                        = "/prometheus"
   victoria_metrics_vmsingle_enabled                   = true
-  metrics_storage_class                               = "gradient-processing-local"
+  metrics_storage_class                               = var.metrics_storage_class
   pod_assignment_label_name                           = "paperspace.com/pool-name"
   ipu_controller_server                               = var.ipu_controller_server
-  ipu_model_cache_pvc_name                            = "gradient-processing-images"
+  ipuof_vipu_api_host                                 = var.ipuof_vipu_api_host
+  ipuof_vipu_api_port                                 = var.ipuof_vipu_api_port
   legacy_datasets_host_path                           = "/mnt/public/data"
   is_graphcore                                        = true
   victoria_metrics_prometheus_node_exporter_host_port = var.victoria_metrics_prometheus_node_exporter_host_port
@@ -119,6 +122,7 @@ module "gradient_processing" {
   node_health_check_enabled                           = false // only needed on ps clouds
   nfs_subdir_external_provisioner_path                = var.local_storage_path
   nfs_subdir_external_provisioner_server              = var.local_storage_server
+  rbd_storage_config                                  = var.rbd_storage_config
   notebook_volume_type                                = var.notebook_volume_type
   ceph_provisioner_replicas                           = var.ceph_provisioner_replicas
 }

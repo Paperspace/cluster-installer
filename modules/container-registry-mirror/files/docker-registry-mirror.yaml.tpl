@@ -5,6 +5,14 @@ replicaCount: ${replica_count}
 
 storage: ${storage}
 
+resources:
+  limits:
+    cpu: 100m
+    memory: 2Gi
+  requests:
+    cpu: 100m
+    memory: 2Gi
+
 %{ if s3 != null }
 s3:
     region: "${s3.region}"

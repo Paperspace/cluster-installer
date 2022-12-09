@@ -65,6 +65,6 @@
       mirrors:
         docker.io:
           endpoint:
-            - "https://container-registry-mirror.{{ containerd_cluster_domain }}"
+            - "{{ containerd_cluster_domain }}"
             - "https://index.docker.io"
   when: containerd_cluster_domain is defined
