@@ -6,7 +6,7 @@ global:
     handle: ${cluster_handle}
     name: ${name}
 
-  natsAuthToken: ${nats_token}
+  natsAuthToken: "${nats_token}"
 
   logs:
     host: ${logs_host}
@@ -694,7 +694,7 @@ nats:
 
   auth:
     enabled: true
-    token: ${nats_token}
+    token: "${nats_token}"
 
   nats:
     cluster:
