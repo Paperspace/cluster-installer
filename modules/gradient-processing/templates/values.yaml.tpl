@@ -723,8 +723,24 @@ telemetry:
     logsAPI: ${logs_host}
     useSSL: true
 
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+
 natsBridge:
   enabled: true
+
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+    limits:
+      cpu: 2000m
+      memory: 4Gi
 
   config:
     port: 8085
