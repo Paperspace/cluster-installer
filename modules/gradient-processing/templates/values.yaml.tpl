@@ -6,7 +6,7 @@ global:
     handle: ${cluster_handle}
     name: ${name}
 
-  natsAuthToken: ${nats_token}
+  natsAuthToken: "${nats_token}"
 
   logs:
     host: ${logs_host}
@@ -694,7 +694,7 @@ nats:
 
   auth:
     enabled: true
-    token: ${nats_token}
+    token: "${nats_token}"
 
   nats:
     cluster:
@@ -723,8 +723,24 @@ telemetry:
     logsAPI: ${logs_host}
     useSSL: true
 
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+
 natsBridge:
   enabled: true
+
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+    limits:
+      cpu: 2000m
+      memory: 4Gi
 
   config:
     port: 8085
