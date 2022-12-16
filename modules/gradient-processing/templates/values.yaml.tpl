@@ -710,7 +710,7 @@ nats:
 
       fileStorage:
         enabled: true
-        size: 250Gi
+        size: 350Gi
         storageClassName: ${nats_storage_class}
 
 telemetry:
