@@ -273,10 +273,13 @@ variable "is_public_cluster" {
   default     = false
 }
 
-variable "prometheus_resources" {
-  description = "map of k8s resource requests for prometheus"
-  type        = map(string)
-  default     = null
+variable "vmsingle_resources" {
+  description = "map of k8s resource requests for vmsingle"
+  type = object({
+    cpu    = string
+    memory = string
+  })
+  default = null
 }
 
 variable "metrics_storage_class" {

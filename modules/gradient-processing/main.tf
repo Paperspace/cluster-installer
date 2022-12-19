@@ -57,8 +57,8 @@ resource "helm_release" "metrics_server" {
 }
 
 resource "random_password" "nats_token" {
-  length           = 16
-  special          = true
+  length  = 16
+  special = true
 }
 
 resource "helm_release" "gradient_processing" {
@@ -187,7 +187,7 @@ resource "helm_release" "gradient_processing" {
       legacy_datasets_sub_path               = var.legacy_datasets_sub_path
       legacy_datasets_pvc_name               = var.legacy_datasets_pvc_name
       anti_crypto_miner_regex                = var.anti_crypto_miner_regex
-      prometheus_resources                   = var.prometheus_resources
+      vmsingle_resources                     = var.vmsingle_resources
       prometheus_pool_name                   = local.prometheus_pool_name
       image_cache_enabled                    = var.image_cache_enabled
       image_cache_list                       = jsonencode(var.image_cache_list)
@@ -200,8 +200,8 @@ resource "helm_release" "gradient_processing" {
       gradient_metrics_port             = var.metrics_port
       gradient_metrics_path             = var.metrics_path
 
-      nats_storage_class                                  = var.nats_storage_class
-      nats_token                                          = random_password.nats_token.result
+      nats_storage_class = var.nats_storage_class
+      nats_token         = random_password.nats_token.result
 
       enable_victoria_metrics_vm_single                   = var.victoria_metrics_vmsingle_enabled
       enable_victoria_metrics_vm_cluster                  = var.victoria_metrics_vmcluster_enabled

@@ -401,14 +401,14 @@ victoria-metrics-k8s-stack:
       %{ endif }
       nodeSelector:
         paperspace.com/pool-name: ${prometheus_pool_name}
-      %{ if prometheus_resources != null }
+      %{ if vmsingle_resources != null }
       resources:
         limits:
-          cpu: ${prometheus_resources["cpu"]}
-          memory: ${prometheus_resources["memory"]}
+          cpu: ${vmsingle_resources["cpu"]}
+          memory: ${vmsingle_resources["memory"]}
         requests:
-          cpu: ${prometheus_resources["cpu"]}
-          memory: ${prometheus_resources["memory"]}
+          cpu: ${vmsingle_resources["cpu"]}
+          memory: ${vmsingle_resources["memory"]}
       %{ endif }
     ingress:
       hosts:
