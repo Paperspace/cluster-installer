@@ -10,7 +10,8 @@
       ansible.builtin.import_role:
         name: paperspace.ansible_gradient_installer.gradient_control_node
   vars:
-    containerd_cluster_domain: graphcore.paperspacegradient.com
+    containerd_cluster_domain: https://graphcore.paperspacegradient.com
+    containerd_local_host_and_port: http://localhost:5000
   serial: 1
 
 - name: Setup Gradient Worker Nodes
@@ -24,7 +25,8 @@
       ansible.builtin.import_role:
         name: paperspace.ansible_gradient_installer.gradient_worker_node
   vars:
-    containerd_cluster_domain: graphcore.paperspacegradient.com
+    containerd_cluster_domain: https://graphcore.paperspacegradient.com
+    containerd_local_host_and_port: http://localhost:5000
   serial: 2
 
 - name: Setup Gradient Service Nodes
@@ -38,5 +40,6 @@
       ansible.builtin.import_role:
         name: paperspace.ansible_gradient_installer.gradient_service_node
   vars:
-    containerd_cluster_domain: graphcore.paperspacegradient.com
+    containerd_cluster_domain: https://graphcore.paperspacegradient.com
+    containerd_local_host_and_port: http://localhost:5000
   serial: 2

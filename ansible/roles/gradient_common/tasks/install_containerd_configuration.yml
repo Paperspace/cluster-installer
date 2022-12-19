@@ -1,4 +1,12 @@
 ---
+- name: Modprobe overlay
+  ansible.builtin.shell:
+    cmd: sudo modprobe overlay
+
+- name: Modprobe br_netfilter
+  ansible.builtin.shell:
+    cmd: sudo modprobe br_netfilter
+
 - name: Install containerd.conf
   ansible.builtin.copy:
     dest: /etc/modules-load.d/containerd.conf
@@ -58,13 +66,58 @@
     state: directory
     mode: 0755
 
-- name: Setup containerd registries.yaml
+- name: Create /etc/containerd/certs.d dir
+  ansible.builtin.file:
+    path: '/etc/containerd/certs.d'
+    state: directory
+    mode: 0755
+
+- name: Create /etc/containerd/certs.d/_default dir
+  ansible.builtin.file:
+    path: '/etc/containerd/certs.d/_default'
+    state: directory
+    mode: 0755
+
+- name: Install custom domain and local containerd registry config
   ansible.builtin.copy:
-    dest: /etc/rancher/rke2/registries.yaml
+    dest: /etc/containerd/certs.d/_default/hosts.toml
+    mode: 0744
     content: |
-      mirrors:
-        docker.io:
-          endpoint:
-            - "{{ containerd_cluster_domain }}"
-            - "https://index.docker.io"
+      server = "{{ containerd_cluster_domain }}"
+
+      [host."{{ containerd_local_host_and_port }}"]
+        capabilities = ["pull", "resolve"]
+        skip_verify = true
+
+      [host."{{ containerd_cluster_domain }}"]
+        capabilities = ["pull", "resolve"]
+  when: containerd_cluster_domain is defined and containerd_local_host_and_port is defined
+
+- name: Install custom domain containerd registry config
+  ansible.builtin.copy:
+    dest: /etc/containerd/certs.d/_default/hosts.toml
+    mode: 0744
+    content: |
+      server = "{{ containerd_cluster_domain }}"
+
+      [host."{{ containerd_cluster_domain }}"]
+        capabilities = ["pull", "resolve"]
   when: containerd_cluster_domain is defined
+
+- name: Create default containerd config
+  ansible.builtin.shell:
+    cmd: |
+      sudo containerd config default \
+      | sed 's/SystemdCgroup \= false/SystemdCgroup \= true/g' \
+      | sudo tee /etc/containerd/config.toml
+
+- name: Pickup systemctl changes
+  ansible.builtin.shell:
+    cmd: sudo systemctl --system
+
+- name: Restart containerd
+  ansible.builtin.systemd:
+    name: containerd.service
+    state: started
+    enabled: true
+    daemon_reload: true

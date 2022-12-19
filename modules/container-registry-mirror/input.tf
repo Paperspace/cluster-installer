@@ -1,6 +1,6 @@
 variable "replica_count" {
   description = "How many instances of the mirror to run"
-  default     = 2
+  default     = 3
   type        = number
 }
 
