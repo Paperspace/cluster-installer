@@ -581,7 +581,7 @@ module "gradient_processing" {
   legacy_datasets_pvc_name    = local.legacy_datasets_pvc_name
   legacy_datasets_sub_path    = local.legacy_datasets_sub_path
   anti_crypto_miner_regex     = var.anti_crypto_miner_regex
-  prometheus_resources        = var.prometheus_resources
+  vmsingle_resources          = var.vmsingle_resources
   prometheus_pool_name        = local.prometheus_pool_name
   metrics_storage_class       = local.metrics_storage_class
   nats_storage_class          = local.nats_storage_class
