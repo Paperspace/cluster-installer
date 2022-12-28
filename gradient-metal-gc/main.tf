@@ -42,7 +42,7 @@ variable "gradient_processing_enabled" {
 }
 
 locals {
-  nats_storage_class = length(rbd_storage_config) != 0 ? "gradient-processing-rbd" : "gradient-processing-local"
+  nats_storage_class = "gradient-processing-shared"
 }
 
 // Gradient
