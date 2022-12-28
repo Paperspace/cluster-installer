@@ -143,6 +143,7 @@ ceph-csi-rbd:
     userID: ${rbd_storage_config["user"]}
     userKey: ${rbd_storage_config["password"]}
   provisioner:
+    replicaCount: 2
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
     %{ if is_public_cluster }
@@ -274,6 +275,8 @@ gradient-operator:
     %{ if is_graphcore }
     ipuControllerServer: ${ipu_controller_server}
     ipuModelsCachePVCName: ${ipu_model_cache_pvc_name}
+    ipuofVipuApiHost: ${ipuof_vipu_api_host}
+    ipuofVipuApiPort: ${ipuof_vipu_api_port}
     graphcoreCluster: true
     %{ endif }
     adminTeamHandle: ${admin_team_handle}

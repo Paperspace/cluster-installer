@@ -405,6 +405,18 @@ variable "ipu_model_cache_pvc_name" {
   default     = ""
 }
 
+variable "ipuof_vipu_api_host" {
+  description = "Sets the IPUOF_VIPU_API_HOST for ipu configuration"
+  type        = string
+  default     = "localhost"
+}
+
+variable "ipuof_vipu_api_port" {
+  description = "Sets the IPUOF_VIPU_API_PORT for ipu configuration"
+  type        = number
+  default     = 8090
+}
+
 variable "is_graphcore" {
   description = "Is a cluster on graphcore hardware"
   type        = bool

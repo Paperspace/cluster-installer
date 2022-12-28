@@ -91,6 +91,18 @@ variable "ipu_model_cache_pvc_name" {
   default     = ""
 }
 
+variable "ipuof_vipu_api_host" {
+  description = "Sets the IPUOF_VIPU_API_HOST for ipu configuration"
+  type        = string
+  default     = "localhost"
+}
+
+variable "ipuof_vipu_api_port" {
+  description = "Sets the IPUOF_VIPU_API_PORT for ipu configuration"
+  type        = number
+  default     = 8090
+}
+
 variable "victoria_metrics_prometheus_node_exporter_host_port" {
   description = "Victoria Metrics Prometheus Node Exporter"
   type        = number
@@ -101,6 +113,11 @@ variable "prometheus_pool_name" {
   description = "Victoria Metrics Kubernetes Node Selector Identifier"
   type        = string
   default     = "metrics"
+}
+
+variable "rbd_storage_config" {
+  description = "Local storage config json"
+  default     = ""
 }
 
 variable "notebook_volume_type" {
@@ -140,4 +157,16 @@ variable "external_s3_ip_addresses" {
 variable "external_s3_port" {
   description = "Port for http access to a datacenter local s3 service"
   type        = number
+}
+
+variable "metrics_storage_class" {
+  description = "Name of the storage class for the metrics server"
+  type        = string
+  default     = "gradient-processing-shared"
+}
+
+variable "victoria_metrics_vmcluster_vmstorage_replicacount" {
+  description = "How many vmstorage replicas do you want running?"
+  type        = number
+  default     = 3
 }
