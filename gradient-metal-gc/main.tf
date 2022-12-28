@@ -96,8 +96,11 @@ module "gradient_processing" {
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
     # Images used internally
     # "paperspace/notebook_idle:v1.0.5",
+    "paperspace/gradient-integrations-sidecar:latest",
 
     # Ordered by most used
+    "graphcore/pytorch-jupyter:2.6.0-ubuntu-20.04-20220804",
+    "graphcore/tensorflow-jupyter:2-amd-2.6.0-ubuntu-20.04-20220804",
     "graphcore/pytorch-jupyter:3.0.0-ubuntu-20.04-20221206",
     "graphcore/tensorflow-jupyter:2-amd-3.0.0-ubuntu-20.04-20221206",
     "graphcore/tensorflow-jupyter:2-amd-3.0.0-ubuntu-18.04-20221206",
@@ -125,6 +128,7 @@ module "gradient_processing" {
   rbd_storage_config                                  = var.rbd_storage_config
   notebook_volume_type                                = var.notebook_volume_type
   ceph_provisioner_replicas                           = var.ceph_provisioner_replicas
+       nats_storage_class = "gradient-processing-rbd"
 }
 
 

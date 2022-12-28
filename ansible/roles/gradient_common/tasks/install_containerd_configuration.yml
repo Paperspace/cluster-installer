@@ -78,6 +78,17 @@
     state: directory
     mode: 0755
 
+- name: Install custom domain containerd registry config
+  ansible.builtin.copy:
+    dest: /etc/containerd/certs.d/_default/hosts.toml
+    mode: 0744
+    content: |
+      server = "{{ containerd_cluster_domain }}"
+
+      [host."{{ containerd_cluster_domain }}"]
+        capabilities = ["pull", "resolve"]
+  when: containerd_cluster_domain is defined
+
 - name: Install custom domain and local containerd registry config
   ansible.builtin.copy:
     dest: /etc/containerd/certs.d/_default/hosts.toml
@@ -92,17 +103,6 @@
       [host."{{ containerd_cluster_domain }}"]
         capabilities = ["pull", "resolve"]
   when: containerd_cluster_domain is defined and containerd_local_host_and_port is defined
-
-- name: Install custom domain containerd registry config
-  ansible.builtin.copy:
-    dest: /etc/containerd/certs.d/_default/hosts.toml
-    mode: 0744
-    content: |
-      server = "{{ containerd_cluster_domain }}"
-
-      [host."{{ containerd_cluster_domain }}"]
-        capabilities = ["pull", "resolve"]
-  when: containerd_cluster_domain is defined
 
 - name: Create default containerd config
   ansible.builtin.shell:
