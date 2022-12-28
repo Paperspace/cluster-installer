@@ -41,6 +41,10 @@ variable "gradient_processing_enabled" {
   default = 1
 }
 
+locals {
+  nats_storage_class = "gradient-processing-shared"
+}
+
 // Gradient
 module "gradient_processing" {
   source  = "../modules/gradient-processing"
@@ -128,7 +132,7 @@ module "gradient_processing" {
   rbd_storage_config                                  = var.rbd_storage_config
   notebook_volume_type                                = var.notebook_volume_type
   ceph_provisioner_replicas                           = var.ceph_provisioner_replicas
-       nats_storage_class = "gradient-processing-rbd"
+  nats_storage_class                                  = local.nats_storage_class
 }
 
 
