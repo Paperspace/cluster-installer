@@ -1,3 +1,0 @@
----
-- name: Install Gradient Common Base Packages
-  ansible.builtin.include_tasks: install_base_packages.yml
