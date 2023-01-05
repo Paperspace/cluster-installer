@@ -266,8 +266,11 @@ gradient-operator:
     ingressHost: ${domain}
     workspaceUploadUseSSL: true
     usePodAntiAffinity: ${use_pod_anti_affinity}
-    %{ if is_public_cluster || is_graphcore }
+    %{ if is_public_cluster }
     notebookPendingTimeout: 900
+    %{ endif }
+    %{ if is_graphcore }
+    notebookPendingTimeout: 45
     %{ endif }
 
     notebookVolumeType: ${notebook_volume_type}
