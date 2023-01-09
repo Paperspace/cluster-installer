@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{ matrix.directory }}
+        working-directory: ${{ matrix.directory }}/tests
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
