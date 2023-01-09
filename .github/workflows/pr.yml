@@ -46,8 +46,6 @@ jobs:
         directory:
           [gradient-aws, gradient-metal, gradient-metal-gc, gradient-ps-cloud]
         workspace: [default]
-    container:
-      image: paperspace/circleci-helm:3.2.0
     runs-on: ubuntu-latest
     defaults:
       run:
