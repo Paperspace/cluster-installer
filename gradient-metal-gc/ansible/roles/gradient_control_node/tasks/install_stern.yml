@@ -1,0 +1,20 @@
+---
+- name: Check for stern install
+  shell: command -v stern > /dev/null 2>&1
+  register: stern_check
+  ignore_errors: true
+
+- name: Install stern
+  ansible.builtin.shell:
+    cmd: |
+      (
+        OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+        ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+        STERN="stern_{{ version }}_${OS}_${ARCH}" &&
+        curl -fsSLO "https://github.com/stern/stern/releases/download/v{{ version }}/${STERN}.tar.gz" &&
+        tar zxvf "${STERN}.tar.gz" &&
+        mv stern /usr/local/sbin
+      )
+  vars:
+    version: '1.22.0'
+  when: stern_check.failed

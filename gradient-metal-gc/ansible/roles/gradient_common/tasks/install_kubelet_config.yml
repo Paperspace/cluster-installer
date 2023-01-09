@@ -1,0 +1,17 @@
+---
+- name: Install Gradient RKE2 KubeletConfig File
+  copy:
+    dest: /etc/rancher/rke2/kubelet-config.yaml
+    content: |
+      apiVersion: kubelet.config.k8s.io/v1beta1
+      kind: KubeletConfiguration
+      kubeReserved:
+        cpu: "500m"
+        memory: "256Mi"
+        ephemeral-storage: "10Gi"
+      kubeReservedCgroup: "/podruntime.slice"
+      sytemReserved:
+        cpu: "500m"
+        memory: "256Mi"
+        ephemeral-storage: "5Gi"
+      systemReservedCgroup: "/system.slice"
