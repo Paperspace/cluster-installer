@@ -1,0 +1,22 @@
+---
+- name: Check for kubectl install
+  shell: command -v kubectl > /dev/null 2>&1
+  register: kubectl_check
+  ignore_errors: true
+
+- name: Add signing key for installing kubectl
+  ansible.builtin.shell:
+    cmd: curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  when: kubectl_check.failed
+
+- name: Add apt repository for kubectl
+  ansible.builtin.apt_repository:
+    state: present
+    repo: deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+  when: kubectl_check.failed
+
+- name: Install required apt packages
+  ansible.builtin.apt:
+    pkg:
+      - kubectl
+  when: kubectl_check.failed

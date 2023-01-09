@@ -1,0 +1,123 @@
+---
+- name: Modprobe overlay
+  ansible.builtin.shell:
+    cmd: sudo modprobe overlay
+
+- name: Modprobe br_netfilter
+  ansible.builtin.shell:
+    cmd: sudo modprobe br_netfilter
+
+- name: Install containerd.conf
+  ansible.builtin.copy:
+    dest: /etc/modules-load.d/containerd.conf
+    mode: 0744
+    content: |
+      overlay
+      br_netfilter
+
+- name: Install 99-kubernetes-cri.conf
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/99-kubernetes-cri.conf
+    mode: 0744
+    content: |
+      net.bridge.bridge-nf-call-iptables  = 1
+      net.ipv4.ip_forward                 = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+
+- name: Create containerd cgroups
+  ansible.builtin.file:
+    path: '/sys/fs/cgroup/{{ containerd_cgroup_path }}'
+    state: directory
+    mode: 0755
+  loop:
+    - pids/podruntime.slice
+    - hugetlb/podruntime.slice
+    - cpuset/podruntime.slice
+    - cpu/podruntime.slice
+    - memory/podruntime.slice
+    - systemd/podruntime.slice
+  loop_control:
+    loop_var: containerd_cgroup_path
+
+- name: Create dirs for containerd mount
+  ansible.builtin.file:
+    path: '{{ containerd_mount_dir }}'
+    state: directory
+    mode: 0755
+  loop:
+    - /var/lib/docker/containerd
+    - /var/lib/rancher/rke2/agent/containerd
+  loop_control:
+    loop_var: containerd_mount_dir
+
+- name: Create mounts for containerd
+  ansible.posix.mount:
+    src: /var/lib/docker/containerd
+    path: /var/lib/rancher/rke2/agent/containerd
+    state: mounted
+    fstype: none
+    opts: defaults,bind
+    backup: 0
+    passno: 2
+
+- name: Create /etc/rancher/rke2 dir
+  ansible.builtin.file:
+    path: '/etc/rancher/rke2'
+    state: directory
+    mode: 0755
+
+- name: Create /etc/containerd/certs.d dir
+  ansible.builtin.file:
+    path: '/etc/containerd/certs.d'
+    state: directory
+    mode: 0755
+
+- name: Create /etc/containerd/certs.d/_default dir
+  ansible.builtin.file:
+    path: '/etc/containerd/certs.d/_default'
+    state: directory
+    mode: 0755
+
+- name: Install custom domain containerd registry config
+  ansible.builtin.copy:
+    dest: /etc/containerd/certs.d/_default/hosts.toml
+    mode: 0744
+    content: |
+      server = "{{ containerd_cluster_domain }}"
+
+      [host."{{ containerd_cluster_domain }}"]
+        capabilities = ["pull", "resolve"]
+  when: containerd_cluster_domain is defined
+
+- name: Install custom domain and local containerd registry config
+  ansible.builtin.copy:
+    dest: /etc/containerd/certs.d/_default/hosts.toml
+    mode: 0744
+    content: |
+      server = "{{ containerd_cluster_domain }}"
+
+      [host."{{ containerd_local_host_and_port }}"]
+        capabilities = ["pull", "resolve"]
+        skip_verify = true
+
+      [host."{{ containerd_cluster_domain }}"]
+        capabilities = ["pull", "resolve"]
+  when: containerd_cluster_domain is defined and containerd_local_host_and_port is defined
+
+- name: Create default containerd config
+  ansible.builtin.shell:
+    cmd: |
+      sudo containerd config default \
+      | sed 's/SystemdCgroup \= false/SystemdCgroup \= true/g' \
+      | sudo tee /etc/containerd/config.toml
+
+- name: Pickup systemctl changes
+  ansible.builtin.shell:
+    cmd: sudo systemctl --system
+
+- name: Restart containerd
+  ansible.builtin.systemd:
+    name: containerd.service
+    state: started
+    enabled: true
+    daemon_reload: true
