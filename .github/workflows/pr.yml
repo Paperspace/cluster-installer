@@ -35,7 +35,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          file: integrations-sidecar/Dockerfile
+          file: Dockerfile
           push: true
           tags: paperspace/papersapce/gradient-installer:0.0.0-${{ github.sha }}
 
@@ -83,7 +83,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            const output = `## Terraform Results for ${{ matrix.directory }}\`
+            #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
             <details><summary>Validation Output</summary>
