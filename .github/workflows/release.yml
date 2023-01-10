@@ -42,3 +42,5 @@ jobs:
       # TODO install jq?
       - run: bin/build $GITHUB_REF
       - run: bin/upload $GITHUB_REF
+        env:
+          GH_TOKEN: ${{ secrets.PSBOT_GITHUB_TOKEN }}
