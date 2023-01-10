@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       # TODO install jq?
-      - run: bin/build $GITHUB_REF
-      - run: bin/upload $GITHUB_REF
+      - run: bin/build ${{ github.ref }}
+      - run: bin/upload ${{ github.ref }}
         env:
           GH_TOKEN: ${{ secrets.PSBOT_GITHUB_TOKEN }}
