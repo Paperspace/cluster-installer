@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set docker tag name
-        run: echo "::set-output name=DOCKER_TAG_NAME::$GITHUB_REF"
+        run: echo "::set-output name=DOCKER_TAG_NAME::$(echo $GITHUB_REF | cut -d / -f 3)"
         id: docker-tag-name
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
