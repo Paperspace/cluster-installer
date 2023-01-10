@@ -14,9 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set docker tag name
-        run: echo "::set-output name=DOCKER_TAG_NAME::$(echo $GITHUB_REF | cut -d / -f 3)"
-        id: docker-tag-name
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -32,7 +29,7 @@ jobs:
           push: true
           tags: |
             paperspace/gradient-installer:latest
-            paperspace/gradient-installer:${{ steps.docker-tag-name.outputs.DOCKER_TAG_NAME }}
+            paperspace/gradient-installer:${{ github.ref_name}}
 
   upload_assets:
     name: upload-assests
@@ -40,7 +37,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       # TODO install jq?
-      - run: bin/build ${{ github.ref }}
-      - run: bin/upload ${{ github.ref }}
+      - run: bin/build ${{ github.ref_name }}
+      - run: bin/upload ${{ github.ref_name }}
         env:
           GH_TOKEN: ${{ secrets.PSBOT_GITHUB_TOKEN }}
