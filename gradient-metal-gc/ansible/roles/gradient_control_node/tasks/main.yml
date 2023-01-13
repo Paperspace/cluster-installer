@@ -18,6 +18,24 @@
   ansible.builtin.include_tasks: install_rke2_on_other_servers.yml
   when: inventory_hostname in groups['gradient_control_nodes'][1:]
 
+- name: Install rke2-coredns HelmConfigChart
+  copy:
+    dest: /var/lib/rancher/rke2/server/manifests/rke2-coredns-config.yaml
+    content: |
+      apiVersion: helm.cattle.io/v1
+      kind: HelmChartConfig
+      metadata:
+        name: rke2-coredns
+        namespace: kube-system
+      spec:
+        valuesContent: |-
+          autoscaler:
+            enabled: false
+          replicaCount: {{ rke2_coredns_replica_count }}
+          nodeSelector:
+            paperspace.com/pool-name: services-small
+  when: inventory_hostname in groups['gradient_control_nodes'][0]
+
 - name: Install Terraform
   ansible.builtin.include_tasks: install_terraform.yml
 
