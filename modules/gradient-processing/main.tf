@@ -98,7 +98,7 @@ resource "helm_release" "gradient_processing" {
 
   set {
     name = "traefik.timeouts.forwarding.responseHeaderTimeout"
-    value = "10m"
+    value = var.forwarding_response_header_timeout
   }
 
   set_sensitive {
