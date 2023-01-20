@@ -96,6 +96,11 @@ resource "helm_release" "gradient_processing" {
     value = var.tls_key
   }
 
+  set {
+    name = "traefik.timeouts.forwarding.responseHeaderTimeout"
+    value = "10m"
+  }
+
   set_sensitive {
     name  = "traefik.acme.dnsProvider.name"
     value = var.letsencrypt_dns_name

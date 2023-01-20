@@ -1,6 +1,5 @@
 global:
   amqpExchange: ${cluster_handle}
-
   artifactsPath: ${artifacts_path}
   cluster:
     handle: ${cluster_handle}
@@ -554,7 +553,7 @@ traefik:
   serviceType: NodePort
   %{ if !is_public_cluster }
   deploymentStrategy:
-    type: Recreate
+    type: RollingUpdate
   %{ endif }
   deployment:
     hostNetwork: true
