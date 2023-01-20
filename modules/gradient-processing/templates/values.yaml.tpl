@@ -1,6 +1,5 @@
 global:
   amqpExchange: ${cluster_handle}
-
   artifactsPath: ${artifacts_path}
   cluster:
     handle: ${cluster_handle}
@@ -552,10 +551,8 @@ traefik:
 
   %{ if (label_selector_cpu != "" && label_selector_gpu != "") || cluster_autoscaler_cloudprovider == "paperspace" }
   serviceType: NodePort
-  %{ if !is_public_cluster }
   deploymentStrategy:
     type: Recreate
-  %{ endif }
   deployment:
     hostNetwork: true
     hostPort:
