@@ -551,10 +551,8 @@ traefik:
 
   %{ if (label_selector_cpu != "" && label_selector_gpu != "") || cluster_autoscaler_cloudprovider == "paperspace" }
   serviceType: NodePort
-  %{ if !is_public_cluster }
   deploymentStrategy:
-    type: RollingUpdate
-  %{ endif }
+    type: Recreate
   deployment:
     hostNetwork: true
     hostPort:
