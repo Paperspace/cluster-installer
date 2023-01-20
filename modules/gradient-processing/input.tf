@@ -468,6 +468,6 @@ variable "ceph_provisioner_replicas" {
 
 variable "forwarding_response_header_timeout" {
   description = "Traefik forwarding response header timeout"
-  type        = "string"
+  type        = string
   default     = "10m"
 }
