@@ -611,7 +611,7 @@ module "gradient_processing" {
 
     # Images used internally
     "bitnami/git:2.38.1",
-    "paperspace/notebook_idle:v1.0.5",
+    "paperspace/notebook_idle:1.0.6",
   ]
   metrics_server_enabled = false
 }
