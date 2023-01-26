@@ -597,7 +597,7 @@ module "gradient_processing" {
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
     # Ordered by most used
     "paperspace/gradient-base:pt112-tf29-jax0314-py39-20220803",
-    "paperspace/gradient-base:pt112-tf29-jax0317-py39-20230125"
+    "paperspace/gradient-base:pt112-tf29-jax0317-py39-20230125",
     "paperspace/fastai:2.0-fastbook-2022-10-13",
 
     # note nvidia will tell you to use the `nvcr.io/rapidsai/rapidsai` releases
