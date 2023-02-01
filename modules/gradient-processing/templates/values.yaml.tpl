@@ -425,6 +425,8 @@ victoria-metrics-k8s-stack:
       vminsert:
         extraArgs:
           maxLabelsPerTimeseries: "70"
+        nodeSelector:
+          paperspace.com/pool-name: ${service_pool_name}
       vmselect:
         resources:
         %{ if is_public_cluster }
@@ -694,6 +696,9 @@ nodeHealthChecks:
 
 nats:
   enabled: true
+
+  nodeSelector:
+    paperspace.com/pool-name: ${service_pool_name}
 
   auth:
     enabled: true
