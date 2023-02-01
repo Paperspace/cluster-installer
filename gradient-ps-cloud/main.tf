@@ -287,10 +287,10 @@ locals {
   gradient_prometheus_pool_count   = local.enable_gradient_prometheus_pool == 1 ? 1 : 0
   prometheus_pool_name             = local.enable_gradient_prometheus_pool == 1 ? "prometheus" : "services-small"
   gradient_lb_count                = var.kind == "multinode" ? 2 : 0
-  gradient_main_count              = local.is_public_cluster ? 5 : var.kind == "multinode" ? 3 : 1
+  gradient_main_count              = local.is_public_cluster ? 5 : var.kind == "multinode" ? 3 : 1 # etcd or etcd + api-server. 1, 3, and 5 are the only valid configs
 
-  gradient_controlplane_count = local.is_public_cluster ? 3 : 0
-  gradient_service_count      = var.kind == "multinode" ? 5 : 0
+  gradient_controlplane_count = local.is_public_cluster ? 5 : 0 # kube api-server. scale horizontally
+  gradient_service_count      = var.kind == "multinode" ? 5 : 0 # generic worker pool for gradient servces, scale horizontally
   k8s_version                 = var.k8s_version == "" ? "1.20.15" : var.k8s_version
   kubeconfig                  = yamldecode(rancher2_cluster_sync.main.kube_config)
   lb_ips                      = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
@@ -597,6 +597,7 @@ module "gradient_processing" {
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
     # Ordered by most used
     "paperspace/gradient-base:pt112-tf29-jax0314-py39-20220803",
+    "paperspace/gradient-base:pt112-tf29-jax0317-py39-20230125",
     "paperspace/fastai:2.0-fastbook-2022-10-13",
 
     # note nvidia will tell you to use the `nvcr.io/rapidsai/rapidsai` releases
@@ -610,7 +611,7 @@ module "gradient_processing" {
 
     # Images used internally
     "bitnami/git:2.38.1",
-    "paperspace/notebook_idle:v1.0.5",
+    "paperspace/notebook_idle:1.0.6",
   ]
   metrics_server_enabled = false
 }

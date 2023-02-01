@@ -1,6 +1,5 @@
 global:
   amqpExchange: ${cluster_handle}
-
   artifactsPath: ${artifacts_path}
   cluster:
     handle: ${cluster_handle}
@@ -175,7 +174,7 @@ cluster-autoscaler:
   image:
     pullPolicy: Always
     repository: paperspace/cluster-autoscaler
-    tag: 1.20-8e250224947c4c0ea6bff9b48aeb14b2c1f1648f
+    tag: 1.20-1cc038f0793e8dcefb1ae8364b1dfaa044a1d124-amd64
 
   autoscalingGroups:
     %{ for autoscaling_group in cluster_autoscaler_autoscaling_groups }
@@ -552,10 +551,8 @@ traefik:
 
   %{ if (label_selector_cpu != "" && label_selector_gpu != "") || cluster_autoscaler_cloudprovider == "paperspace" }
   serviceType: NodePort
-  %{ if !is_public_cluster }
   deploymentStrategy:
     type: Recreate
-  %{ endif }
   deployment:
     hostNetwork: true
     hostPort:

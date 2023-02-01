@@ -1,0 +1,11 @@
+---
+- name: Install required apt packages
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - golang-go
+      - nfs-common
+      - nfs-kernel-server
+      - python3-pip
