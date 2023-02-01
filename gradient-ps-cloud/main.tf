@@ -289,7 +289,7 @@ locals {
   gradient_lb_count                = var.kind == "multinode" ? 2 : 0
   gradient_main_count              = local.is_public_cluster ? 5 : var.kind == "multinode" ? 3 : 1 # etcd or etcd + api-server. 1, 3, and 5 are the only valid configs
 
-  gradient_controlplane_count = local.is_public_cluster ? 5 : 0 # kube api-server. scale horizontally
+  gradient_controlplane_count = local.is_public_cluster ? 4 : 0 # kube api-server. scale horizontally
   gradient_service_count      = var.kind == "multinode" ? 5 : 0 # generic worker pool for gradient servces, scale horizontally
   k8s_version                 = var.k8s_version == "" ? "1.20.15" : var.k8s_version
   kubeconfig                  = yamldecode(rancher2_cluster_sync.main.kube_config)
