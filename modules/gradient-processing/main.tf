@@ -42,6 +42,21 @@ resource "helm_release" "cert_manager" {
       "nodeSelector" = {
         "paperspace.com/pool-name" = var.service_pool_name
       }
+      "webhook" = {
+        "nodeSelector" = {
+          "paperspace.com/pool-name" = var.service_pool_name
+        }
+      }
+      "cainjector" = {
+        "nodeSelector" = {
+          "paperspace.com/pool-name" = var.service_pool_name
+        }
+      }
+      "startupapicheck" = {
+        "nodeSelector" = {
+          "paperspace.com/pool-name" = var.service_pool_name
+        }
+      }
     })
   ]
 }
@@ -52,6 +67,14 @@ resource "helm_release" "metrics_server" {
   repository = "https://kubernetes-sigs.github.io/metrics-server"
   chart      = "metrics-server"
   version    = var.metrics_server_version
+  
+  values = [
+    yamlencode({
+      "nodeSelector" = {
+        "paperspace.com/pool-name" = var.service_pool_name
+      }
+    })
+  ]
 }
 
 resource "random_password" "nats_token" {
