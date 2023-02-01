@@ -1,4 +1,4 @@
-FROM hashicorp/terraform:1.3.5
+FROM hashicorp/terraform:1.3.7
 
 RUN apk add ansible curl bash
 
