@@ -522,11 +522,11 @@ victoria-metrics-k8s-stack:
       %{ if is_public_cluster }
       resources:
         requests:
-          cpu: 1000m
-          memory: 2Gi
+          cpu: 4000m
+          memory: 6Gi
         limits:
-          cpu: 2000m
-          memory: 4Gi
+          cpu: 4000m
+          memory: 6Gi
       %{ endif }
 
     additionalRemoteWrites:
