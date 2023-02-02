@@ -1,6 +1,6 @@
 resource "helm_release" "descheduler" {
   name       = "descheduler"
-  version    = var.chart_version
+  version    = "0.26.0"
   repository = "https://kubernetes-sigs.github.io/descheduler"
   chart      = "descheduler"
 

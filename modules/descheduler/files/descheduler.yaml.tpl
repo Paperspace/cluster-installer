@@ -1,7 +1,7 @@
 kind: Deployment
 deschedulerPolicy:
   strategies:
-    "RemoveEvictedDeploymentPods":
+    "RemoveFailedPods":
       enabled: true
       params:
         failedPods:
@@ -9,5 +9,11 @@ deschedulerPolicy:
           - "Evicted"
           includingInitContainers: true
         labelSelector:
-          matchLabels:
-            paperspace.com/entity-name: deploymentSpec
+          matchExpressions:
+            - { key: "paperspace.com/deployment-id", operator: Exists }
+    "RemoveDuplicates":
+       enabled: true
+       params:
+         removeDuplicates:
+           excludeOwnerKinds:
+           - "ReplicaSet"
