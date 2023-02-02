@@ -29,6 +29,7 @@ jobs:
           push: true
           tags: |
             paperspace/gradient-installer:latest
+            paperspace/gradient-installer:0.0.0-latest
             paperspace/gradient-installer:${{ github.ref_name}}
 
   upload_assets:
