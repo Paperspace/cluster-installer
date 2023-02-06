@@ -8,12 +8,36 @@ deschedulerPolicy:
           reasons:
           - "Evicted"
           includingInitContainers: true
-        labelSelector:
-          matchExpressions:
-            - { key: "paperspace.com/deployment-id", operator: Exists }
     "RemoveDuplicates":
        enabled: true
        params:
          removeDuplicates:
            excludeOwnerKinds:
            - "ReplicaSet"
+    "RemovePodsHavingTooManyRestarts":
+      enabled: true
+      params:
+        podsHavingTooManyRestarts:
+          podRestartThreshold: 3
+          includingInitContainers: true
+    "PodLifeTime":
+      enabled: true
+      params:
+        podLifeTime:
+          maxPodLifeTimeSeconds: 600
+          states:
+          - "Pending"
+          - "Terminating"
+    {* Disabled Strategies *}
+    "RemovePodsViolatingInterPodAntiAffinity":
+      enabled: false
+    "RemovePodsViolatingNodeAffinity":
+      enabled: false
+    "RemovePodsViolatingNodeTaints":
+      enabled: false
+    "RemovePodsViolatingTopologySpreadConstraint":
+      enabled: false
+    "LowNodeUtilization":
+      enabled: false
+    "HighNodeUtilization":
+      enabled: false"
