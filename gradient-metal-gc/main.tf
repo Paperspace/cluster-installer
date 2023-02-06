@@ -166,4 +166,5 @@ module "s3_external_ingress" {
 
 module "descheduler" {
   source = "../modules/descheduler"
+  pool_name = var.service_pool_name
 }

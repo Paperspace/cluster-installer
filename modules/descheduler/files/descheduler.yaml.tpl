@@ -27,9 +27,8 @@ deschedulerPolicy:
       params:
         podLifeTime:
           maxPodLifeTimeSeconds: 600
-          states:
-            - Pending
-            - Terminating
+          podStatusPhases:
+          - Pending
     RemovePodsViolatingInterPodAntiAffinity:
       enabled: false
     RemovePodsViolatingNodeAffinity:

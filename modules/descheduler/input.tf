@@ -1,6 +1,6 @@
 variable "chart_version" {
   description = "Version of the descheduler chart"
-  default     = "0.26.0"
+  default     = "0.21.0"
   type        = string
 }
 
