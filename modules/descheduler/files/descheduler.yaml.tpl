@@ -1,43 +1,44 @@
 kind: Deployment
+nodeSelector:
+  paperspace.com/pool-name: ${pool_name}
 deschedulerPolicy:
   strategies:
-    "RemoveFailedPods":
+    RemoveFailedPods:
       enabled: true
       params:
         failedPods:
           reasons:
-          - "Evicted"
+            - Evicted
           includingInitContainers: true
-    "RemoveDuplicates":
-       enabled: true
-       params:
-         removeDuplicates:
-           excludeOwnerKinds:
-           - "ReplicaSet"
-    "RemovePodsHavingTooManyRestarts":
+    RemoveDuplicates:
+      enabled: true
+      params:
+        removeDuplicates:
+          excludeOwnerKinds:
+            - ReplicaSet
+    RemovePodsHavingTooManyRestarts:
       enabled: true
       params:
         podsHavingTooManyRestarts:
           podRestartThreshold: 3
           includingInitContainers: true
-    "PodLifeTime":
+    PodLifeTime:
       enabled: true
       params:
         podLifeTime:
           maxPodLifeTimeSeconds: 600
           states:
-          - "Pending"
-          - "Terminating"
-    {* Disabled Strategies *}
-    "RemovePodsViolatingInterPodAntiAffinity":
+            - Pending
+            - Terminating
+    RemovePodsViolatingInterPodAntiAffinity:
       enabled: false
-    "RemovePodsViolatingNodeAffinity":
+    RemovePodsViolatingNodeAffinity:
       enabled: false
-    "RemovePodsViolatingNodeTaints":
+    RemovePodsViolatingNodeTaints:
       enabled: false
-    "RemovePodsViolatingTopologySpreadConstraint":
+    RemovePodsViolatingTopologySpreadConstraint:
       enabled: false
-    "LowNodeUtilization":
+    LowNodeUtilization:
       enabled: false
-    "HighNodeUtilization":
-      enabled: false"
+    HighNodeUtilization:
+      enabled: false
