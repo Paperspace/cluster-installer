@@ -86,7 +86,7 @@ module "gradient_processing" {
   name                        = var.name
   sentry_dsn                  = var.sentry_dsn
   service_pool_name           = local.service_pool_name
-  lb_count                    = 2
+  lb_count                    = var.lb_count
   lb_pool_name                = local.load_balancer_pool_name
   shared_storage_server       = var.shared_storage_server
   shared_storage_path         = ""
