@@ -170,3 +170,9 @@ variable "victoria_metrics_vmcluster_vmstorage_replicacount" {
   type        = number
   default     = 3
 }
+
+variable "lb_count" {
+  description = "How many load balancer nodes are available"
+  type        = number
+  default     = 2
+}
