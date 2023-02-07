@@ -135,7 +135,6 @@ module "gradient_processing" {
   nats_storage_class                                  = local.nats_storage_class
 }
 
-
 module "container_registry_mirror" {
   source              = "../modules/container-registry-mirror"
   docker_hub_username = var.docker_hub_username
@@ -163,4 +162,9 @@ module "s3_external_ingress" {
     "Access-Control-Expose-Headers:Content-Length,Content-Range",
     "Access-Control-Allow-Credentials:true",
   ]
+}
+
+module "descheduler" {
+  source = "../modules/descheduler"
+  pool_name = var.service_pool_name
 }
