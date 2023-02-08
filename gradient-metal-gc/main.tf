@@ -164,3 +164,7 @@ module "s3_external_ingress" {
     "Access-Control-Allow-Credentials:true",
   ]
 }
+
+module "node_problem_detector" {
+  source = "../modules/node-problem-detector"
+}
