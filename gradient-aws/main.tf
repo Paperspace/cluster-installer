@@ -80,9 +80,6 @@ module "network" {
 // Kubernetes
 module "kubernetes" {
   source = "./modules/kubernetes"
-  providers = {
-    kubernetes = kubernetes.gradient
-  }
   enable = !local.has_k8s
 
   name = var.name
@@ -144,10 +141,6 @@ provider "kubernetes" {
 module "gradient_processing" {
   source  = "../modules/gradient-processing"
   enabled = module.kubernetes.cluster_status == "" ? false : true
-  providers = {
-    helm       = helm.gradient
-    kubernetes = kubernetes.gradient
-  }
 
   amqp_hostname                     = var.amqp_hostname
   amqp_port                         = var.amqp_port
