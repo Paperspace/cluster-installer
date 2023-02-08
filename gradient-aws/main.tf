@@ -190,3 +190,7 @@ module "gradient_processing" {
 output "elb_hostname" {
   value = module.gradient_processing.traefik_service.status.0.load_balancer.0.ingress.0.hostname
 }
+
+module "node_problem_detector" {
+  source = "../modules/node-problem-detector"
+}

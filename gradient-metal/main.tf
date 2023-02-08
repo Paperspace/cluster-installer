@@ -140,3 +140,7 @@ module "gradient_processing" {
   victoria_metrics_vmcluster_enabled = false
   victoria_metrics_vmsingle_enabled  = true
 }
+
+module "node_problem_detector" {
+  source = "../modules/node-problem-detector"
+}

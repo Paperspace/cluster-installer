@@ -605,7 +605,7 @@ module "gradient_processing" {
     # get data center wide caching. ContainerD will give us more flexility to configure
     # a universal mirror, until then use the dockerhub hosted versions of images please
     "rapidsai/rapidsai:22.10-cuda11.2-runtime-ubuntu20.04-py3.9",
-    
+
     # deployments
     "paperspace/fastapi-deployment:2022-11-14",
 
@@ -772,4 +772,10 @@ module "pool_overprovisioner" {
   helm_repo_username = var.helm_repo_username
   helm_repo_password = var.helm_repo_password
   chart_version      = var.pop_chart_version
+}
+
+
+
+module "node_problem_detector" {
+  source = "../modules/node-problem-detector"
 }
