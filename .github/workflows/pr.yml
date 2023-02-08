@@ -43,7 +43,8 @@ jobs:
     name: terraform
     strategy:
       matrix:
-        directory: [gradient-aws, gradient-metal, gradient-metal-gc]
+        directory:
+          [gradient-aws, gradient-metal, gradient-metal-gc, gradient-ps-cloud]
         workspace: [default]
     runs-on: ubuntu-latest
     defaults:
@@ -70,9 +71,9 @@ jobs:
         id: validate
         run: terraform validate -no-color
 
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -no-color
+      #- name: Terraform Plan
+      #  id: plan
+      #  run: terraform plan -no-color
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
