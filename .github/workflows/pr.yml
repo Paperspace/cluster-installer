@@ -37,7 +37,7 @@ jobs:
         with:
           file: Dockerfile
           push: true
-          tags: paperspace/gradient-installer:0.0.0-${{ github.sha }}
+          tags: paperspace/gradient-installer:0.0.0-${{ github.event.pull_request.head.sha }}
 
   terraform:
     name: terraform
