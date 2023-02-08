@@ -43,8 +43,7 @@ jobs:
     name: terraform
     strategy:
       matrix:
-        directory:
-          [gradient-aws, gradient-metal, gradient-metal-gc, gradient-ps-cloud]
+        directory: [gradient-aws, gradient-metal, gradient-metal-gc]
         workspace: [default]
     runs-on: ubuntu-latest
     defaults:
