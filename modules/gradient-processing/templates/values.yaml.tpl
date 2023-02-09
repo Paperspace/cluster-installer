@@ -230,10 +230,10 @@ dispatcher:
   resources:
     requests:
       cpu: 1000m
-      memory: 1Gi
+      memory: 2Gi
     limits:
       cpu: 1000m
-      memory: 1Gi
+      memory: 2Gi
   %{ endif }
 
 
