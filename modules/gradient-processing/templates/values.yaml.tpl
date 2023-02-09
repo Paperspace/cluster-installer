@@ -706,17 +706,18 @@ nats:
     enabled: true
     replicas: 3
   
-  jetstream:
-    enabled: true
-
-    memStorage:
-      enabled: false
-      size: 10Gi
-
-    fileStorage:
+  nats:
+    jetstream:
       enabled: true
-      size: 350Gi
-      storageClassName: ${nats_storage_class}
+
+      memStorage:
+        enabled: false
+        size: 10Gi
+
+      fileStorage:
+        enabled: true
+        size: 350Gi
+        storageClassName: ${nats_storage_class}
 
 telemetry:
   enabled: true
