@@ -225,17 +225,15 @@ cluster-autoscaler:
     paperspace.com/pool-name: ${service_pool_name}
 
 dispatcher:
-  %{ if is_public_cluster }
-  config:
-    resources:
-      requests:
-        cpu: 250m
-        memory: 512Mi
-      limits:
-        cpu: 250m
-        memory: 800Mi
-  %{ else }
   config: {}
+  %{ if is_public_cluster }
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 1Gi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
   %{ endif }
 
 
