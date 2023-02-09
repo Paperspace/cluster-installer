@@ -702,22 +702,21 @@ nats:
     enabled: true
     token: "${nats_token}"
 
-  nats:
-    cluster:
-      enabled: true
-      replicas: 3
+  cluster:
+    enabled: true
+    replicas: 3
   
-    jetstream:
+  jetstream:
+    enabled: true
+
+    memStorage:
+      enabled: false
+      size: 10Gi
+
+    fileStorage:
       enabled: true
-
-      memStorage:
-        enabled: false
-        size: 10Gi
-
-      fileStorage:
-        enabled: true
-        size: 350Gi
-        storageClassName: ${nats_storage_class}
+      size: 350Gi
+      storageClassName: ${nats_storage_class}
 
 telemetry:
   enabled: true
