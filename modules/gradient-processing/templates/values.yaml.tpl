@@ -702,11 +702,11 @@ nats:
     enabled: true
     token: "${nats_token}"
 
-  nats:
-    cluster:
-      enabled: true
-      replicas: 3
+  cluster:
+    enabled: true
+    replicas: 3
   
+  nats:
     jetstream:
       enabled: true
 
