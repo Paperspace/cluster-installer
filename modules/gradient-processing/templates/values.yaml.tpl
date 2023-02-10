@@ -425,6 +425,24 @@ victoria-metrics-k8s-stack:
           maxLabelsPerTimeseries: "70"
         nodeSelector:
           paperspace.com/pool-name: ${service_pool_name}
+        resources:
+        %{ if is_public_cluster }
+          limits:
+            cpu: "2"
+            memory: 2Gi
+        %{ else }
+          limits:
+            cpu: "1"
+            memory: 1Gi
+        %{ endif }
+        %{ if is_public_cluster }
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+        %{ endif }
       vmselect:
         resources:
         %{ if is_public_cluster }
@@ -447,6 +465,14 @@ victoria-metrics-k8s-stack:
         replicaCount: ${vm_select_replica_count}
         nodeSelector:
           paperspace.com/pool-name: ${prometheus_pool_name}
+        %{ if is_public_cluster }
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+        %{ endif }
         storage:
           volumeClaimTemplate:
             spec:
@@ -460,6 +486,14 @@ victoria-metrics-k8s-stack:
           memory.allowedPercent: "75.0"
         replicaCount: ${vm_storage_replica_count}
         storageDataPath: "/vm-data"
+        %{ if is_public_cluster }
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+        %{ endif }
         nodeSelector:
           paperspace.com/pool-name: ${prometheus_pool_name}
         storage:
@@ -472,12 +506,21 @@ victoria-metrics-k8s-stack:
                   storage: 500Gi
             %{ endif }
         resources:
+        %{ if is_public_cluster }
+          requests:
+            cpu: "1"
+            memory: 4Gi
+          limits:
+            cpu: "6"
+            memory: 20Gi
+        %{ else }
           requests:
             cpu: "1"
             memory: 0.5Gi
           limits:
-            cpu: 6
-            memory: 40Gi
+            cpu: "2"
+            memory: 1Gi
+        %{ endif }
     ingress:
       select:
         hosts:
