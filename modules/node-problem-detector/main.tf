@@ -2,7 +2,7 @@ variable "custom_plugins" {
   type = map(
     object({
       plugin = optional(string, "custom")
-      pluginConfig = optional(map({
+      pluginConfig = optional(object({
         invoke_interval                              = optional(string) // how frequently to check this plugin
         timeout                                      = optional(string) // default rule timeout
         max_output_length                            = optional(number) // the stdout of the script will be truncated to this length
