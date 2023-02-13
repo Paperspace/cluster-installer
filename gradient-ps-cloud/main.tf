@@ -825,50 +825,50 @@ module "node_problem_detector" {
           type      = "permanent"
           condition = "CloudInit"
           reason    = "CloudInitNotDone"
-          path      = locals.guest_health_path
-          args      = concat(locals.guest_health_args, ["-check=cloud-init"])
+          path      = local.guest_health_path
+          args      = concat(local.guest_health_args, ["-check=cloud-init"])
         },
         {
           type      = "permanent"
           condition = "Hostname"
           reason    = "HostnameNotEstablished"
-          path      = locals.guest_health_path
-          args      = concat(locals.guest_health_args, ["-check=hostname"])
+          path      = local.guest_health_path
+          args      = concat(local.guest_health_args, ["-check=hostname"])
         },
         {
           type      = "permanent"
           condition = "CPU"
           reason    = "CPUsNotReady"
-          path      = locals.guest_health_path
-          args      = concat(locals.guest_health_args, ["-check=cpu"])
+          path      = local.guest_health_path
+          args      = concat(local.guest_health_args, ["-check=cpu"])
         },
         {
           type      = "permanent"
           condition = "PCI"
           reason    = "PCIDevicesNotReady"
-          path      = locals.guest_health_path
-          args      = concat(locals.guest_health_args, ["-check=pci"])
+          path      = local.guest_health_path
+          args      = concat(local.guest_health_args, ["-check=pci"])
         },
         {
           type      = "permanent"
           condition = "NvidiaGPUs"
           reason    = "NvidiaGPUsNotReady"
-          path      = locals.guest_health_path
-          args      = concat(locals.guest_health_args, ["-check=gpu"])
+          path      = local.guest_health_path
+          args      = concat(local.guest_health_args, ["-check=gpu"])
         },
         {
           type      = "permanent"
           condition = "Memory"
           reason    = "MemoryNotReady"
-          path      = locals.guest_health_path
-          args      = concat(locals.guest_health_args, ["-check=memory"])
+          path      = local.guest_health_path
+          args      = concat(local.guest_health_args, ["-check=memory"])
         },
         {
           type      = "permanent"
           condition = "Disks"
           reason    = "DiskNotReady"
-          path      = locals.guest_health_path
-          args      = concat(locals.guest_health_args, ["-check=disks"])
+          path      = local.guest_health_path
+          args      = concat(local.guest_health_args, ["-check=disks"])
         },
       ]
     },
