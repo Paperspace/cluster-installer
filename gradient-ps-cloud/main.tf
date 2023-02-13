@@ -773,7 +773,104 @@ module "pool_overprovisioner" {
 }
 
 
+local = {
+  guest_health_args = ["-format=short", "-errors-only=true", "-daemonize=false"]
+  guest_health_path = "/usr/local/bin/linux-guest-health"
+}
 
 module "node_problem_detector" {
   source = "../modules/node-problem-detector"
+  custom_plugins = {
+    "linux-guest-health.json" = {
+      source = "linux-guest-health"
+      conditions = [
+        {
+          type    = "CloudInit"
+          reason  = "CloudInitDone"
+          message = "Cloud-init has completed"
+        },
+        {
+          type    = "Hostname"
+          reason  = "HostnameEstablished"
+          message = "Hostname has been established"
+        },
+        {
+          type    = "CPU"
+          reason  = "CPUReady"
+          message = "The expected number of CPUs are available"
+        },
+        {
+          type    = "PCI"
+          reason  = "PCIDevicesReady"
+          message = "All expected PCI devices (GPUs) are attached"
+        },
+        {
+          type    = "NvidiaGPUs"
+          reason  = "NvidiaGPUsReady"
+          message = "All gpu devices are ready to use"
+        },
+        {
+          type    = "Memory"
+          reason  = "MemoryReady"
+          message = "The expected amount of memory is available"
+        },
+        {
+          type    = "Disks"
+          reason  = "DisksReady"
+          message = "All VM attached disks are ready to use"
+        },
+      ]
+      rules = [
+        {
+          type      = "permanent"
+          condition = "CloudInit"
+          reason    = "CloudInitNotDone"
+          path      = locals.guest_health_path
+          args      = concat(locals.guest_health_args, ["-check=cloud-init"])
+        },
+        {
+          type      = "permanent"
+          condition = "Hostname"
+          reason    = "HostnameNotEstablished"
+          path      = locals.guest_health_path
+          args      = concat(locals.guest_health_args, ["-check=hostname"])
+        },
+        {
+          type      = "permanent"
+          condition = "CPU"
+          reason    = "CPUsNotReady"
+          path      = locals.guest_health_path
+          args      = concat(locals.guest_health_args, ["-check=cpu"])
+        },
+        {
+          type      = "permanent"
+          condition = "PCI"
+          reason    = "PCIDevicesNotReady"
+          path      = locals.guest_health_path
+          args      = concat(locals.guest_health_args, ["-check=pci"])
+        },
+        {
+          type      = "permanent"
+          condition = "NvidiaGPUs"
+          reason    = "NvidiaGPUsNotReady"
+          path      = locals.guest_health_path
+          args      = concat(locals.guest_health_args, ["-check=gpu"])
+        },
+        {
+          type      = "permanent"
+          condition = "Memory"
+          reason    = "MemoryNotReady"
+          path      = locals.guest_health_path
+          args      = concat(locals.guest_health_args, ["-check=memory"])
+        },
+        {
+          type      = "permanent"
+          condition = "Disks"
+          reason    = "DiskNotReady"
+          path      = locals.guest_health_path
+          args      = concat(locals.guest_health_args, ["-check=disks"])
+        },
+      ]
+    },
+  }
 }
