@@ -773,7 +773,7 @@ module "pool_overprovisioner" {
 }
 
 
-local = {
+locals {
   guest_health_args = ["-format=short", "-errors-only=true", "-daemonize=false"]
   guest_health_path = "/usr/local/bin/linux-guest-health"
 }
