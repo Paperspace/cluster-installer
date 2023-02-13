@@ -46,7 +46,7 @@ resource "helm_release" "node_problem_detector" {
   dynamic "set" {
     for_each = var.custom_plugins
 
-    set {
+    content {
       name  = "settings.custom_monitor_definitions.${set.key}"
       value = jsonencode(set.value)
     }
