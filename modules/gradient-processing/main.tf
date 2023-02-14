@@ -12,8 +12,8 @@ locals {
   }
 
   # Use shared configuration for local configuration
-  local_storage_config = local.shared_storage_config
-  local_storage_name   = local.shared_storage_name
+  local_storage_config  = local.shared_storage_config
+  local_storage_name    = local.shared_storage_name
   local_storage_secrets = local.shared_storage_secrets
 
   rbd_storage_config = var.rbd_storage_config == "" ? {} : jsondecode(var.rbd_storage_config)
@@ -67,7 +67,7 @@ resource "helm_release" "metrics_server" {
   repository = "https://kubernetes-sigs.github.io/metrics-server"
   chart      = "metrics-server"
   version    = var.metrics_server_version
-  
+
   values = [
     yamlencode({
       "nodeSelector" = {
@@ -120,7 +120,7 @@ resource "helm_release" "gradient_processing" {
   }
 
   set {
-    name = "traefik.timeouts.forwarding.responseHeaderTimeout"
+    name  = "traefik.timeouts.forwarding.responseHeaderTimeout"
     value = var.forwarding_response_header_timeout
   }
 
@@ -231,8 +231,8 @@ resource "helm_release" "gradient_processing" {
 
       enable_victoria_metrics_vm_single                   = var.victoria_metrics_vmsingle_enabled
       enable_victoria_metrics_vm_cluster                  = var.victoria_metrics_vmcluster_enabled
-      vm_select_replica_count                             = var.cluster_handle == "clw6rxq2s" ? 1 : var.victoria_metrics_vmcluster_vmselect_replicacount
-      vm_storage_replica_count                            = var.cluster_handle == "clw6rxq2s" ? 1 : var.victoria_metrics_vmcluster_vmstorage_replicacount
+      vm_select_replica_count                             = var.victoria_metrics_vmcluster_vmselect_replicacount
+      vm_storage_replica_count                            = var.victoria_metrics_vmcluster_vmstorage_replicacount
       ipu_controller_server                               = var.ipu_controller_server
       ipu_model_cache_pvc_name                            = var.ipu_model_cache_pvc_name
       ipuof_vipu_api_host                                 = var.ipuof_vipu_api_host
