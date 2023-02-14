@@ -283,8 +283,6 @@ locals {
   dns_node_selector                = { "paperspace.com/pool-name" = var.service_pool_name }
   enable_gradient_service          = var.kind == "multinode" ? 1 : 0
   enable_gradient_lb               = var.kind == "multinode" ? 1 : 0
-  enable_gradient_prometheus_pool  = local.is_public_cluster ? 1 : 0
-  gradient_prometheus_pool_count   = local.enable_gradient_prometheus_pool == 1 ? 1 : 0
   prometheus_pool_name             = "services-small"
   gradient_lb_count                = var.kind == "multinode" ? 2 : 0
   gradient_main_count              = local.is_public_cluster ? 5 : var.kind == "multinode" ? 3 : 1 # etcd or etcd + api-server. 1, 3, and 5 are the only valid configs

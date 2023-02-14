@@ -150,12 +150,6 @@ variable "machine_template_id_gpu" {
   default     = "tmun4o2g"
 }
 
-variable "prometheus_resources" {
-  description = "map of k8s resource requests for prometheus"
-  type        = map(string)
-  default     = null
-}
-
 variable "rancher_api_url" {
   description = "Rancher API URL"
 }
@@ -188,22 +182,6 @@ variable "workers" {
 variable "anti_crypto_miner_regex" {
   description = "Scan for crytpo miner processes using this regex"
   default     = ""
-}
-
-variable "machine_storage_prometheus" {
-  type        = number
-  description = "Prometheus storage"
-  default     = 100
-}
-
-variable "machine_template_id_prometheus" {
-  description = "Prometheus template id"
-  default     = "tpi7gqht"
-}
-
-variable "machine_type_prometheus" {
-  description = "Prometheus machine type"
-  default     = "C8"
 }
 
 variable "service_pool_name" {
