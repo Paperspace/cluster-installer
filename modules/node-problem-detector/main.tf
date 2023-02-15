@@ -44,7 +44,7 @@ resource "helm_release" "node_problem_detector" {
   namespace  = "kube-system"
 
   values = [
-    templatefile("${path.module}/templates/values.yaml.tpl", {
+    templatefile("${path.module}/templates/values.json.tpl", {
       custom_plugins = keys(var.custom_plugins)
       plugin_configs = { for name, config in var.custom_plugins : name => jsonencode(config) }
     })
