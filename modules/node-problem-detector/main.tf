@@ -44,17 +44,8 @@ resource "helm_release" "node_problem_detector" {
   namespace  = "kube-system"
 
   values = [
-    <<EOT
-%{if length(var.custom_plugins) != 0~}
-settings:
-  custom_plugin_monitors:
-    %{for name, config in var.custom_plugins~}
-    "${name}": |-
-      ${jsonencode(config)}
-    %{endfor~}
-
-  custom_plugins: ${jsonencode(keys(var.custom_plugins))}
-%{endif~}
-    EOT
+    templatefile("${path.module}/files/values.yaml.tpl", {
+      custom_plugins = var.custom_plugins
+    })
   ]
 }
