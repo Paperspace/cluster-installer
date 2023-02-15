@@ -432,8 +432,8 @@ victoria-metrics-k8s-stack:
             memory: 2Gi
         %{ else }
           limits:
-            cpu: "1"
-            memory: 1Gi
+            cpu: "2"
+            memory: 2Gi
         %{ endif }
         %{ if is_public_cluster }
         affinity:
@@ -451,8 +451,8 @@ victoria-metrics-k8s-stack:
             memory: 10Gi
         %{ else }
           limits:
-            cpu: "2"
-            memory: 4Gi
+            cpu: "4"
+            memory: 10Gi
         %{ endif }
         extraArgs:
           search.maxConcurrentRequests: "200"
@@ -508,15 +508,15 @@ victoria-metrics-k8s-stack:
         resources:
         %{ if is_public_cluster }
           requests:
-            cpu: "1"
-            memory: 4Gi
+            cpu: "6"
+            memory: 20Gi
           limits:
             cpu: "6"
             memory: 20Gi
         %{ else }
           requests:
-            cpu: "1"
-            memory: 0.5Gi
+            cpu: "2"
+            memory: 1Gi
           limits:
             cpu: "2"
             memory: 1Gi
