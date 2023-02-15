@@ -45,7 +45,8 @@ resource "helm_release" "node_problem_detector" {
 
   values = [
     templatefile("${path.module}/templates/values.yaml.tpl", {
-      custom_plugins = var.custom_plugins
+      custom_plugins = keys(var.custom_plugins)
+      plugin_configs = { for name, config in var.custom_plugins : name => jsonencode(config) }
     })
   ]
 }
