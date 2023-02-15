@@ -44,7 +44,7 @@ resource "helm_release" "node_problem_detector" {
   namespace  = "kube-system"
 
   values = [
-    templatefile("${path.module}/files/values.yaml.tpl", {
+    templatefile("${path.module}/templates/values.yaml.tpl", {
       custom_plugins = var.custom_plugins
     })
   ]
