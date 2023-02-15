@@ -43,17 +43,18 @@ resource "helm_release" "node_problem_detector" {
   version    = var.node_problem_detector_version
   namespace  = "kube-system"
 
-  dynamic "set" {
-    for_each = var.custom_plugins
+  values = [
+    <<EOT
+%{if length(var.custom_plugins) != 0~}
+settings:
+  custom_plugin_monitors:
+    %{for name, config in var.custom_plugins~}
+    "${name}": |-
+      ${jsonencode(config)}
+    %{endfor~}
 
-    content {
-      name  = "settings.custom_monitor_definitions.${set.key}"
-      value = jsonencode(set.value)
-    }
-  }
-
-  set {
-    name  = "settings.custom_plugin_monitors"
-    value = jsonencode(keys(var.custom_plugins))
-  }
+  custom_plugins: ${jsonencode(keys(var.custom_plugins))}
+%{endif~}
+    EOT
+  ]
 }
