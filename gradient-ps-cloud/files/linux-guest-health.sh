@@ -14,7 +14,7 @@ if [ ! -f "$GUEST_OUTPUT" ]; then
   exit $UNKNOWN
 fi
 
-error=$(/custom-plugins/bin/jq -r "try .errors.\"$CHECK\" | join(\",\")")
+error=$(jq -r "try .errors.\"$CHECK\" | join(\",\")")
 if [ -n "$error" ]; then
   echo "$error"
   exit $NONOK

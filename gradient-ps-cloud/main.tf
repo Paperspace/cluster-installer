@@ -776,7 +776,7 @@ module "pool_overprovisioner" {
 locals {
   guest_health_report_path = "/var/log/ps-guest-agent"
   guest_health_args        = [format("%s/guest-health.json", local.guest_health_report_path)]
-  guest_health_path        = "/custom-plugins/linux-guest-health.sh"
+  guest_health_path        = "/custom-plugin/bin/linux-guest-health.sh"
 }
 
 module "node_problem_detector" {
@@ -787,7 +787,7 @@ module "node_problem_detector" {
 
   image = {
     repository = "paperspace/node-problem-detector"
-    tag        = "v0.8.7-jq"
+    tag        = "v0.8.12-jq"
   }
 
   extra_volumes = [
@@ -795,7 +795,7 @@ module "node_problem_detector" {
       name = "guest-health"
       hostPath = {
         path = local.guest_health_report_path
-        type = "Directory"
+        type = "DirectoryOrCreate"
       }
     },
   ]
