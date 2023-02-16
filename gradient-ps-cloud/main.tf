@@ -774,8 +774,8 @@ module "pool_overprovisioner" {
 
 
 locals {
-  guest_health_report_path = "/var/log/ps-guest-agent/guest-health.json"
-  guest_health_args        = [local.guest_health_report_path]
+  guest_health_report_path = "/var/log/ps-guest-agent"
+  guest_health_args        = [format("%s/guest-health.json", local.guest_health_report_path)]
   guest_health_path        = "/custom-plugins/linux-guest-health.sh"
 }
 

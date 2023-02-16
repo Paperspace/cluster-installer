@@ -19,30 +19,22 @@ resource "helm_release" "node_problem_detector" {
       image          = var.image
       custom_plugins = [for name in keys(var.custom_plugin_configs) : "/custom-config/${name}"]
       plugin_configs = { for name, config in var.custom_plugin_configs : name => jsonencode(config) }
+      extra_volume_mounts = concat([
+        {
+          name      = "extra-plugin-bin"
+          mountPath = "/custom-plugin/bin"
+          readOnly  = true
+        },
+      ], var.extra_volume_mounts)
+      extra_volumes = concat([
+        {
+          name = "extra-plugin-bin"
+          configMap = {
+            name        = kubernetes_config_map.extra_plugins.metadata[0].name
+            defaultMode = 493 # octal 755
+          }
+        },
+      ], var.extra_volumes)
     })
   ]
-
-  set {
-    name = "extraVolumeMounts"
-    value = jsonencode(concat([
-      {
-        name      = "extra-plugin-bin"
-        mountPath = "/custom-plugin/bin"
-        readOnly  = true
-      },
-    ], var.extra_volume_mounts))
-  }
-
-  set {
-    name = "extraVolumes"
-    value = jsonencode(concat([
-      {
-        name = "extra-plugin-bin"
-        configMap = {
-          name        = kubernetes_config_map.extra_plugins.metadata[0].name
-          defaultMode = 0777
-        }
-      },
-    ], var.extra_volumes))
-  }
 }
