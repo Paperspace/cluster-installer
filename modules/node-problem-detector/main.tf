@@ -1,4 +1,4 @@
-variable "custom_plugins" {
+variable "custom_plugin_configs" {
   type = map(
     object({
       plugin = optional(string, "custom")
@@ -36,6 +36,57 @@ variable "custom_plugins" {
   default     = {}
 }
 
+variable "custom_plugin_scripts" {
+  type        = map(string)
+  description = "Custom plugin monitor scripts. These are mounted in /custom-plugin/bin"
+  default     = {}
+}
+
+variable "custom_plugin_binaries" {
+  type        = map(string)
+  description = "Custom plugin monitor binaries. These are mounted in /custom-plugin/bin. Strings must be base64 encoded."
+  default     = {}
+}
+
+variable "extra_volumes" {
+  type = list(object({
+    name = string
+    hostPath = optional(object({
+      path = string
+      type = optional(string)
+    }))
+    configMap = optional(object({
+      name        = string
+      defaultMode = optional(number)
+    }))
+    persistentVolumeClaim = optional(object({
+      claimName = string
+    }))
+  }))
+  description = "Extra volumes to mount in the node-problem-detector pod"
+  default     = []
+}
+
+variable "extra_volume_mounts" {
+  type = list(object({
+    name      = string
+    mountPath = string
+    readOnly  = optional(bool)
+  }))
+  description = "Extra volume mounts to mount in the node-problem-detector pod"
+  default     = []
+}
+
+resource "kubernetes_config_map" "extra_plugins" {
+  metadata {
+    name      = "node-problem-detector-extra-plugins"
+    namespace = "kube-system"
+  }
+
+  data        = var.custom_plugin_scripts
+  binary_data = var.custom_plugin_binaries
+}
+
 resource "helm_release" "node_problem_detector" {
   name       = "node-problem-detector"
   repository = "https://charts.deliveryhero.io/"
@@ -45,8 +96,32 @@ resource "helm_release" "node_problem_detector" {
 
   values = [
     templatefile("${path.module}/templates/values.json.tpl", {
-      custom_plugins = keys(var.custom_plugins)
-      plugin_configs = { for name, config in var.custom_plugins : name => jsonencode(config) }
+      custom_plugins = [for name in keys(var.custom_plugin_configs) : "/custom-config/${name}"]
+      plugin_configs = { for name, config in var.custom_plugin_configs : name => jsonencode(config) }
     })
   ]
+
+  set {
+    name = "extraVolumeMounts"
+    value = jsonencode(concat([
+      {
+        name      = "extra-plugin-bin"
+        mountPath = "/custom-plugin/bin"
+        readOnly  = true
+      },
+    ], var.extra_volume_mounts))
+  }
+
+  set {
+    name = "extraVolumes"
+    value = jsonencode(concat([
+      {
+        name = "extra-plugin-bin"
+        configMap = {
+          name        = kubernetes_config_map.extra_plugins.metadata[0].name
+          defaultMode = 0777
+        }
+      },
+    ], var.extra_volumes))
+  }
 }

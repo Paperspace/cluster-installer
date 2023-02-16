@@ -774,13 +774,37 @@ module "pool_overprovisioner" {
 
 
 locals {
-  guest_health_args = ["-format=short", "-errors-only=true", "-daemonize=false"]
-  guest_health_path = "/usr/local/bin/linux-guest-health"
+  guest_health_args = ["/var/log/ps-guest-health.json"]
+  guest_health_path = "/custom-plugins/linux-guest-health.sh"
 }
 
 module "node_problem_detector" {
   source = "../modules/node-problem-detector"
-  custom_plugins = {
+  custom_plugin_scripts = {
+    "linux-guest-health.sh" = file("${path.module}/files/linux-guest-health.sh")
+  }
+  custom_plugin_binaries = {
+    "jq" = filebase64("${path.module}/files/jq")
+  }
+
+  extra_volumes = [
+    {
+      name = "guest-health"
+      hostPath = {
+        path = "/var/log/ps-guest-health.json"
+        type = "Directory"
+      }
+    },
+  ]
+  extra_volume_mounts = [
+    {
+      name      = "guest-health"
+      mountPath = "/var/log/ps-guest-health.json"
+      readOnly  = true
+    },
+  ]
+
+  custom_plugin_configs = {
     "linux-guest-health.json" = {
       source = "linux-guest-health"
       conditions = [
@@ -826,49 +850,49 @@ module "node_problem_detector" {
           condition = "CloudInit"
           reason    = "CloudInitNotDone"
           path      = local.guest_health_path
-          args      = concat(local.guest_health_args, ["-check=cloud-init"])
+          args      = concat(local.guest_health_args, ["cloud-init"])
         },
         {
           type      = "permanent"
           condition = "Hostname"
           reason    = "HostnameNotEstablished"
           path      = local.guest_health_path
-          args      = concat(local.guest_health_args, ["-check=hostname"])
+          args      = concat(local.guest_health_args, ["hostname"])
         },
         {
           type      = "permanent"
           condition = "CPU"
           reason    = "CPUsNotReady"
           path      = local.guest_health_path
-          args      = concat(local.guest_health_args, ["-check=cpu"])
+          args      = concat(local.guest_health_args, ["cpu"])
         },
         {
           type      = "permanent"
           condition = "PCI"
           reason    = "PCIDevicesNotReady"
           path      = local.guest_health_path
-          args      = concat(local.guest_health_args, ["-check=pci"])
+          args      = concat(local.guest_health_args, ["pci"])
         },
         {
           type      = "permanent"
           condition = "NvidiaGPUs"
           reason    = "NvidiaGPUsNotReady"
           path      = local.guest_health_path
-          args      = concat(local.guest_health_args, ["-check=gpu"])
+          args      = concat(local.guest_health_args, ["gpu"])
         },
         {
           type      = "permanent"
           condition = "Memory"
           reason    = "MemoryNotReady"
           path      = local.guest_health_path
-          args      = concat(local.guest_health_args, ["-check=memory"])
+          args      = concat(local.guest_health_args, ["memory"])
         },
         {
           type      = "permanent"
           condition = "Disks"
           reason    = "DiskNotReady"
           path      = local.guest_health_path
-          args      = concat(local.guest_health_args, ["-check=disks"])
+          args      = concat(local.guest_health_args, ["disks"])
         },
       ]
     },
