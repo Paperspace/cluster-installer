@@ -774,7 +774,8 @@ module "pool_overprovisioner" {
 
 
 locals {
-  guest_health_args = ["/var/log/ps-guest-health.json"]
+  guest_health_report_path = "/var/log/ps-guest-agent/guest-health.json"
+  guest_health_args = [local.guest_health_report_path]
   guest_health_path = "/custom-plugins/linux-guest-health.sh"
 }
 
@@ -791,7 +792,7 @@ module "node_problem_detector" {
     {
       name = "guest-health"
       hostPath = {
-        path = "/var/log/ps-guest-health.json"
+        path = local.guest_health_report_path
         type = "Directory"
       }
     },
@@ -799,7 +800,7 @@ module "node_problem_detector" {
   extra_volume_mounts = [
     {
       name      = "guest-health"
-      mountPath = "/var/log/ps-guest-health.json"
+      mountPath = local.guest_health_report_path
       readOnly  = true
     },
   ]
