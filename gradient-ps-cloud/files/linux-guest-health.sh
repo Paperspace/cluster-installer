@@ -14,7 +14,7 @@ if [ ! -f "$GUEST_OUTPUT" ]; then
   exit $UNKNOWN
 fi
 
-error=$(jq -r "try .errors.\"$CHECK\" | join(\",\")")
+error=$(jq -r "try .errors.\"$CHECK\" | join(\",\")" "$GUEST_OUTPUT")
 if [ -n "$error" ]; then
   echo "$error"
   exit $NONOK

@@ -1,16 +1,16 @@
-variable "node_problem_detector_version" {
+variable "node_problem_detector_helm_version" {
   type        = string
   description = "Version of the node-problem-detector chart to install"
   default     = "2.3.3"
 }
 
-variable "image" {
+variable "node_problem_detector_image" {
   type = object({
     repository = optional(string)
     tag        = optional(string)
   })
-
-  default = {}
+  description = "Image to use for the node-problem-detector, must supply both repository and tag or neither"
+  default     = {}
 }
 
 variable "custom_plugin_configs" {
@@ -57,7 +57,7 @@ variable "custom_plugin_scripts" {
   default     = {}
 }
 
-variable "extra_volumes" {
+variable "node_problem_detector_extra_volumes" {
   type = list(object({
     name = string
     hostPath = optional(object({
@@ -76,7 +76,7 @@ variable "extra_volumes" {
   default     = []
 }
 
-variable "extra_volume_mounts" {
+variable "node_problem_detector_extra_volume_mounts" {
   type = list(object({
     name      = string
     mountPath = string
@@ -84,4 +84,55 @@ variable "extra_volume_mounts" {
   }))
   description = "Extra volume mounts to mount in the node-problem-detector pod"
   default     = []
+}
+
+variable "draino_flags" {
+  type = object({
+    dry_run                  = optional(string)
+    max_grace_period         = optional(string)
+    eviction_headroom        = optional(string)
+    drain_buffer             = optional(string)
+    node_label_expr          = optional(string)
+    skip_drain               = optional(bool)
+    evict_daemonset_pods     = optional(bool)
+    evict_emptydir_pods      = optional(bool)
+    evict_unreplicated_pods  = optional(bool)
+    protected_pod_annotation = optional(bool)
+  })
+  description = "Flags to pass to draino. If unset the flag is ommited and upstream defaults are used https://github.com/planetlabs/draino"
+  default     = {}
+}
+
+variable "draino_node_selector" {
+  type        = map(string)
+  description = "Node selector for draino"
+  default     = {}
+}
+
+variable "draino_replicas" {
+  type        = number
+  description = "Number of draino replicas to run"
+  default     = 1
+}
+
+
+variable "draino_resources" {
+  type = object({
+    requests = optional(object({
+      cpu    = optional(string, "100m")
+      memory = optional(string, "128Mi")
+    }))
+    limits = optional(object({
+      cpu    = optional(string, "100m")
+      memory = optional(string, "128Mi")
+    }))
+  })
+  description = "Resources to request for draino"
+  default     = {}
+}
+
+variable "draino_image" {
+  type        = string
+  description = "Image to use for the draino"
+  default     = "planetlabs/draino:e0d5277"
 }
