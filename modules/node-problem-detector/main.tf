@@ -155,9 +155,9 @@ locals {
   ])
 
   draino_command = concat(
-    "/draino",
+    ["/draino"],
     local.draino_flags,
-    "--namespace=${local.namespace}",
+    ["--namespace=${local.namespace}"],
     local.node_problem_detector_default_conditions,
     local.custom_conditions
   )
