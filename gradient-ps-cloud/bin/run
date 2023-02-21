@@ -20,8 +20,6 @@ terraform {
 }
 EOF
 
-sleep infinity
-
 terraform init -upgrade
 terraform workspace new "$TF_VAR_cluster_handle" || true
 terraform workspace select "$TF_VAR_cluster_handle"

@@ -62,6 +62,9 @@ resource "kubernetes_service_account" "draino" {
 }
 
 resource "kubernetes_cluster_role" "draino_rbac" {
+  depends_on = [
+    kubernetes_service_account.draino,
+  ]
   metadata {
     name   = "draino"
     labels = local.draino_labels
@@ -70,7 +73,7 @@ resource "kubernetes_cluster_role" "draino_rbac" {
   rule {
     api_groups = [""]
     resources  = ["events"]
-    verbs      = ["get", "patch", "update"]
+    verbs      = ["create", "patch", "update"]
   }
 
   rule {
@@ -117,6 +120,10 @@ resource "kubernetes_cluster_role" "draino_rbac" {
 }
 
 resource "kubernetes_cluster_role_binding" "draino_rbac" {
+  depends_on = [
+    kubernetes_service_account.draino,
+    kubernetes_cluster_role.draino,
+  ]
   metadata {
     name   = "draino"
     labels = local.draino_labels
@@ -164,6 +171,9 @@ locals {
 }
 
 resource "kubernetes_deployment" "draino" {
+  depends_on = [
+    kubernetes_cluster_role_binding.draino,
+  ]
   metadata {
     name      = "draino"
     namespace = local.namespace
