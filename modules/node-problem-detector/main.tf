@@ -61,7 +61,7 @@ resource "kubernetes_service_account" "draino" {
   }
 }
 
-resource "kubernetes_cluster_role" "draino_rbac" {
+resource "kubernetes_cluster_role" "draino" {
   depends_on = [
     kubernetes_service_account.draino,
   ]
@@ -119,7 +119,7 @@ resource "kubernetes_cluster_role" "draino_rbac" {
   }
 }
 
-resource "kubernetes_cluster_role_binding" "draino_rbac" {
+resource "kubernetes_cluster_role_binding" "draino" {
   depends_on = [
     kubernetes_service_account.draino,
     kubernetes_cluster_role.draino,
