@@ -771,9 +771,3 @@ module "pool_overprovisioner" {
   helm_repo_password = var.helm_repo_password
   chart_version      = var.pop_chart_version
 }
-
-
-
-module "node_problem_detector" {
-  source = "../modules/node-problem-detector"
-}
