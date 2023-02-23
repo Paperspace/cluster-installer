@@ -568,6 +568,14 @@ victoria-metrics-k8s-stack:
         limits:
           cpu: 4000m
           memory: 6Gi
+      %{ else }
+      resources:
+        requests:
+          cpu: 1000m
+          memory: 1Gi
+        limits:
+          cpu: 2000m
+          memory: 2Gi
       %{ endif }
 
     additionalRemoteWrites:
