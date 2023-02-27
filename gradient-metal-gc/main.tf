@@ -103,11 +103,9 @@ module "gradient_processing" {
     "paperspace/gradient-integrations-sidecar:latest",
 
     # Ordered by most used
-    "graphcore/pytorch-jupyter:2.6.0-ubuntu-20.04-20220804",
-    "graphcore/tensorflow-jupyter:2-amd-2.6.0-ubuntu-20.04-20220804",
-    "graphcore/pytorch-jupyter:3.0.0-ubuntu-20.04-20221206",
-    "graphcore/tensorflow-jupyter:2-amd-3.0.0-ubuntu-20.04-20221206",
-    "graphcore/tensorflow-jupyter:2-amd-3.0.0-ubuntu-18.04-20221206",
+    "graphcore/pytorch-jupyter:3.1.0-ubuntu-20.04-20230224"
+    "graphcore/pytorch-jupyter:3.1.0-ubuntu-20.04-20230224"
+    "graphcore/tensorflow-jupyter:2-amd-3.1.0-ubuntu-20.04-20230224"
     "graphcore/tensorflow-jupyter:ogb-competition-2022-11-21"
   ]
   metrics_server_enabled                              = false
