@@ -52,6 +52,15 @@
     enabled: no
   when: ansible_facts.services["firewalld.service"] is defined and ansible_facts.services["firewalld.service"].status != "not-found"
 
+# Disable ufw
+# We recommend disabling firewalld. For Kubernetes 1.19+, firewalld must be turned off.
+- name: disable ufw
+  systemd:
+    name: ufw
+    state: stopped
+    enabled: no
+  when: ansible_facts.services["ufw.service"] is defined and ansible_facts.services["ufw.service"].status != "not-found"
+
 - include: network_manager_fix.yaml
 
 - include: config.yml
