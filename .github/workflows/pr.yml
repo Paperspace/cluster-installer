@@ -63,9 +63,9 @@ jobs:
         id: init
         run: terraform init
 
-      - name: Terraform Init
+      - name: Terraform Workspace
         id: workspace
-        run: terraform workspace ${{ matrix.workspace }}
+        run: terraform workspace select ${{ matrix.workspace }}
 
       - name: Terraform Validate
         id: validate
