@@ -167,7 +167,7 @@ module "node_problem_detector" {
   source = "../modules/node-problem-detector"
 }
 
-resource "kubernetes_cron_job_v1" {
+resource "kubernetes_cron_job_v1" "gradient_processing_shared_backup_job" {
   count = var.enable_cephbackup_job ? 1 : 0
 
   metadata {
