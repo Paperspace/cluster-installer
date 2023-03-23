@@ -167,7 +167,7 @@ module "node_problem_detector" {
   source = "../modules/node-problem-detector"
 }
 
-resource "kubernetes_cron_job_v1" "gradient_processing_shared_backup_job" {
+resource "kubernetes_cron_job" "gradient_processing_shared_backup_job" {
   count = var.enable_cephbackup_job ? 1 : 0
 
   metadata {
@@ -188,7 +188,7 @@ resource "kubernetes_cron_job_v1" "gradient_processing_shared_backup_job" {
         template {
           metadata {}
           spec {
-            conatainer {
+            container {
               name    = "rsync"
               image   = "alpinelinux/rsyncd"
               command = ["rsync", "-av", "--delete", "/mnt/gradient/", "/mnt/gradient-backup/"]
@@ -210,14 +210,14 @@ resource "kubernetes_cron_job_v1" "gradient_processing_shared_backup_job" {
 
             volume {
               name = "gradient-shared"
-              persistent_volume_claim = {
+              persistent_volume_claim {
                 claim_name = "gradient-processing-shared"
               }
             }
 
             volume {
               name = "gradient-shared-backup"
-              host_path = {
+              host_path {
                 path = "/mnt/poddata"
               }
             }
