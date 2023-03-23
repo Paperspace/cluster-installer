@@ -81,6 +81,11 @@ variable "dispatcher_host" {
   description = "Dispatcher host"
 }
 
+variable "cluster_api_host" {
+  description = "Cluster API host"
+  default     = "cluster-api.paperspace.com"
+}
+
 variable "domain" {
   description = "domain"
 }

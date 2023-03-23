@@ -51,6 +51,11 @@ variable "dispatcher_host" {
   default     = "dispatcher.paperspace.com"
 }
 
+variable "cluster_api_host" {
+  description = "Cluster API host"
+  default     = "cluster-api.paperspace.com"
+}
+
 variable "domain" {
   description = "Domain used to host gradient"
 }
