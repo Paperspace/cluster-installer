@@ -199,8 +199,8 @@ resource "kubernetes_cron_job" "gradient_processing_shared_backup_job" {
                 read_only  = true
               }
               volume_mount {
-                name      = "gradient-shared-backup"
-                mountPath = "/mnt/gradient-backup"
+                name       = "gradient-shared-backup"
+                mount_path = "/mnt/gradient-backup"
               }
             }
 
