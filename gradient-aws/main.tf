@@ -156,6 +156,7 @@ module "gradient_processing" {
   cluster_autoscaler_enabled        = true
   cluster_handle                    = var.cluster_handle
   dispatcher_host                   = var.dispatcher_host
+  cluster_api_host                  = var.cluster_api_host
   domain                            = var.domain
   helm_repo_username                = var.helm_repo_username
   helm_repo_password                = var.helm_repo_password
