@@ -321,9 +321,9 @@ locals {
 
   // double default limits for beefy clusters
   volume_controller_cpu_request    = var.kind == "multinode" ? "2000m" : "1000m"
-  volume_controller_memory_request = var.kind == "multinode" ? "12144Mi" : "6072m"
+  volume_controller_memory_request = var.kind == "multinode" ? "4Gi" : "1Gi"
   volume_controller_cpu_limit      = var.kind == "multinode" ? "2000m" : "1000m"
-  volume_controller_memory_limit   = var.kind == "multinode" ? "16144Mi" : "8072m"
+  volume_controller_memory_limit   = var.kind == "multinode" ? "4Gi" : "1Gi"
 }
 
 provider "cloudflare" {
