@@ -189,9 +189,19 @@ resource "kubernetes_cron_job" "gradient_processing_shared_backup_job" {
           metadata {}
           spec {
             container {
-              name    = "rsync"
-              image   = "alpinelinux/rsyncd"
-              command = ["rsync", "-av", "--delete", "/mnt/gradient/", "/mnt/gradient-backup/"]
+              name  = "rsync"
+              image = "alpinelinux/rsyncd"
+              command = [
+                "rsync",
+                "-av",
+                "--no-specials",
+                "--no-devices",
+                "--no-group",
+                "--no-owner",
+                "--delete",
+                "/mnt/gradient/",
+                "/mnt/gradient-backup/"
+              ]
 
               volume_mount {
                 name       = "gradient-shared"
