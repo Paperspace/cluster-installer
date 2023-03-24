@@ -202,6 +202,10 @@ resource "kubernetes_cron_job" "gradient_processing_shared_backup_job" {
                 name       = "gradient-shared-backup"
                 mount_path = "/mnt/gradient-backup"
               }
+              security_context {
+                allow_privilege_escalation  = false
+                run_as_user = 0
+              }
             }
 
             node_selector = {
