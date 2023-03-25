@@ -707,12 +707,10 @@ volumeController:
       cpu: ${volume_controller_cpu_limit}
       memory: ${volume_controller_memory_limit}
 
-  %{ if shared_storage_type == "csi-driver-nfs" }
   # if we are using nfs, we want to allow all connections to drops in VC..
   # before rolling out a new pod
   strategy:
     type: Recreate
-  %{ endif }
 
 recycleBin:
   enabled: true
