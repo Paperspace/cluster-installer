@@ -199,8 +199,9 @@ resource "kubernetes_cron_job" "gradient_processing_shared_backup_job" {
                 "--no-group",
                 "--no-owner",
                 "--delete",
+                "--exclude", "/mnt/gradient/volumes", // exclude csi volumes we don't care about prom data and rsync chokes on them
                 "/mnt/gradient/",
-                "/mnt/gradient-backup/"
+                "/mnt/gradient-backup/gradient-volumes"
               ]
 
               volume_mount {
