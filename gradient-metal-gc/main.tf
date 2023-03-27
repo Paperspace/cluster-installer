@@ -2,15 +2,15 @@ terraform {
   required_providers {
     rancher2 = {
       source  = "rancher/rancher2"
-      version = "1.17.0"
+      version = "~> 1.17.0"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "2.3.0"
+      version = "~> 2.3.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.5.0"
+      version = "~> 2.5.0"
     }
   }
 }
@@ -166,4 +166,80 @@ module "s3_external_ingress" {
 
 module "node_problem_detector" {
   source = "../modules/node-problem-detector"
+}
+
+resource "kubernetes_cron_job" "gradient_processing_shared_backup_job" {
+  count = var.enable_cephbackup_job ? 1 : 0
+
+  metadata {
+    name = "gradient-processing-shared-backup"
+  }
+
+  spec {
+    schedule                      = "@hourly"
+    concurrency_policy            = "Forbid"
+    failed_jobs_history_limit     = 3
+    starting_deadline_seconds     = 60
+    successful_jobs_history_limit = 3
+    job_template {
+      metadata {}
+      spec {
+        backoff_limit              = 2
+        ttl_seconds_after_finished = 3600
+        template {
+          metadata {}
+          spec {
+            container {
+              name  = "rsync"
+              image = "alpinelinux/rsyncd"
+              command = [
+                "rsync",
+                "-av",
+                "--no-specials",
+                "--no-devices",
+                "--no-group",
+                "--no-owner",
+                "--delete",
+                "--exclude", "/mnt/gradient/volumes", // exclude csi volumes we don't care about prom data and rsync chokes on them
+                "/mnt/gradient/",
+                "/mnt/gradient-backup/gradient-volumes"
+              ]
+
+              volume_mount {
+                name       = "gradient-shared"
+                mount_path = "/mnt/gradient"
+                read_only  = true
+              }
+              volume_mount {
+                name       = "gradient-shared-backup"
+                mount_path = "/mnt/gradient-backup"
+              }
+              security_context {
+                allow_privilege_escalation = false
+                run_as_user                = 0
+              }
+            }
+
+            node_selector = {
+              "paperspace.com/pool-name" = local.service_pool_name
+            }
+
+            volume {
+              name = "gradient-shared"
+              persistent_volume_claim {
+                claim_name = "gradient-processing-shared"
+              }
+            }
+
+            volume {
+              name = "gradient-shared-backup"
+              host_path {
+                path = "/mnt/poddata"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

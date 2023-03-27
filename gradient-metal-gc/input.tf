@@ -176,3 +176,9 @@ variable "lb_count" {
   type        = number
   default     = 2
 }
+
+variable "enable_cephbackup_job" {
+  description = "Backup the disk to the pure storage volume"
+  type        = bool
+  default     = true
+}
