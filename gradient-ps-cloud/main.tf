@@ -645,7 +645,7 @@ resource "rancher2_cluster" "main" {
     upgrade_strategy {
       drain                        = false
       max_unavailable_controlplane = tostring(max(floor(local.gradient_controlplane_count / 2), 1))
-      max_unavailable_worker       = "10%"
+      max_unavailable_worker       = "10"
     }
 
     services {
