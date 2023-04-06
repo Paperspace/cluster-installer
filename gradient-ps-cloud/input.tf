@@ -68,6 +68,10 @@ variable "machine_type_main" {
     multinode  = "C7"
   }
 }
+variable "machine_type_controlplane" {
+  description = "Controlplane machine type"
+  default = "C8"
+}
 
 variable "machine_storage_lb" {
   type        = number
