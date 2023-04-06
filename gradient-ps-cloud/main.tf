@@ -431,7 +431,7 @@ resource "paperspace_machine" "gradient_main" {
 
   region           = var.region
   name             = "${var.name}-main${format("%02s", count.index + 1)}"
-  machine_type     = var.machine_type_controlplane
+  machine_type     = local.machine_type_main
   size             = var.machine_storage_main
   billing_type     = "hourly"
   assign_public_ip = true
@@ -477,7 +477,7 @@ resource "paperspace_machine" "gradient_controlplane" {
 
   region           = var.region
   name             = "${var.name}-controlplane${format("%02s", count.index + 1)}"
-  machine_type     = local.machine_type_main
+  machine_type     = var.machine_type_controlplane
   size             = var.machine_storage_main
   billing_type     = "hourly"
   assign_public_ip = true
