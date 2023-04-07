@@ -747,6 +747,14 @@ nodeHealthChecks:
 nats:
   enabled: true
 
+  resources:
+    requests:
+      cpu: 2000m
+      memory: 2Gi
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+    
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
 
