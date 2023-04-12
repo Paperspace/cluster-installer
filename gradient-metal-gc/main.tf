@@ -116,6 +116,7 @@ module "gradient_processing" {
   metrics_service_name                                = "vmsingle-gradient-processing-victoria-metrics"
   metrics_path                                        = "/prometheus"
   victoria_metrics_vmsingle_enabled                   = true
+  vmsingle_resources                                  = var.vmsingle_resources
   metrics_storage_class                               = var.metrics_storage_class
   pod_assignment_label_name                           = "paperspace.com/pool-name"
   ipu_controller_server                               = var.ipu_controller_server
