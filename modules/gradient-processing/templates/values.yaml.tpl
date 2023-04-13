@@ -35,6 +35,13 @@ global:
   dispatcherServerApiAddress: ${dispatcher_host}:443
   clusterAPIHost: ${cluster_api_host}:443
 
+  # We already define metrics path + service which correctly point...
+  # to the desired victoria destination. Reuse these for our rewite ingress rule.
+  metrics:
+    ingressHost: ${domain}
+    rewriteTarget: ${metrics_path}
+    serviceName: ${metrics_service_name}-rewrite
+
   defaultStorageName: ${default_storage_name}
   sharedStorageName: ${shared_storage_name}
   storage:
