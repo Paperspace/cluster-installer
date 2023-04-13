@@ -39,8 +39,8 @@ global:
   # to the desired victoria destination. Reuse these for our rewrite ingress rule.
   metrics:
     ingressHost: ${domain}
-    rewriteTarget: ${metrics_path}
-    serviceName: ${metrics_service_name}-rewrite
+    rewriteTarget: ${gradient_metrics_path}
+    serviceName: ${gradient_metrics_service_name}-rewrite
 
   defaultStorageName: ${default_storage_name}
   sharedStorageName: ${shared_storage_name}
