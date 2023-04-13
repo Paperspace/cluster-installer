@@ -227,6 +227,7 @@ resource "helm_release" "gradient_processing" {
       gradient_metrics_adapter_endpoint = local.gradient_metrics_adapter_endpoint
       gradient_metrics_port             = var.metrics_port
       gradient_metrics_path             = var.metrics_path
+      gradient_metrics_service_name     = var.metrics_service_name
 
       nats_storage_class = var.nats_storage_class
       nats_token         = random_password.nats_token.result

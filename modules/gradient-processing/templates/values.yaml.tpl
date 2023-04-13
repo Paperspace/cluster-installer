@@ -35,6 +35,13 @@ global:
   dispatcherServerApiAddress: ${dispatcher_host}:443
   clusterAPIHost: ${cluster_api_host}:443
 
+  # We already define metrics path + service which correctly point...
+  # to the desired victoria destination. Reuse these for our rewrite ingress rule.
+  metrics:
+    ingressHost: ${domain}
+    rewriteTarget: ${gradient_metrics_path}
+    serviceName: ${gradient_metrics_service_name}-rewrite
+
   defaultStorageName: ${default_storage_name}
   sharedStorageName: ${shared_storage_name}
   storage:
