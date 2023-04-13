@@ -36,7 +36,7 @@ global:
   clusterAPIHost: ${cluster_api_host}:443
 
   # We already define metrics path + service which correctly point...
-  # to the desired victoria destination. Reuse these for our rewite ingress rule.
+  # to the desired victoria destination. Reuse these for our rewrite ingress rule.
   metrics:
     ingressHost: ${domain}
     rewriteTarget: ${metrics_path}
