@@ -35,13 +35,6 @@ global:
   dispatcherServerApiAddress: ${dispatcher_host}:443
   clusterAPIHost: ${cluster_api_host}:443
 
-  # We already define metrics path + service which correctly point...
-  # to the desired victoria destination. Reuse these for our rewrite ingress rule.
-  metrics:
-    ingressHost: ${domain}
-    rewriteTarget: ${gradient_metrics_path}
-    serviceName: ${gradient_metrics_service_name}-rewrite
-
   defaultStorageName: ${default_storage_name}
   sharedStorageName: ${shared_storage_name}
   storage:
@@ -571,11 +564,11 @@ victoria-metrics-k8s-stack:
       %{ if is_public_cluster }
       resources:
         requests:
-          cpu: 4000m
-          memory: 6Gi
+          cpu: 8000m
+          memory: 12Gi
         limits:
-          cpu: 4000m
-          memory: 6Gi
+          cpu: 8000m
+          memory: 12Gi
       %{ else }
       resources:
         requests:
