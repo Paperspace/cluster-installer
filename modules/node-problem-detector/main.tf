@@ -166,7 +166,10 @@ locals {
     local.draino_flags,
     ["--namespace=${local.namespace}"],
     local.node_problem_detector_default_conditions,
-    local.custom_conditions
+    local.custom_conditions,
+    ["--leader-election-lease-duration=30s"],
+    ["--leader-election-renew-deadline=15s"],
+    ["--leader-election-retry-period=5s"]
   )
 }
 
