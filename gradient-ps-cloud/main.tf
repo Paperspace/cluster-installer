@@ -503,6 +503,7 @@ resource "paperspace_machine" "gradient_controlplane" {
 
   provisioner "local-exec" {
     command = <<EOF
+            sleep 30
             echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
             --key-file ${local.ssh_key_path} \
