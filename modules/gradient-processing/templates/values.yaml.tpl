@@ -783,7 +783,7 @@ nats:
 
       fileStorage:
         enabled: true
-        size: 350Gi
+        size: 1Ti
         storageClassName: ${nats_storage_class}
 
 telemetry:
