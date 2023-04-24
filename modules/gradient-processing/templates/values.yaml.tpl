@@ -160,7 +160,7 @@ ceph-csi-rbd:
     resources:
       requests:
         cpu: 500m
-        memory: 256Mi
+        memory: 2Gi
       limits:
         cpu: 500m
         memory: 2Gi
@@ -170,7 +170,7 @@ ceph-csi-rbd:
     resources:
       requests:
         cpu: 500m
-        memory: 256Mi
+        memory: 2Gi
       limits:
         cpu: 500m
         memory: 2Gi
@@ -579,8 +579,8 @@ victoria-metrics-k8s-stack:
       %{ else }
       resources:
         requests:
-          cpu: 1000m
-          memory: 1Gi
+          cpu: 2000m
+          memory: 2Gi
         limits:
           cpu: 2000m
           memory: 2Gi
@@ -726,7 +726,7 @@ recycleBin:
   %{ if is_public_cluster }
   resources:
     requests:
-      cpu: 250m
+      cpu: 500m
       memory: 1Gi
     limits:
       cpu: 500m
@@ -757,10 +757,10 @@ nats:
   resources:
     requests:
       cpu: 2000m
-      memory: 2Gi
+      memory: 8Gi
     limits:
       cpu: 2000m
-      memory: 2Gi
+      memory: 8Gi
     
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
@@ -789,7 +789,7 @@ nats:
 telemetry:
   enabled: true
 
-  replicaCount: 4
+  replicaCount: 10
 
   config:
     logLevel: "info"
@@ -799,10 +799,10 @@ telemetry:
   resources:
     requests:
       cpu: 1000m
-      memory: 2Gi
+      memory: 1Gi
     limits:
-      cpu: 2000m
-      memory: 4Gi
+      cpu: 1000m
+      memory: 1Gi
 
 natsBridge:
   enabled: true
