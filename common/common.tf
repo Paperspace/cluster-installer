@@ -223,11 +223,77 @@ variable "console_host" {
   type        = string
 }
 
-variable "vmsingle_resources" {
-  description = "map of k8s resource requests for vmsingle"
-  type = object({
-    cpu    = string
-    memory = string
-  })
-  default = null
+variable "service_resources" {
+  description = "Map of resources for various components. If you only provide a limits value, it will be used for both requests and limits."
+  type = map(object({
+    requests = optional(object({
+      cpu    = string
+      memory = string
+    }), null),
+    limits = object({
+      cpu    = string
+      memory = string
+    })
+  }))
+  // note that defaults are set in the locals block below so that we can merge
+  default = {}
+}
+
+locals {
+  service_resource_defaults = merge({
+    "default" = {
+      "limits" = {
+        "cpu"    = "100m"
+        "memory" = "128Mi"
+      }
+    },
+    "cluster-autoscaler" = {
+      "limits" = {
+        "cpu"    = "100m"
+        "memory" = "512Mi"
+      }
+    },
+    "vmsingle" = {
+      "limits" = {
+        "cpu"    = "2"
+        "memory" = "2Gi"
+      }
+    }
+    "vminsert" = {
+      "limits" = {
+        "cpu"    = "2"
+        "memory" = "2Gi"
+      }
+    },
+    "vmselect" = {
+      "limits" = {
+        "cpu"    = "1"
+        "memory" = "1Gi"
+      }
+    }
+    "vmstorage" = {
+      "limits" = {
+        "cpu"    = "1"
+        "memory" = "1Gi"
+      }
+    },
+    "vmagent" = {
+      "limits" = {
+        "cpu"    = "1"
+        "memory" = "1Gi"
+      }
+    },
+    "argo-rollouts" = {
+      "limits" = {
+        "cpu"    = "100m"
+        "memory" = "128Mi"
+      }
+    },
+    "volume-controller" = {
+      "limits" = {
+        "cpu"    = "500m"
+        "memory" = "1Gi"
+      }
+    },
+  }, var.service_resources)
 }

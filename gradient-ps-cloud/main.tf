@@ -288,7 +288,7 @@ locals {
   gradient_main_count              = local.is_public_cluster ? 5 : var.kind == "multinode" ? 3 : 1 # etcd or etcd + api-server. 1, 3, and 5 are the only valid configs
 
   gradient_controlplane_count = local.is_public_cluster ? 5 : 0 # kube api-server. scale horizontally
-  gradient_service_count      = var.kind == "multinode" ? 12 : 0 # generic worker pool for gradient servces, scale horizontally
+  gradient_service_count      = var.machine_count_service       # generic worker pool for gradient servces, scale horizontally
   k8s_version                 = var.k8s_version == "" ? "1.20.15" : var.k8s_version
   kubeconfig                  = yamldecode(rancher2_cluster_sync.main.kube_config)
   lb_ips                      = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
@@ -296,7 +296,7 @@ locals {
 
   local_storage_path       = var.local_storage_path == "" ? "/srv/gradient" : var.local_storage_path
   local_storage_type       = var.local_storage_type == "" ? "nfs" : var.local_storage_type
-  machine_type_main        = var.kind == "multinode" ? var.machine_type_main["multinode"] : var.machine_type_main["singlenode"]
+  machine_type_main        = var.machine_type_main
   shared_storage_path      = var.shared_storage_path == "/" ? "/srv/gradient" : var.shared_storage_path
   shared_storage_type      = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
   legacy_datasets_pvc_name = var.gradient_machine_config == "paperspace-public" ? "gradient-processing-shared" : ""
@@ -318,12 +318,6 @@ locals {
     "1.16.15" = "v1.16.15-rancher1-4",
     "1.15.12" = "v1.15.12-rancher2-7",
   }
-
-  // double default limits for beefy clusters
-  volume_controller_cpu_request    = var.kind == "multinode" ? "3000m" : "1000m"
-  volume_controller_memory_request = var.kind == "multinode" ? "12Gi" : "1Gi"
-  volume_controller_cpu_limit      = var.kind == "multinode" ? "3000m" : "1000m"
-  volume_controller_memory_limit   = var.kind == "multinode" ? "16Gi" : "1Gi"
 }
 
 provider "cloudflare" {
@@ -581,18 +575,12 @@ module "gradient_processing" {
   legacy_datasets_pvc_name    = local.legacy_datasets_pvc_name
   legacy_datasets_sub_path    = local.legacy_datasets_sub_path
   anti_crypto_miner_regex     = var.anti_crypto_miner_regex
-  vmsingle_resources          = var.vmsingle_resources
   prometheus_pool_name        = local.prometheus_pool_name
   metrics_storage_class       = local.metrics_storage_class
   nats_storage_class          = local.nats_storage_class
   rbd_storage_config          = var.rbd_storage_config
   cert_manager_enabled        = true
   image_cache_enabled         = true
-
-  volume_controller_memory_limit   = local.volume_controller_memory_limit
-  volume_controller_cpu_limit      = local.volume_controller_cpu_limit
-  volume_controller_memory_request = local.volume_controller_memory_request
-  volume_controller_cpu_request    = local.volume_controller_cpu_request
 
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
     # Ordered by most used
@@ -614,6 +602,7 @@ module "gradient_processing" {
     "paperspace/notebook_idle:1.0.6",
   ]
   metrics_server_enabled = false
+  service_resources      = local.resources
 }
 
 resource "rancher2_cluster" "main" {

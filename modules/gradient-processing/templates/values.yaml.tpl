@@ -14,33 +14,17 @@ global:
   serviceNodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
   serviceResources:
-    %{ if is_public_cluster }
     requests:
-      cpu: 250m
-      memory: 512Mi
+      cpu: ${resources["default"]["requests"]["cpu"]}
+      memory: ${resources["default"]["requests"]["memory"]}
     limits:
-      cpu: 250m
-      memory: 512Mi
-   %{ else }
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 100m
-      memory: 128Mi
-   %{ endif }
+      cpu: ${resources["default"]["limits"]["cpu"]}
+      memory: ${resources["default"]["limits"]["memory"]}
 
   api: ${paperspace_base_url}
   apiNext: ${paperspace_api_next_url}
   dispatcherServerApiAddress: ${dispatcher_host}:443
   clusterAPIHost: ${cluster_api_host}:443
-
-  # We already define metrics path + service which correctly point...
-  # to the desired victoria destination. Reuse these for our rewrite ingress rule.
-  metrics:
-    ingressHost: ${domain}
-    rewriteTarget: ${gradient_metrics_path}
-    serviceName: ${gradient_metrics_service_name}-rewrite
 
   defaultStorageName: ${default_storage_name}
   sharedStorageName: ${shared_storage_name}
@@ -129,8 +113,28 @@ ceph-csi-cephfs:
     %{ endif }
   provisioner:
     replicaCount: ${ceph_provisioner_replicas}
+    %{ if try(resources["ceph-csi-provisioner"], null) != null }
+    resources:
+      requests:
+        cpu: ${resources["ceph-csi-provisioner"]["requests"]["cpu"]}
+        memory: ${resources["ceph-csi-provisioner"]["requests"]["memory"]}
+      limits:
+        cpu: ${resources["ceph-csi-provisioner"]["limits"]["cpu"]}
+        memory: ${resources["ceph-csi-provisioner"]["limits"]["memory"]}
+    %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
+
+  %{ if try(resources["ceph-csi-resizer"], null) != null }
+  resizer:
+    resources:
+      requests:
+        cpu: ${resources["ceph-csi-resizer"]["requests"]["cpu"]}
+        memory: ${resources["ceph-csi-resizer"]["requests"]["memory"]}
+      limits:
+        cpu: ${resources["ceph-csi-resizer"]["limits"]["cpu"]}
+        memory: ${resources["ceph-csi-resizer"]["limits"]["memory"]}
+  %{ endif }
 
 # https://github.com/kubernetes-csi/external-provisioner/releases
 %{ if length(rbd_storage_config) != 0 }
@@ -153,27 +157,27 @@ ceph-csi-rbd:
     replicaCount: 2
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
-    %{ if is_public_cluster }
     image:
       repository: k8s.gcr.io/sig-storage/csi-provisioner
       tag: v3.1.0
+    %{ if try(resources["rbd-csi-provisioner"], null) != null }
     resources:
       requests:
-        cpu: 500m
-        memory: 2Gi
+        cpu: ${resources["rbd-csi-provisioner"]["requests"]["cpu"]}
+        memory: ${resources["rbd-csi-provisioner"]["requests"]["memory"]}
       limits:
-        cpu: 500m
-        memory: 2Gi
+        cpu: ${resources["rbd-csi-provisoner"]["limits"]["cpu"]}
+        memory: ${resources["rbd-csi-provisioner"]["limits"]["memory"]}
     %{ endif }
   resizer:
-    %{ if is_public_cluster }
+    %{ if try(resources["rbd-csi-resizer"], null) != null }
     resources:
       requests:
-        cpu: 500m
-        memory: 2Gi
+        cpu: ${resources["rbd-csi-resizer"]["requests"]["cpu"]}
+        memory: ${resources["rbd-csi-resizer"]["requests"]["memory"]}
       limits:
-        cpu: 500m
-        memory: 2Gi
+        cpu: ${resources["rbd-csi-resizer"]["limits"]["cpu"]}
+        memory: ${resources["rbd-csi-resizer"]["limits"]["memory"]}
     %{ endif }
 %{ endif }
 cluster-autoscaler:
@@ -206,22 +210,14 @@ cluster-autoscaler:
       key: PS_API_KEY
 
   %{ endif }
-  %{ if is_public_cluster }
+  %{ if try(resources["cluster-autoscaler"], null) != null }
   resources:
     requests:
-      cpu: 500m
-      memory: 3072Mi
+      cpu: ${resources["cluster-autoscaler"]["requests"]["cpu"]}
+      memory: ${resources["cluster-autoscaler"]["requests"]["memory"]}
     limits:
-      cpu: 500m
-      memory: 3072Mi
-  %{ else }
-  resources:
-    limits:
-      cpu: 100m
-      memory: 512Mi
-    requests:
-      cpu: 100m
-      memory: 512Mi
+      cpu: ${resources["cluster-autoscaler"]["limits"]["cpu"]}
+      memory: ${resources["cluster-autoscaler"]["limits"]["memory"]}
   %{ endif }
 
   awsRegion: ${aws_region}
@@ -234,14 +230,14 @@ cluster-autoscaler:
 
 dispatcher:
   config: {}
-  %{ if is_public_cluster }
+  %{ if try(resources["dispatcher"], null) != null }
   resources:
     requests:
-      cpu: 1000m
-      memory: 2Gi
+      cpu: ${resources["dispatcher"]["requests"]["cpu"]}
+      memory: ${resources["dispatcher"]["requests"]["memory"]}
     limits:
-      cpu: 1000m
-      memory: 2Gi
+      cpu: ${resources["dispatcher"]["limits"]["cpu"]}
+      memory: ${resources["dispatcher"]["limits"]["memory"]}
   %{ endif }
 
 
@@ -289,15 +285,15 @@ gradient-operator:
     %{ endif }
     adminTeamHandle: ${admin_team_handle}
 
-    %{ if is_public_cluster }
+    %{ if try(resources["gradient-operator-controller"], null) != null }
     controller:
       resources:
         requests:
-          cpu: 1000m
-          memory: 3072Mi
+          cpu: ${resources["gradient-operator-controller"]["requests"]["cpu"]}
+          memory: ${resources["gradient-operator-controller"]["requests"]["memory"]}
         limits:
-          cpu: 1000m
-          memory: 3072Mi
+          cpu: ${resources["gradient-operator-controller"]["limits"]["cpu"]}
+          memory: ${resources["gradient-operator-controller"]["limits"]["memory"]}
     %{ endif }
 
     %{ if pod_assignment_label_name != "" }
@@ -313,29 +309,29 @@ gradient-operator:
     legacyDatasetsSubPath: ${legacy_datasets_sub_path}
     %{ endif }
 
-    %{ if is_public_cluster }
+    %{ if try(resources["gradient-operator-state-watcher"], null) != null }
     stateWatcher:
       resources:
         requests:
-          cpu: 250m
-          memory: 768Mi
+          cpu: ${resources["gradient-operator-state-watcher"]["requests"]["cpu"]}
+          memory: ${resources["gradient-operator-state-watcher"]["requests"]["memory"]}
         limits:
-          cpu: 250m
-          memory: 768Mi
+          cpu: ${resources["gradient-operator-state-watcher"]["limits"]["cpu"]}
+          memory: ${resources["gradient-operator-state-watcher"]["limits"]["memory"]}
     %{ endif }
 
     abuseWatcher:
       enabled: false
       antiCryptoMinerRegex: ${anti_crypto_miner_regex}
 
-      %{ if is_public_cluster }
+      %{ if try(resources["gradient-operator-abuse-watcher"], null) != null }
       resources:
         requests:
-          cpu: 250m
-          memory: 1Gi
+          cpu: ${resources["gradient-operator-abuse-watcher"]["requests"]["cpu"]}
+          memory: ${resources["gradient-operator-abuse-watcher"]["requests"]["memory"]}
         limits:
-          cpu: 250m
-          memory: 1Gi
+          cpu: ${resources["gradient-operator-abuse-watcher"]["limits"]["cpu"]}
+          memory: ${resources["gradient-operator-abuse-watcher"]["limits"]["memory"]}
       %{ endif }
 
     %{ if label_selector_cpu != "" && label_selector_gpu != "" }
@@ -370,14 +366,14 @@ gradient-metrics:
   config:
     connectionString: ${gradient_metrics_conn_str}
 
-  %{ if is_public_cluster }
+  %{ if try(resources["gradient-metrics"], null) != null }
   resources:
     requests:
-      cpu: 1000m
-      memory: 512Mi
+      cpu: ${resources["gradient-metrics"]["requests"]["cpu"]}
+      memory: ${resources["gradient-metrics"]["requests"]["memory"]}
     limits:
-      cpu: 1000m
-      memory: 512Mi
+      cpu: ${resources["gradient-metrics"]["limits"]["cpu"]}
+      memory: ${resources["gradient-metrics"]["limits"]["memory"]}
   %{ endif }
 
 gradient-operator-dispatcher:
@@ -412,14 +408,14 @@ victoria-metrics-k8s-stack:
       %{ endif }
       nodeSelector:
         paperspace.com/pool-name: ${prometheus_pool_name}
-      %{ if vmsingle_resources != null }
+      %{ if try(resources["vmsingle"], null) != null }
       resources:
         limits:
-          cpu: ${vmsingle_resources["cpu"]}
-          memory: ${vmsingle_resources["memory"]}
+          cpu: ${resources["vmsingle"]["limits"]["cpu"]}
+          memory: ${resources["vmsingle"]["limits"]["memory"]}
         requests:
-          cpu: ${vmsingle_resources["cpu"]}
-          memory: ${vmsingle_resources["memory"]}
+          cpu: ${resources["vmsingle"]["requests"]["cpu"]}
+          memory: ${resources["vmsingle"]["requests"]["memory"]}
       %{ endif }
     ingress:
       hosts:
@@ -433,15 +429,14 @@ victoria-metrics-k8s-stack:
           maxLabelsPerTimeseries: "70"
         nodeSelector:
           paperspace.com/pool-name: ${service_pool_name}
+        %{ if try(resources["vminsert"], null) != null }
         resources:
-        %{ if is_public_cluster }
           limits:
-            cpu: "2"
-            memory: 2Gi
-        %{ else }
-          limits:
-            cpu: "2"
-            memory: 2Gi
+            cpu: ${resources["vminsert"]["limits"]["cpu"]}
+            memory: ${resources["vminsert"]["limits"]["memory"]}
+          requests:
+            cpu: ${resources["vminsert"]["requests"]["cpu"]}
+            memory: ${resources["vminsert"]["requests"]["memory"]}
         %{ endif }
         %{ if is_public_cluster }
         affinity:
@@ -452,15 +447,14 @@ victoria-metrics-k8s-stack:
               weight: 100
         %{ endif }
       vmselect:
+        %{ if try(resources["vmselect"], null) != null }
         resources:
-        %{ if is_public_cluster }
           limits:
-            cpu: "4"
-            memory: 16Gi
-        %{ else }
-          limits:
-            cpu: "4"
-            memory: 16Gi
+            cpu: ${resources["vmselect"]["limits"]["cpu"]}
+            memory: ${resources["vmselect"]["limits"]["memory"]}
+          requests:
+            cpu: ${resources["vmselect"]["requests"]["cpu"]}
+            memory: ${resources["vmselect"]["requests"]["memory"]}
         %{ endif }
         extraArgs:
           search.maxConcurrentRequests: "200"
@@ -514,20 +508,13 @@ victoria-metrics-k8s-stack:
                   storage: 500Gi
             %{ endif }
         resources:
-        %{ if is_public_cluster }
+        %{ if try(resources["vmstorage"], null) != null }
           requests:
-            cpu: "6"
-            memory: 24Gi
+            cpu: ${resources["vmstorage"]["requests"]["cpu"]}
+            memory: ${resources["vmstorage"]["requests"]["memory"]}
           limits:
-            cpu: "6"
-            memory: 24Gi
-        %{ else }
-          requests:
-            cpu: "2"
-            memory: 1Gi
-          limits:
-            cpu: "2"
-            memory: 1Gi
+            cpu: ${resources["vmstorage"]["limits"]["cpu"]}
+            memory: ${resources["vmstorage"]["limits"]["memory"]}
         %{ endif }
     ingress:
       select:
@@ -535,14 +522,14 @@ victoria-metrics-k8s-stack:
           - ${domain}
 
   kube-state-metrics:
-    %{ if is_public_cluster }
+    %{ if try(resources["kube-state-metrics"], null) != null }
     resources:
       requests:
-        cpu: 500m
-        memory: 2Gi
+        cpu: ${resources["kube-state-metrics"]["requests"]["cpu"]}
+        memory: ${resources["kube-state-metrics"]["requests"]["memory"]}
       limits:
-        cpu: 500m
-        memory: 2Gi
+        cpu: ${resources["kube-state-metrics"]["limits"]["cpu"]}
+        memory: ${resources["kube-state-metrics"]["limits"]["memory"]}
     %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
@@ -551,11 +538,11 @@ victoria-metrics-k8s-stack:
     %{ if is_public_cluster }
     resources:
       requests:
-        cpu: 500m
-        memory: 1Gi
+        cpu: ${resources["victoria-metrics-operator"]["requests"]["cpu"]}
+        memory: ${resources["victoria-metrics-operator"]["requests"]["memory"]}
       limits:
-        cpu: 500m
-        memory: 1Gi
+        cpu: ${resources["victoria-metrics-operator"]["limits"]["cpu"]}
+        memory: ${resources["victoria-metrics-operator"]["limits"]["memory"]}
     %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
@@ -568,22 +555,14 @@ victoria-metrics-k8s-stack:
         cluster: ${cluster_handle}
       nodeSelector:
         paperspace.com/pool-name: ${service_pool_name}
-      %{ if is_public_cluster }
+      %{ if try(resources["vmagent"], null) != null }
       resources:
         requests:
-          cpu: 4000m
-          memory: 6Gi
+          cpu: ${resources["vmagent"]["requests"]["cpu"]}
+          memory: ${resources["vmagent"]["requests"]["memory"]}
         limits:
-          cpu: 4000m
-          memory: 6Gi
-      %{ else }
-      resources:
-        requests:
-          cpu: 2000m
-          memory: 2Gi
-        limits:
-          cpu: 2000m
-          memory: 2Gi
+          cpu: ${resources["vmagent"]["limits"]["cpu"]}
+          memory: ${resources["vmagent"]["limits"]["memory"]}
       %{ endif }
 
     additionalRemoteWrites:
@@ -644,14 +623,14 @@ traefik:
       %{ endif }
   %{ endif }
 
-  %{ if is_public_cluster }
+  %{ if try(resources["traefik"], null) != null }
   resources:
     requests:
-      cpu: 10
-      memory: 28Gi
+      cpu: ${resources["traefik"]["requests"]["cpu"]}
+      memory: ${resources["traefik"]["requests"]["memory"]}
     limits:
-      cpu: 10
-      memory: 28Gi
+      cpu: ${resources["traefik"]["limits"]["cpu"]}
+      memory: ${resources["traefik"]["limits"]["memory"]}
   %{ endif }
 
 argo:
@@ -663,21 +642,14 @@ argo-rollouts:
   controller:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
-%{ if is_public_cluster }
+%{ if try(resources["argo-rollouts"], null) != null }
     resources:
       requests:
-        cpu: 250m
-        memory: 512Mi
+        cpu: ${resources["argo-rollouts"]["requests"]["cpu"]}
+        memory: ${resources["argo-rollouts"]["requests"]["memory"]}
       limits:
-        cpu: 250m
-        memory: 512Mi
-%{ else }
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 100m
-      memory: 128Mi
+        cpu: ${resources["argo-rollouts"]["limits"]["cpu"]}
+        memory: ${resources["argo-rollouts"]["limits"]["memory"]}
 %{ endif }
 
 %{ if image_cache_enabled }
@@ -706,13 +678,15 @@ volumeController:
     imagesVolumeClaimName: gradient-processing-images
     %{ endif }
 
+  %{ if try(resources["volume-controller"], null) != null }
   resources:
     requests:
-      cpu: ${volume_controller_cpu_request}
-      memory: ${volume_controller_memory_request}
+      cpu: ${resources["volume-controller"]["requests"]["cpu"]}
+      memory: ${resources["volume-controller"]["requests"]["memory"]}
     limits:
-      cpu: ${volume_controller_cpu_limit}
-      memory: ${volume_controller_memory_limit}
+      cpu: ${resources["volume-controller"]["limits"]["cpu"]}
+      memory: ${resources["volume-controller"]["limits"]["memory"]}
+  %{ endif }
 
   %{ if shared_storage_type == "csi-driver-nfs" }
   # if we are using nfs, we want to allow all connections to drops in VC..
@@ -723,14 +697,14 @@ volumeController:
 
 recycleBin:
   enabled: true
-  %{ if is_public_cluster }
+  %{ if try(resources["recycle-bin"], null) != null }
   resources:
     requests:
-      cpu: 500m
-      memory: 1Gi
+      cpu: ${resources["recycle-bin"]["requests"]["cpu"]}
+      memory: ${resources["recycle-bin"]["requests"]["memory"]}
     limits:
-      cpu: 500m
-      memory: 1Gi
+      cpu: ${resources["recycle-bin"]["limits"]["cpu"]}
+      memory: ${resources["recycle-bin"]["limits"]["memory"]}
   %{ endif }
 
 volumeFs:
@@ -754,14 +728,6 @@ nodeHealthChecks:
 nats:
   enabled: true
 
-  resources:
-    requests:
-      cpu: 2000m
-      memory: 8Gi
-    limits:
-      cpu: 2000m
-      memory: 8Gi
-    
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
 
@@ -772,7 +738,17 @@ nats:
   cluster:
     enabled: true
     replicas: 3
-  
+
+  %{ if try(resources["nats"], null) != null }
+  resources:
+    requests:
+      cpu: ${resources["nats"]["requests"]["cpu"]}
+      memory: ${resources["nats"]["requests"]["memory"]}
+    limits:
+      cpu: ${resources["nats"]["limits"]["cpu"]}
+      memory: ${resources["nats"]["limits"]["memory"]}
+  %{ endif }
+
   nats:
     jetstream:
       enabled: true
@@ -789,31 +765,35 @@ nats:
 telemetry:
   enabled: true
 
-  replicaCount: 10
+  replicaCount: 4
 
   config:
     logLevel: "info"
     logsAPI: ${logs_host}
     useSSL: true
 
+  %{ if try(resources["telemetry"], null) != null }
   resources:
     requests:
-      cpu: 1000m
-      memory: 1Gi
+      cpu: ${resources["telemetry"]["requests"]["cpu"]}
+      memory: ${resources["telemetry"]["requests"]["memory"]}
     limits:
-      cpu: 1000m
-      memory: 1Gi
+      cpu: ${resources["telemetry"]["limits"]["cpu"]}
+      memory: ${resources["telemetry"]["limits"]["memory"]}
+  %{ endif }
 
 natsBridge:
   enabled: true
 
+  %{ if try(resources["nats-bridge"], null) != null }
   resources:
     requests:
-      cpu: 1000m
-      memory: 2Gi
+      cpu: ${resources["nats-bridge"]["requests"]["cpu"]}
+      memory: ${resources["nats-bridge"]["requests"]["memory"]}
     limits:
-      cpu: 2000m
-      memory: 4Gi
+      cpu: ${resources["nats-bridge"]["limits"]["cpu"]}
+      memory: ${resources["nats-bridge"]["limits"]["memory"]}
+  %{ endif }
 
   config:
     port: 8085

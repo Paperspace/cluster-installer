@@ -214,26 +214,6 @@ variable "helm_repo_url" {
   default     = ""
 }
 
-variable "volume_controller_cpu_request" {
-  description = "CPU request for volume controller"
-  default     = "1000m"
-}
-
-variable "volume_controller_memory_request" {
-  description = "Memory request for volume controller"
-  default     = "3072Mi"
-}
-
-variable "volume_controller_cpu_limit" {
-  description = "CPU limit for volume controller"
-  default     = "1000m"
-}
-
-variable "volume_controller_memory_limit" {
-  description = "Memory limit for volume controller"
-  default     = "4072Mi"
-}
-
 # tls
 variable "tls_cert" {
   description = "TLS certificate"
@@ -276,15 +256,6 @@ variable "is_public_cluster" {
   description = "designate whether the cluster is a public cluster"
   type        = bool
   default     = false
-}
-
-variable "vmsingle_resources" {
-  description = "map of k8s resource requests for vmsingle"
-  type = object({
-    cpu    = string
-    memory = string
-  })
-  default = null
 }
 
 variable "metrics_storage_class" {
@@ -475,4 +446,18 @@ variable "forwarding_response_header_timeout" {
   description = "Traefik forwarding response header timeout"
   type        = string
   default     = "10m"
+}
+
+variable "service_resources" {
+  description = "Map of resources for various components. If you only provide a limits value, it will be used for both requests and limits."
+  type = map(object({
+    requests = optional(object({
+      cpu    = string
+      memory = string
+    }), null),
+    limits = optional(object({
+      cpu    = string
+      memory = string
+    }), null)
+  }))
 }

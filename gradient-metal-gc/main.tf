@@ -116,7 +116,6 @@ module "gradient_processing" {
   metrics_service_name                                = "vmsingle-gradient-processing-victoria-metrics"
   metrics_path                                        = "/prometheus"
   victoria_metrics_vmsingle_enabled                   = true
-  vmsingle_resources                                  = var.vmsingle_resources
   metrics_storage_class                               = var.metrics_storage_class
   pod_assignment_label_name                           = "paperspace.com/pool-name"
   ipu_controller_server                               = var.ipu_controller_server
@@ -133,6 +132,14 @@ module "gradient_processing" {
   notebook_volume_type                                = var.notebook_volume_type
   ceph_provisioner_replicas                           = var.ceph_provisioner_replicas
   nats_storage_class                                  = local.nats_storage_class
+  service_resources = merge(local.service_resource_defaults, {
+    "vmsingle" = {
+      "limits" = {
+        "cpu"    = "1400m"
+        "memory" = "30Gi"
+      }
+    }
+  })
 }
 
 

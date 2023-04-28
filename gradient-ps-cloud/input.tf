@@ -63,14 +63,12 @@ variable "machine_template_id_main" {
 }
 variable "machine_type_main" {
   description = "Main machine type"
-  default = {
-    singlenode = "C7"
-    multinode  = "C7"
-  }
+  type        = string
+  default     = "C7"
 }
 variable "machine_type_controlplane" {
   description = "Controlplane machine type"
-  default = "C8"
+  default     = "C8"
 }
 
 variable "machine_storage_lb" {
@@ -134,6 +132,12 @@ variable "machine_type_service" {
   description = "Service machine type"
   default     = "C5"
 }
+
+variable "machine_count_service" {
+  description = "Service machine count"
+  default     = 0
+}
+
 variable "machine_storage_worker_cpu" {
   type        = number
   description = "CPU worker storage"

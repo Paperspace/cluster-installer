@@ -179,6 +179,7 @@ module "gradient_processing" {
   cert_manager_enabled        = var.cert_manager_enabled
   image_cache_enabled         = var.image_cache_enabled
   image_cache_list            = var.image_cache_list
+  service_resources           = local.service_resource_defaults
 }
 
 output "elb_hostname" {

@@ -140,6 +140,7 @@ module "gradient_processing" {
   metrics_path                       = "/prometheus"
   victoria_metrics_vmcluster_enabled = false
   victoria_metrics_vmsingle_enabled  = true
+  service_resources                  = local.service_resource_defaults
 }
 
 module "node_problem_detector" {
