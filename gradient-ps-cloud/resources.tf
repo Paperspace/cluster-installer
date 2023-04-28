@@ -103,11 +103,10 @@ locals {
           "memory" = "16Gi"
         }
       },
-
       "vmselect" = {
         "limits" = {
-          "cpu"    = "4"
-          "memory" = "10Gi"
+          "cpu"    = "6"
+          "memory" = "15Gi"
         }
       },
       "vmstorage" = {
