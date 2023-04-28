@@ -6,13 +6,6 @@ locals {
         "memory" = "512Mi"
       }
     }
-
-    "cluster-autoscaler" = {
-      "limits" = {
-        "cpu"    = "500m"
-        "memory" = "3Gi"
-      }
-    },
     "dispatcher" = {
       "limits" = {
         "cpu"    = "1000m"
@@ -73,6 +66,18 @@ locals {
   // you will need to duplicate profiles by machine type, c8 won't inherit from c7, etc
   service_resource_defaults_by_machine_type = {
     "C8" = {
+      "argo-rollouts" = {
+        "limits" = {
+          "cpu"    = "1"
+          "memory" = "1Gi"
+        }
+      },
+      "cluster-autoscaler" = {
+        "limits" = {
+          "cpu"    = "1000m"
+          "memory" = "4Gi"
+        }
+      },
       "rbd-csi-provisioner" = {
         "limits" = {
           "cpu"    = "500m"
@@ -81,19 +86,19 @@ locals {
       },
       "rbd-csi-resizer" = {
         "limits" = {
-          "cpu"    = "500m"
+          "cpu"    = "1"
           "memory" = "2Gi"
         },
       },
       "cephfs-csi-provisioner" = {
         "limits" = {
-          "cpu"    = "750m"
+          "cpu"    = "1"
           "memory" = "4Gi"
         },
       },
       "cephfs-csi-resizer" = {
         "limits" = {
-          "cpu"    = "750m"
+          "cpu"    = "1"
           "memory" = "4Gi"
         },
       },
@@ -101,6 +106,12 @@ locals {
         "limits" = {
           "cpu"    = "3000m"
           "memory" = "16Gi"
+        }
+      },
+      "kube-state-metrics" = {
+        "limits" = {
+          "cpu"    = "2"
+          "memory" = "4Gi"
         }
       },
       "vmselect" = {
@@ -111,8 +122,8 @@ locals {
       },
       "vmstorage" = {
         "limits" = {
-          "cpu"    = "14"
-          "memory" = "56Gi"
+          "cpu"    = "12"
+          "memory" = "50Gi"
         }
       },
       "vmagent" = {
@@ -142,6 +153,12 @@ locals {
     },
 
     "C7" = {
+      "cluster-autoscaler" = {
+        "limits" = {
+          "cpu"    = "500m"
+          "memory" = "2Gi"
+        }
+      },
       "rbd-csi-provisioner" = {
         "limits" = {
           "cpu"    = "500m"
@@ -165,7 +182,7 @@ locals {
       "cephfs-csi-provisioner" = {
         "limits" = {
           "cpu"    = "250m"
-          "memory" = "256Mi"
+          "memory" = "2Gi"
         },
         "requests" = {
           "cpu"    = "500m"
@@ -175,7 +192,7 @@ locals {
       "cephfs-csi-resizer" = {
         "limits" = {
           "cpu"    = "250m"
-          "memory" = "256Mi"
+          "memory" = "2Gi"
         },
         "requests" = {
           "cpu"    = "500m"
@@ -242,9 +259,9 @@ locals {
 
 
   resources = merge(
+    local.service_resource_defaults,
     local.is_public_cluster ? local.public_cluster_resource_defaults : {},
     lookup(local.service_resource_defaults_by_machine_type, var.machine_type_service, {}),
     lookup(local.lb_resource_defaults_by_machine_type, var.machine_type_lb, {}),
-    local.service_resource_defaults
   )
 }

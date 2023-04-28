@@ -27,7 +27,7 @@ terraform workspace select "$TF_VAR_cluster_handle"
 export PAPERSPACE_API_KEY="$TF_VAR_admin_user_api_key"
 export PAPERSPACE_API_HOST="$TF_VAR_api_host"
 export PAPERSPACE_REGION="$TF_VAR_region"
-while sleep 1; do echo 1; done
+sleep infinity
 
 if [ "$TERRAFORM_COMMAND" = "destroy" ]; then
   terraform state rm module.gradient_processing || true
