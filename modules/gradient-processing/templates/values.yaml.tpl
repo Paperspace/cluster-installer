@@ -517,10 +517,10 @@ victoria-metrics-k8s-stack:
         %{ if is_public_cluster }
           requests:
             cpu: "6"
-            memory: 20Gi
+            memory: 24Gi
           limits:
             cpu: "6"
-            memory: 20Gi
+            memory: 24Gi
         %{ else }
           requests:
             cpu: "2"
