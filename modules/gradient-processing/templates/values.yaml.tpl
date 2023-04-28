@@ -158,11 +158,8 @@ ceph-csi-rbd:
     replicaCount: 2
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
+    %{ if try(resources["rbd-csi-provisioner"], null) != null }
     provisioner:
-      image:
-        repository: k8s.gcr.io/sig-storage/csi-provisioner
-        tag: v3.1.0
-      %{ if try(resources["rbd-csi-provisioner"], null) != null }
       resources:
         requests:
           cpu: ${resources["rbd-csi-provisioner"]["requests"]["cpu"]}
@@ -170,7 +167,7 @@ ceph-csi-rbd:
         limits:
           cpu: ${resources["rbd-csi-provisioner"]["limits"]["cpu"]}
           memory: ${resources["rbd-csi-provisioner"]["limits"]["memory"]}
-      %{ endif }
+    %{ endif }
     %{ if try(resources["rbd-csi-resizer"], null) != null }
     resizer:
       resources:
