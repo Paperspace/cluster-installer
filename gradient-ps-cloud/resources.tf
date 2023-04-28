@@ -81,13 +81,13 @@ locals {
       "rbd-csi-provisioner" = {
         "limits" = {
           "cpu"    = "500m"
-          "memory" = "2Gi"
+          "memory" = "4Gi"
         },
       },
       "rbd-csi-resizer" = {
         "limits" = {
           "cpu"    = "1"
-          "memory" = "2Gi"
+          "memory" = "4Gi"
         },
       },
       "cephfs-csi-provisioner" = {
