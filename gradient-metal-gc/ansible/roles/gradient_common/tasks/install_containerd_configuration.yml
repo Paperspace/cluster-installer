@@ -26,7 +26,7 @@
 
 - name: Create containerd cgroups
   ansible.builtin.file:
-    path: '/sys/fs/cgroup/{{ containerd_cgroup_path }}'
+    path: "/sys/fs/cgroup/{{ containerd_cgroup_path }}"
     state: directory
     mode: 0755
   loop:
@@ -41,7 +41,7 @@
 
 - name: Create dirs for containerd mount
   ansible.builtin.file:
-    path: '{{ containerd_mount_dir }}'
+    path: "{{ containerd_mount_dir }}"
     state: directory
     mode: 0755
   loop:
@@ -62,19 +62,19 @@
 
 - name: Create /etc/rancher/rke2 dir
   ansible.builtin.file:
-    path: '/etc/rancher/rke2'
+    path: "/etc/rancher/rke2"
     state: directory
     mode: 0755
 
 - name: Create /etc/containerd/certs.d dir
   ansible.builtin.file:
-    path: '/etc/containerd/certs.d'
+    path: "/etc/containerd/certs.d"
     state: directory
     mode: 0755
 
 - name: Create /etc/containerd/certs.d/_default dir
   ansible.builtin.file:
-    path: '/etc/containerd/certs.d/_default'
+    path: "/etc/containerd/certs.d/_default"
     state: directory
     mode: 0755
 
@@ -110,6 +110,12 @@
       sudo containerd config default \
       | sed 's/SystemdCgroup \= false/SystemdCgroup \= true/g' \
       | sudo tee /etc/containerd/config.toml
+
+- name: Move containerd root dir
+  ansible.builtin.lineinfile:
+    path: /etc/containerd/config.toml
+    regexp: 'root \= .*'
+    line: 'root = "/mnt/poddata/{{ inventory_hostname }}/containerd"'
 
 - name: Pickup systemctl changes
   ansible.builtin.shell:
