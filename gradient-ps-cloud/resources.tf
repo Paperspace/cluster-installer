@@ -115,14 +115,12 @@ locals {
           "memory" = "56Gi"
         }
       },
-
       "vmagent" = {
         "limits" = {
           "cpu"    = "4"
           "memory" = "6Gi"
         }
       },
-
       "telemetry" = {
         "limits" = {
           "cpu"    = "1000m"
@@ -135,6 +133,12 @@ locals {
           "memory" = "1Gi"
         }
       },
+      "nats" = {
+        "limits" = {
+          "cpu"    = "2"
+          "memory" = "8Gi"
+        }
+      }
     },
 
     "C7" = {
@@ -184,7 +188,6 @@ locals {
           "memory" = "16Gi"
         }
       },
-
       "vmselect" = {
         "limits" = {
           "cpu"    = "4"
@@ -197,14 +200,12 @@ locals {
           "memory" = "24Gi"
         }
       },
-
       "vmagent" = {
         "limits" = {
           "cpu"    = "4"
           "memory" = "6Gi"
         }
       },
-
       "telemetry" = {
         "limits" = {
           "cpu"    = "1000m"
@@ -217,14 +218,13 @@ locals {
           "memory" = "1Gi"
         }
       },
-    },
-
-    "nats" = {
-      "limits" = {
-        "cpu"    = "2"
-        "memory" = "8Gi"
+      "nats" = {
+        "limits" = {
+          "cpu"    = "2"
+          "memory" = "8Gi"
+        }
       }
-    }
+    },
   }
 
   // this should only contain traefik, but needs to be a map to merge with the other maps
