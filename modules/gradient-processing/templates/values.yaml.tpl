@@ -113,28 +113,29 @@ ceph-csi-cephfs:
     %{ endif }
   provisioner:
     replicaCount: ${ceph_provisioner_replicas}
-    %{ if try(resources["cephfs-csi-provisioner"], null) != null }
-    resources:
-      requests:
-        cpu: ${resources["cephfs-csi-provisioner"]["requests"]["cpu"]}
-        memory: ${resources["cephfs-csi-provisioner"]["requests"]["memory"]}
-      limits:
-        cpu: ${resources["cephfs-csi-provisioner"]["limits"]["cpu"]}
-        memory: ${resources["cephfs-csi-provisioner"]["limits"]["memory"]}
-    %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
-  %{ if try(resources["cephfs-csi-resizer"], null) != null }
-  resizer:
-    resources:
-      requests:
-        cpu: ${resources["cephfs-csi-resizer"]["requests"]["cpu"]}
-        memory: ${resources["cephfs-csi-resizer"]["requests"]["memory"]}
-      limits:
-        cpu: ${resources["cephfs-csi-resizer"]["limits"]["cpu"]}
-        memory: ${resources["cephfs-csi-resizer"]["limits"]["memory"]}
-  %{ endif }
+    %{ if try(resources["cephfs-csi-provisioner"], null) != null }
+    provisioner:
+      resources:
+        requests:
+          cpu: ${resources["cephfs-csi-provisioner"]["requests"]["cpu"]}
+          memory: ${resources["cephfs-csi-provisioner"]["requests"]["memory"]}
+        limits:
+          cpu: ${resources["cephfs-csi-provisioner"]["limits"]["cpu"]}
+          memory: ${resources["cephfs-csi-provisioner"]["limits"]["memory"]}
+    %{ endif }
+    %{ if try(resources["cephfs-csi-resizer"], null) != null }
+    resizer:
+      resources:
+        requests:
+          cpu: ${resources["cephfs-csi-resizer"]["requests"]["cpu"]}
+          memory: ${resources["cephfs-csi-resizer"]["requests"]["memory"]}
+        limits:
+          cpu: ${resources["cephfs-csi-resizer"]["limits"]["cpu"]}
+          memory: ${resources["cephfs-csi-resizer"]["limits"]["memory"]}
+    %{ endif }
 
 # https://github.com/kubernetes-csi/external-provisioner/releases
 %{ if length(rbd_storage_config) != 0 }
@@ -157,28 +158,29 @@ ceph-csi-rbd:
     replicaCount: 2
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
-    image:
-      repository: k8s.gcr.io/sig-storage/csi-provisioner
-      tag: v3.1.0
-    %{ if try(resources["rbd-csi-provisioner"], null) != null }
-    resources:
-      requests:
-        cpu: ${resources["rbd-csi-provisioner"]["requests"]["cpu"]}
-        memory: ${resources["rbd-csi-provisioner"]["requests"]["memory"]}
-      limits:
-        cpu: ${resources["rbd-csi-provisioner"]["limits"]["cpu"]}
-        memory: ${resources["rbd-csi-provisioner"]["limits"]["memory"]}
+    provisioner:
+      image:
+        repository: k8s.gcr.io/sig-storage/csi-provisioner
+        tag: v3.1.0
+      %{ if try(resources["rbd-csi-provisioner"], null) != null }
+      resources:
+        requests:
+          cpu: ${resources["rbd-csi-provisioner"]["requests"]["cpu"]}
+          memory: ${resources["rbd-csi-provisioner"]["requests"]["memory"]}
+        limits:
+          cpu: ${resources["rbd-csi-provisioner"]["limits"]["cpu"]}
+          memory: ${resources["rbd-csi-provisioner"]["limits"]["memory"]}
+      %{ endif }
+    %{ if try(resources["rbd-csi-resizer"], null) != null }
+    resizer:
+      resources:
+        requests:
+          cpu: ${resources["rbd-csi-resizer"]["requests"]["cpu"]}
+          memory: ${resources["rbd-csi-resizer"]["requests"]["memory"]}
+        limits:
+          cpu: ${resources["rbd-csi-resizer"]["limits"]["cpu"]}
+          memory: ${resources["rbd-csi-resizer"]["limits"]["memory"]}
     %{ endif }
-  %{ if try(resources["rbd-csi-resizer"], null) != null }
-  resizer:
-    resources:
-      requests:
-        cpu: ${resources["rbd-csi-resizer"]["requests"]["cpu"]}
-        memory: ${resources["rbd-csi-resizer"]["requests"]["memory"]}
-      limits:
-        cpu: ${resources["rbd-csi-resizer"]["limits"]["cpu"]}
-        memory: ${resources["rbd-csi-resizer"]["limits"]["memory"]}
-  %{ endif }
 %{ endif }
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}
