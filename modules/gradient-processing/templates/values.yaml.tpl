@@ -456,11 +456,11 @@ victoria-metrics-k8s-stack:
         %{ if is_public_cluster }
           limits:
             cpu: "4"
-            memory: 10Gi
+            memory: 16Gi
         %{ else }
           limits:
             cpu: "4"
-            memory: 10Gi
+            memory: 16Gi
         %{ endif }
         extraArgs:
           search.maxConcurrentRequests: "200"
