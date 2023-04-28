@@ -113,27 +113,27 @@ ceph-csi-cephfs:
     %{ endif }
   provisioner:
     replicaCount: ${ceph_provisioner_replicas}
-    %{ if try(resources["ceph-csi-provisioner"], null) != null }
+    %{ if try(resources["cephfs-csi-provisioner"], null) != null }
     resources:
       requests:
-        cpu: ${resources["ceph-csi-provisioner"]["requests"]["cpu"]}
-        memory: ${resources["ceph-csi-provisioner"]["requests"]["memory"]}
+        cpu: ${resources["cephfs-csi-provisioner"]["requests"]["cpu"]}
+        memory: ${resources["cephfs-csi-provisioner"]["requests"]["memory"]}
       limits:
-        cpu: ${resources["ceph-csi-provisioner"]["limits"]["cpu"]}
-        memory: ${resources["ceph-csi-provisioner"]["limits"]["memory"]}
+        cpu: ${resources["cephfs-csi-provisioner"]["limits"]["cpu"]}
+        memory: ${resources["cephfs-csi-provisioner"]["limits"]["memory"]}
     %{ endif }
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
-  %{ if try(resources["ceph-csi-resizer"], null) != null }
+  %{ if try(resources["cephfs-csi-resizer"], null) != null }
   resizer:
     resources:
       requests:
-        cpu: ${resources["ceph-csi-resizer"]["requests"]["cpu"]}
-        memory: ${resources["ceph-csi-resizer"]["requests"]["memory"]}
+        cpu: ${resources["cephfs-csi-resizer"]["requests"]["cpu"]}
+        memory: ${resources["cephfs-csi-resizer"]["requests"]["memory"]}
       limits:
-        cpu: ${resources["ceph-csi-resizer"]["limits"]["cpu"]}
-        memory: ${resources["ceph-csi-resizer"]["limits"]["memory"]}
+        cpu: ${resources["cephfs-csi-resizer"]["limits"]["cpu"]}
+        memory: ${resources["cephfs-csi-resizer"]["limits"]["memory"]}
   %{ endif }
 
 # https://github.com/kubernetes-csi/external-provisioner/releases
@@ -169,8 +169,8 @@ ceph-csi-rbd:
         cpu: ${resources["rbd-csi-provisioner"]["limits"]["cpu"]}
         memory: ${resources["rbd-csi-provisioner"]["limits"]["memory"]}
     %{ endif }
+  %{ if try(resources["rbd-csi-resizer"], null) != null }
   resizer:
-    %{ if try(resources["rbd-csi-resizer"], null) != null }
     resources:
       requests:
         cpu: ${resources["rbd-csi-resizer"]["requests"]["cpu"]}
@@ -178,7 +178,7 @@ ceph-csi-rbd:
       limits:
         cpu: ${resources["rbd-csi-resizer"]["limits"]["cpu"]}
         memory: ${resources["rbd-csi-resizer"]["limits"]["memory"]}
-    %{ endif }
+  %{ endif }
 %{ endif }
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}
