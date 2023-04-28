@@ -26,6 +26,14 @@ locals {
 
   nfs_subdir_external_provisioner_path   = var.nfs_subdir_external_provisioner_path != "" ? var.nfs_subdir_external_provisioner_path : var.shared_storage_path
   nfs_subdir_external_provisioner_server = var.nfs_subdir_external_provisioner_server != "" ? var.nfs_subdir_external_provisioner_server : var.shared_storage_server
+
+  resources = {
+    for service, resource in var.service_resources :
+    service => {
+      "requests" = try(resource["requests"], null) != null ? resource["requests"] : resource["limits"]
+      "limits"   = resource["limits"]
+    }
+  }
 }
 
 resource "helm_release" "cert_manager" {
@@ -215,7 +223,6 @@ resource "helm_release" "gradient_processing" {
       legacy_datasets_sub_path               = var.legacy_datasets_sub_path
       legacy_datasets_pvc_name               = var.legacy_datasets_pvc_name
       anti_crypto_miner_regex                = var.anti_crypto_miner_regex
-      vmsingle_resources                     = var.vmsingle_resources
       prometheus_pool_name                   = local.prometheus_pool_name
       image_cache_enabled                    = var.image_cache_enabled
       image_cache_list                       = jsonencode(var.image_cache_list)
@@ -245,11 +252,7 @@ resource "helm_release" "gradient_processing" {
       node_health_check_enabled                           = var.node_health_check_enabled
       notebook_volume_type                                = var.notebook_volume_type
       admin_team_handle                                   = var.admin_team_handle
-
-      volume_controller_memory_limit   = var.volume_controller_memory_limit
-      volume_controller_cpu_limit      = var.volume_controller_cpu_limit
-      volume_controller_memory_request = var.volume_controller_memory_request
-      volume_controller_cpu_request    = var.volume_controller_cpu_request
+      resources                                           = local.resources
     })
   ]
 }
