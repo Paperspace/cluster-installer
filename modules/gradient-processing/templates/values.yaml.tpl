@@ -166,7 +166,7 @@ ceph-csi-rbd:
         cpu: ${resources["rbd-csi-provisioner"]["requests"]["cpu"]}
         memory: ${resources["rbd-csi-provisioner"]["requests"]["memory"]}
       limits:
-        cpu: ${resources["rbd-csi-provisoner"]["limits"]["cpu"]}
+        cpu: ${resources["rbd-csi-provisioner"]["limits"]["cpu"]}
         memory: ${resources["rbd-csi-provisioner"]["limits"]["memory"]}
     %{ endif }
   resizer:
