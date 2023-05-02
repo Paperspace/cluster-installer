@@ -33,6 +33,7 @@ resource "helm_release" "node_problem_detector" {
       image          = var.node_problem_detector_image
       custom_plugins = [for name in keys(var.custom_plugin_configs) : "/custom-config/${name}"]
       plugin_configs = { for name, config in var.custom_plugin_configs : name => jsonencode(config) }
+      max_unavailable = "25%"
       extra_volume_mounts = concat([
         {
           name      = "extra-plugin-bin"

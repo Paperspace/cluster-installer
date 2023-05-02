@@ -11,6 +11,7 @@
     "custom_monitor_definitions": ${jsonencode(plugin_configs)}
   },
   "extraVolumeMounts": ${jsonencode(extra_volume_mounts)},
-  "extraVolumes": ${jsonencode(extra_volumes)}
+  "extraVolumes": ${jsonencode(extra_volumes)},
+  "maxUnavailable": ${max_unavailable}
 }
 %{endif~}
