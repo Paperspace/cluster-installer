@@ -239,6 +239,22 @@ dispatcher:
       memory: ${resources["dispatcher"]["limits"]["memory"]}
   %{ endif }
 
+dispatcherNotifier:
+  enabled: true
+
+  replicaCount: 4
+
+  config:
+    logLevel: "info"
+    useSSL: true
+
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+    limits:
+      cpu: 2000m
+      memory: 4Gi
 
 efs-provisioner:
   enabled: ${efs_provisioner_enabled}
