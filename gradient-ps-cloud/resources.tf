@@ -167,48 +167,32 @@ locals {
       },
       "rbd-csi-provisioner" = {
         "limits" = {
-          "cpu"    = "500m"
-          "memory" = "256Mi"
+          "cpu"    = "250m"
+          "memory" = "1Gi"
         },
-        "requests" = {
-          "cpu"    = "500m"
-          "memory" = "2Gi"
-        }
       },
       "rbd-csi-resizer" = {
         "limits" = {
           "cpu"    = "250m"
-          "memory" = "256Mi"
+          "memory" = "1Gi"
         },
-        "requests" = {
-          "cpu"    = "500m"
-          "memory" = "2Gi"
-        }
       },
       "cephfs-csi-provisioner" = {
         "limits" = {
-          "cpu"    = "250m"
-          "memory" = "2Gi"
-        },
-        "requests" = {
           "cpu"    = "500m"
-          "memory" = "2Gi"
-        }
+          "memory" = "1Gi"
+        },
       },
       "cephfs-csi-resizer" = {
         "limits" = {
-          "cpu"    = "250m"
-          "memory" = "2Gi"
-        },
-        "requests" = {
           "cpu"    = "500m"
-          "memory" = "2Gi"
-        }
+          "memory" = "1Gi"
+        },
       },
       "volume-controller" = {
         "limits" = {
-          "cpu"    = "3000m"
-          "memory" = "16Gi"
+          "cpu"    = "1000m"
+          "memory" = "4Gi"
         }
       },
       "vmselect" = {
@@ -219,13 +203,13 @@ locals {
       },
       "vmstorage" = {
         "limits" = {
-          "cpu"    = "6"
-          "memory" = "24Gi"
+          "cpu"    = "3"
+          "memory" = "12Gi"
         }
       },
       "vmagent" = {
         "limits" = {
-          "cpu"    = "4"
+          "cpu"    = "2"
           "memory" = "6Gi"
         }
       },
