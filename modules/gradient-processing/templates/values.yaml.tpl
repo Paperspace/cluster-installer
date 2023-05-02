@@ -248,13 +248,15 @@ dispatcherNotifier:
     logLevel: "info"
     useSSL: true
 
+  %{ if try(resources["dispatcher-notifier"], null) != null }
   resources:
     requests:
-      cpu: 1000m
-      memory: 2Gi
+      cpu: ${resources["dispatcher-notifier"]["requests"]["cpu"]}
+      memory: ${resources["dispatcher-notifier"]["requests"]["memory"]}
     limits:
-      cpu: 2000m
-      memory: 4Gi
+      cpu: ${resources["dispatcher-notifier"]["limits"]["cpu"]}
+      memory: ${resources["dispatcher-notifier"]["limits"]["memory"]}
+  %{ endif }
 
 efs-provisioner:
   enabled: ${efs_provisioner_enabled}
