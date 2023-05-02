@@ -132,6 +132,12 @@ locals {
           "memory" = "6Gi"
         }
       },
+      "dispatcher-notifier" = {
+        "limits" = {
+          "cpu"    = "1000m"
+          "memory" = "2Gi"
+        }
+      },
       "telemetry" = {
         "limits" = {
           "cpu"    = "1000m"
@@ -224,6 +230,12 @@ locals {
         }
       },
       "telemetry" = {
+        "limits" = {
+          "cpu"    = "1000m"
+          "memory" = "2Gi"
+        }
+      },
+      "dispatcher-notifier" = {
         "limits" = {
           "cpu"    = "1000m"
           "memory" = "2Gi"

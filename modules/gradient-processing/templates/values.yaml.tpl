@@ -239,6 +239,24 @@ dispatcher:
       memory: ${resources["dispatcher"]["limits"]["memory"]}
   %{ endif }
 
+dispatcherNotifier:
+  enabled: true
+
+  replicaCount: 4
+
+  config:
+    logLevel: "info"
+    useSSL: true
+
+  %{ if try(resources["dispatcher-notifier"], null) != null }
+  resources:
+    requests:
+      cpu: ${resources["dispatcher-notifier"]["requests"]["cpu"]}
+      memory: ${resources["dispatcher-notifier"]["requests"]["memory"]}
+    limits:
+      cpu: ${resources["dispatcher-notifier"]["limits"]["cpu"]}
+      memory: ${resources["dispatcher-notifier"]["limits"]["memory"]}
+  %{ endif }
 
 efs-provisioner:
   enabled: ${efs_provisioner_enabled}
