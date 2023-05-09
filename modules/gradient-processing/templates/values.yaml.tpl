@@ -683,6 +683,7 @@ volumeController:
   config:
     useSSL: true
     sharedStorageClaim: gradient-processing-shared
+    prometheusUrl: ${gradient_metrics_conn_str}
     gradientTeamsPersistentVolumeClaimName: ${shared_storage_name}
     %{ if local_storage_type == "ceph-csi-fs" || shared_storage_type == "ceph-csi-fs" }
     volumeType: cephfs
