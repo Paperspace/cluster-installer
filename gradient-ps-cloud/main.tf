@@ -234,7 +234,7 @@ locals {
     "A100-80Gx2" = 0,
     "A100-80Gx4" = 0,
     "A100-80Gx8" = 0,
-    "H100".      = 0,
+    "H100"       = 0,
     "H100x2"     = 0,
     "H100x4"     = 0,
     "H100x8"     = 0,
@@ -252,7 +252,7 @@ locals {
     "Free-A6000"    = 0,
     "Free-A100"     = 0,
     "Free-A100-80G" = 0,
-    "Free-H100".    = 0,
+    "Free-H100"     = 0,
   }) : local.base_asg_min_sizes
   base_asg_min_sizes = merge({
     "C3"         = 0,
