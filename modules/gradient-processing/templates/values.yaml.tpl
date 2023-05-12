@@ -628,8 +628,14 @@ traefik:
       enabled: true
       domainsList:
         - main: "*.${domain}"
+        %{ if secondary_domain != "" }
+        - main: "*.${secondary_domain}"
+        %{ endif }
         - sans:
           - ${domain}
+          %{ if secondary_domain != "" }
+          - ${secondary_domain}
+          %{ endif }
     challengeType: dns-01
     resolvers:
       - 8.8.8.8:53

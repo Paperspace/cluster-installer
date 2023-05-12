@@ -90,6 +90,10 @@ variable "domain" {
   description = "domain"
 }
 
+variable "secondary_domain" {
+  description = "a secondary domain to be used for the cluster."
+}
+
 variable "enabled" {
   description = "If module is enabled"
   default     = "true"
