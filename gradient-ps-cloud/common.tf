@@ -62,6 +62,7 @@ variable "domain" {
 
 variable "secondary_domain" {
   description = "Secondary domain used to host gradient"
+  default = ""
 }
 
 variable "gradient_processing_chart" {
