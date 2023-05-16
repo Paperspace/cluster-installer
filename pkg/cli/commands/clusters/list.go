@@ -1,7 +1,7 @@
 package clusters
 
 import (
-	"github.com/Paperspace/gradient-installer/pkg/cli"
+	"github.com/Paperspace/cluster-installer/pkg/cli"
 	"github.com/Paperspace/paperspace-go"
 	"github.com/spf13/cobra"
 )

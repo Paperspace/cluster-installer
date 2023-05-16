@@ -31,7 +31,7 @@ locals {
       for worker_node_definition in instance_type.instance_type_metadata : {
 
         name = "${worker_node_definition.instance_type_name}-${data.aws_subnet.nodes[0].availability_zone}"
-        # For subnets please see https://github.com/Paperspace/gradient-installer/issues/241 
+        # For subnets please see https://github.com/Paperspace/cluster-installer/issues/241 
         subnets                       = [var.node_subnet_ids[0]]
         additional_security_group_ids = var.node_security_group_ids
         additional_userdata           = var.additional_userdata

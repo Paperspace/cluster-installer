@@ -39,7 +39,7 @@ Global Flags:
 var versionTemplate = `Gradient Installer/{{ .Version }}
 `
 
-var commandName = "gradient-installer"
+var commandName = "cluster-installer"
 var version = "latest"
 
 func NewRootCommand(profileName string) *cobra.Command {

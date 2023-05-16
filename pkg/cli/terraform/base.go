@@ -4,7 +4,7 @@ import (
 	"github.com/Paperspace/paperspace-go"
 )
 
-var SourcePrefix = "github.com/Paperspace/gradient-installer"
+var SourcePrefix = "github.com/Paperspace/cluster-installer"
 var SupportedClusterPlatformTypes = []paperspace.ClusterPlatformType{
 	paperspace.ClusterPlatformAWS,
 	paperspace.ClusterPlatformMetal,

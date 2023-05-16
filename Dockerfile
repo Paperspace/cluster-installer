@@ -4,7 +4,7 @@ RUN apk add ansible curl bash
 
 RUN mkdir /home/paperspace
 
-ADD . /home/paperspace/gradient-installer
+ADD . /home/paperspace/cluster-installer
 
 WORKDIR /home/paperspace/gradient-cluster
 ENTRYPOINT

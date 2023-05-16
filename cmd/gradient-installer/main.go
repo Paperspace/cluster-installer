@@ -3,9 +3,9 @@ package main
 import (
 	"os"
 
-	"github.com/Paperspace/gradient-installer/pkg/cli"
-	"github.com/Paperspace/gradient-installer/pkg/cli/commands"
-	"github.com/Paperspace/gradient-installer/pkg/cli/config"
+	"github.com/Paperspace/cluster-installer/pkg/cli"
+	"github.com/Paperspace/cluster-installer/pkg/cli/commands"
+	"github.com/Paperspace/cluster-installer/pkg/cli/config"
 )
 
 func main() {

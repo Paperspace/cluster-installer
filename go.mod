@@ -1,4 +1,4 @@
-module github.com/Paperspace/gradient-installer
+module github.com/Paperspace/cluster-installer
 
 go 1.14
 
