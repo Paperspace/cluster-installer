@@ -1,6 +1,6 @@
 .terraform
 /build
-gradient-kubeconfig
+cluster-kubeconfig
 plugins
 terraform.tfstate
 cluster-installer

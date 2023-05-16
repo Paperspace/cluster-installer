@@ -28,7 +28,7 @@ func NewSetupCommand(profileName string) *cobra.Command {
 				Value:          profile.APIKey,
 			}
 
-			println(cli.TextHeader("Setup Gradient Installer CLI, for a Paperspace API key visit: https://console.paperspace.com"))
+			println(cli.TextHeader("Setup Cluster Installer CLI, for a Paperspace API key visit: https://console.paperspace.com"))
 			if err := prompt.Run(); err != nil {
 				return err
 			}

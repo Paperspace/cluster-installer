@@ -81,7 +81,7 @@ provider "kubernetes" {
   cluster_ca_certificate = module.kubernetes.k8s_cluster_ca_certificate
 }
 
-// Gradient
+// Cluster
 module "gradient_processing" {
   source  = "../modules/gradient-processing"
   enabled = module.kubernetes.k8s_host == "" ? false : true

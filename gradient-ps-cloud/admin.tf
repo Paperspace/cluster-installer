@@ -4,8 +4,8 @@ resource "tls_private_key" "admin_management_key" {
 
 resource "paperspace_script" "gradient_machine_setup" {
   count       = var.gradient_admin_vm_enabled ? 1 : 0
-  name        = "Gradient Admin Setup"
-  description = "Gradient Admin Setup Script"
+  name        = "Cluster Admin Setup"
+  description = "Cluster Admin Setup Script"
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
     kind                         = "admin_public"
     gpu_enabled                  = false

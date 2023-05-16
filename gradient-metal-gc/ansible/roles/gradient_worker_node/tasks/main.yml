@@ -1,5 +1,5 @@
 ---
-- name: Gradient RKE2 Common Tasks
+- name: Cluster RKE2 Common Tasks
   ansible.builtin.include_role:
     name: gradient_common
     tasks_from: '{{ gradient_common_task }}'

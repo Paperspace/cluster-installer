@@ -1,8 +1,8 @@
 resource "paperspace_script" "gradient_service" {
   count = local.enable_gradient_service
 
-  name        = "Gradient service setup"
-  description = "Gradient service setup"
+  name        = "Cluster service setup"
+  description = "Cluster service setup"
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
     kind                         = "worker"
     gpu_enabled                  = false

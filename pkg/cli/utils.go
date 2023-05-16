@@ -14,7 +14,7 @@ import (
 	"github.com/fatih/color"
 )
 
-var Name = "Gradient Installer"
+var Name = "Cluster Installer"
 var maxInterruptCount = 1
 
 func Exec(cmd *exec.Cmd) error {

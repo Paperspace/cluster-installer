@@ -36,7 +36,7 @@ Global Flags:
 {{- end }}
 `
 
-var versionTemplate = `Gradient Installer/{{ .Version }}
+var versionTemplate = `Cluster Installer/{{ .Version }}
 `
 
 var commandName = "cluster-installer"
@@ -45,7 +45,7 @@ var version = "latest"
 func NewRootCommand(profileName string) *cobra.Command {
 	rootCommand := &cobra.Command{
 		Use:           commandName,
-		Short:         "CLI to manage Paperspace Gradient clusters",
+		Short:         "CLI to manage Paperspace Cluster clusters",
 		SilenceErrors: true,
 		Version:       version,
 	}
