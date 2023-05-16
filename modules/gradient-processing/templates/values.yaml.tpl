@@ -756,18 +756,18 @@ nats:
   cluster:
     enabled: true
     replicas: 3
-
-  %{ if try(resources["nats"], null) != null }
-  resources:
-    requests:
-      cpu: ${resources["nats"]["requests"]["cpu"]}
-      memory: ${resources["nats"]["requests"]["memory"]}
-    limits:
-      cpu: ${resources["nats"]["limits"]["cpu"]}
-      memory: ${resources["nats"]["limits"]["memory"]}
-  %{ endif }
-
+  
   nats:
+    %{ if try(resources["nats"], null) != null }
+    resources:
+      requests:
+        cpu: ${resources["nats"]["requests"]["cpu"]}
+        memory: ${resources["nats"]["requests"]["memory"]}
+      limits:
+        cpu: ${resources["nats"]["limits"]["cpu"]}
+        memory: ${resources["nats"]["limits"]["memory"]}
+    %{ endif }
+
     jetstream:
       enabled: true
 
