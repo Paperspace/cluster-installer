@@ -134,8 +134,8 @@ locals {
       },
       "dispatcher-notifier" = {
         "limits" = {
-          "cpu"    = "1000m"
-          "memory" = "2Gi"
+          "cpu"    = "200m"
+          "memory" = "256Mi"
         }
       },
       "telemetry" = {
@@ -221,8 +221,8 @@ locals {
       },
       "dispatcher-notifier" = {
         "limits" = {
-          "cpu"    = "1000m"
-          "memory" = "2Gi"
+          "cpu"    = "200m"
+          "memory" = "256Mi"
         }
       },
       "nats-bridge" = {
