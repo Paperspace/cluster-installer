@@ -1,22 +1,22 @@
 ---
 - name: Cluster RKE2 Common Tasks
   ansible.builtin.include_role:
-    name: gradient_common
-    tasks_from: '{{ gradient_common_task }}'
+    name: cluster_common
+    tasks_from: '{{ cluster_common_task }}'
   loop:
     - main
     - install_kubelet_config
     - install_containerd_configuration
   loop_control:
-    loop_var: gradient_common_task
+    loop_var: cluster_common_task
 
 - name: Install RKE2 for Initial Server
   ansible.builtin.include_tasks: install_rke2_on_initial_server.yml
-  when: inventory_hostname in groups['gradient_control_nodes'][0]
+  when: inventory_hostname in groups['cluster_control_nodes'][0]
 
 - name: Install RKE2 for Other Servers
   ansible.builtin.include_tasks: install_rke2_on_other_servers.yml
-  when: inventory_hostname in groups['gradient_control_nodes'][1:]
+  when: inventory_hostname in groups['cluster_control_nodes'][1:]
 
 - name: Install rke2-coredns HelmConfigChart
   copy:
@@ -34,7 +34,7 @@
           replicaCount: {{ rke2_coredns_replica_count }}
           nodeSelector:
             paperspace.com/pool-name: services-small
-  when: inventory_hostname in groups['gradient_control_nodes'][0]
+  when: inventory_hostname in groups['cluster_control_nodes'][0]
 
 - name: Install Terraform
   ansible.builtin.include_tasks: install_terraform.yml

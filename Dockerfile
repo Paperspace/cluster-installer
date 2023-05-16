@@ -6,6 +6,6 @@ RUN mkdir /home/paperspace
 
 ADD . /home/paperspace/cluster-installer
 
-WORKDIR /home/paperspace/gradient-cluster
+WORKDIR /home/paperspace/cluster-cluster
 ENTRYPOINT
 CMD terraform init && terraform plan

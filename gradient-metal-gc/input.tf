@@ -162,7 +162,7 @@ variable "external_s3_port" {
 variable "metrics_storage_class" {
   description = "Name of the storage class for the metrics server"
   type        = string
-  default     = "gradient-processing-shared"
+  default     = "cluster-processing-shared"
 }
 
 variable "victoria_metrics_vmcluster_vmstorage_replicacount" {

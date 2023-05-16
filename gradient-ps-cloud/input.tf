@@ -48,7 +48,7 @@ variable "kind" {
   default     = "singlenode"
 }
 
-variable "gradient_machine_config" {
+variable "cluster_machine_config" {
   description = "Cluster machine config"
   default     = ""
 }
@@ -107,13 +107,13 @@ variable "machine_storage_admin" {
   default     = 200
 }
 
-variable "gradient_admin_vm_enabled" {
-  description = "gradient admin public box is enabled"
+variable "cluster_admin_vm_enabled" {
+  description = "cluster admin public box is enabled"
   default     = false
 }
 
-variable "gradient_workspace_vm_enabled" {
-  description = "gradient workspace job box is enabled"
+variable "cluster_workspace_vm_enabled" {
+  description = "cluster workspace job box is enabled"
   default     = true
 }
 

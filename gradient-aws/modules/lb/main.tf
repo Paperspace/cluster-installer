@@ -3,7 +3,7 @@ kubernetes.io/cluster/p-test     owned
  kubernetes.io/service-name     default/traefik     
 */
 resource "aws_elb" "main" {
-  name               = "gradient-elb"
+  name               = "cluster-elb"
   availability_zones = var.availability_zones
 
   access_logs {

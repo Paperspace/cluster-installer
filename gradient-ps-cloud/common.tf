@@ -57,15 +57,15 @@ variable "cluster_api_host" {
 }
 
 variable "domain" {
-  description = "Domain used to host gradient"
+  description = "Domain used to host cluster"
 }
 
-variable "gradient_processing_chart" {
+variable "cluster_processing_chart" {
   description = "Cluster processing chart"
-  default     = "gradient-processing"
+  default     = "cluster-processing"
 }
 
-variable "gradient_processing_version" {
+variable "cluster_processing_version" {
   description = "Cluster processing version"
   default     = "*"
 }
@@ -102,7 +102,7 @@ variable "k8s_version" {
 
 variable "kubeconfig_path" {
   description = "Kubeconfig path"
-  default     = "./gradient-kubeconfig"
+  default     = "./cluster-kubeconfig"
 }
 
 variable "letsencrypt_dns_name" {
@@ -187,7 +187,7 @@ variable "write_kubeconfig" {
 }
 
 variable "cert_manager_enabled" {
-  description = "Enable cert-manager helm package, this is required for gradient but should only be installed once per cluster"
+  description = "Enable cert-manager helm package, this is required for cluster but should only be installed once per cluster"
   default     = false
   type        = bool
 }

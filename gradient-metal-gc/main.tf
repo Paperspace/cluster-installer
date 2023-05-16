@@ -36,19 +36,19 @@ provider "kubernetes" {
   config_path = var.kubeconfig_path
 }
 
-variable "gradient_processing_enabled" {
+variable "cluster_processing_enabled" {
   type    = number
   default = 1
 }
 
 locals {
-  nats_storage_class = "gradient-processing-shared"
+  nats_storage_class = "cluster-processing-shared"
 }
 
 // Cluster
-module "gradient_processing" {
-  source  = "../modules/gradient-processing"
-  enabled = var.gradient_processing_enabled == 0 ? false : true
+module "cluster_processing" {
+  source  = "../modules/cluster-processing"
+  enabled = var.cluster_processing_enabled == 0 ? false : true
 
   amqp_hostname                         = var.amqp_hostname
   amqp_port                             = var.amqp_port
@@ -57,7 +57,7 @@ module "gradient_processing" {
   artifacts_object_storage_endpoint     = var.artifacts_object_storage_endpoint
   artifacts_path                        = var.artifacts_path
   artifacts_secret_access_key           = var.artifacts_secret_access_key
-  chart                                 = var.gradient_processing_chart
+  chart                                 = var.cluster_processing_chart
   cluster_apikey                        = var.cluster_apikey
   cluster_authorization_token           = var.cluster_authorization_token
   cluster_autoscaler_autoscaling_groups = var.cluster_autoscaler_autoscaling_groups
@@ -83,7 +83,7 @@ module "gradient_processing" {
   logs_host                   = var.logs_host
   paperspace_base_url         = var.api_host
   paperspace_api_next_url     = var.paperspace_api_next_url
-  gradient_processing_version = var.gradient_processing_version
+  cluster_processing_version = var.cluster_processing_version
   name                        = var.name
   sentry_dsn                  = var.sentry_dsn
   service_pool_name           = local.service_pool_name
@@ -101,7 +101,7 @@ module "gradient_processing" {
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
     # Images used internally
     # "paperspace/notebook_idle:v1.0.5",
-    "paperspace/gradient-integrations-sidecar:latest",
+    "paperspace/cluster-integrations-sidecar:latest",
 
     # Ordered by most used
     "graphcore/pytorch-jupyter:3.1.0-ubuntu-20.04-20230224",
@@ -113,7 +113,7 @@ module "gradient_processing" {
   victoria_metrics_vmcluster_enabled                  = false
   victoria_metrics_vmcluster_vmstorage_replicacount   = var.victoria_metrics_vmcluster_vmstorage_replicacount
   metrics_port                                        = 8429
-  metrics_service_name                                = "vmsingle-gradient-processing-victoria-metrics"
+  metrics_service_name                                = "vmsingle-cluster-processing-victoria-metrics"
   metrics_path                                        = "/prometheus"
   victoria_metrics_vmsingle_enabled                   = true
   metrics_storage_class                               = var.metrics_storage_class
@@ -150,7 +150,7 @@ module "container_registry_mirror" {
   hostname            = "container-registry-mirror.${var.domain}"
   pvc_storage = {
     size           = "500Gi"
-    storage_class  = "gradient-processing-shared"
+    storage_class  = "cluster-processing-shared"
     existing_claim = ""
   }
   pool_name = var.registry_pool_name != "" ? var.registry_pool_name : var.service_pool_name
@@ -176,11 +176,11 @@ module "node_problem_detector" {
   source = "../modules/node-problem-detector"
 }
 
-resource "kubernetes_cron_job" "gradient_processing_shared_backup_job" {
+resource "kubernetes_cron_job" "cluster_processing_shared_backup_job" {
   count = var.enable_cephbackup_job ? 1 : 0
 
   metadata {
-    name = "gradient-processing-shared-backup"
+    name = "cluster-processing-shared-backup"
   }
 
   spec {
@@ -208,19 +208,19 @@ resource "kubernetes_cron_job" "gradient_processing_shared_backup_job" {
                 "--no-group",
                 "--no-owner",
                 "--delete",
-                "--exclude", "/mnt/gradient/volumes", // exclude csi volumes we don't care about prom data and rsync chokes on them
-                "/mnt/gradient/",
-                "/mnt/gradient-backup/gradient-volumes"
+                "--exclude", "/mnt/cluster/volumes", // exclude csi volumes we don't care about prom data and rsync chokes on them
+                "/mnt/cluster/",
+                "/mnt/cluster-backup/cluster-volumes"
               ]
 
               volume_mount {
-                name       = "gradient-shared"
-                mount_path = "/mnt/gradient"
+                name       = "cluster-shared"
+                mount_path = "/mnt/cluster"
                 read_only  = true
               }
               volume_mount {
-                name       = "gradient-shared-backup"
-                mount_path = "/mnt/gradient-backup"
+                name       = "cluster-shared-backup"
+                mount_path = "/mnt/cluster-backup"
               }
               security_context {
                 allow_privilege_escalation = false
@@ -233,14 +233,14 @@ resource "kubernetes_cron_job" "gradient_processing_shared_backup_job" {
             }
 
             volume {
-              name = "gradient-shared"
+              name = "cluster-shared"
               persistent_volume_claim {
-                claim_name = "gradient-processing-shared"
+                claim_name = "cluster-processing-shared"
               }
             }
 
             volume {
-              name = "gradient-shared-backup"
+              name = "cluster-shared-backup"
               host_path {
                 path = "/mnt/poddata"
               }

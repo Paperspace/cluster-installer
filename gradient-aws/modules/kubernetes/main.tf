@@ -52,7 +52,7 @@ locals {
           concat([
             "paperspace.com/pool-name=${worker_node_definition.instance_type_name}",
             "paperspace.com/pool-type=${worker_node_definition.node_pool_type}",
-            "paperspace.com/gradient-worker=${tostring(length(regexall("^services", worker_node_definition.instance_type_name)) > 0)}",
+            "paperspace.com/cluster-worker=${tostring(length(regexall("^services", worker_node_definition.instance_type_name)) > 0)}",
           ], worker_node_definition.kubelet_extra_args)
         )}"
 

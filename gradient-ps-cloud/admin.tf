@@ -2,8 +2,8 @@ resource "tls_private_key" "admin_management_key" {
   algorithm = "RSA"
 }
 
-resource "paperspace_script" "gradient_machine_setup" {
-  count       = var.gradient_admin_vm_enabled ? 1 : 0
+resource "paperspace_script" "cluster_machine_setup" {
+  count       = var.cluster_admin_vm_enabled ? 1 : 0
   name        = "Cluster Admin Setup"
   description = "Cluster Admin Setup Script"
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
@@ -21,10 +21,10 @@ resource "paperspace_script" "gradient_machine_setup" {
   run_once   = true
 }
 
-resource "paperspace_machine" "gradient_admin" {
-  count = var.gradient_admin_vm_enabled ? 1 : 0
+resource "paperspace_machine" "cluster_admin" {
+  count = var.cluster_admin_vm_enabled ? 1 : 0
   depends_on = [
-    paperspace_script.gradient_machine_setup,
+    paperspace_script.cluster_machine_setup,
     tls_private_key.ssh_key,
   ]
 
@@ -37,7 +37,7 @@ resource "paperspace_machine" "gradient_admin" {
   template_id      = var.machine_template_id_admin
   user_id          = data.paperspace_user.admin.id
   team_id          = data.paperspace_user.admin.team_id
-  script_id        = paperspace_script.gradient_machine_setup[0].id
+  script_id        = paperspace_script.cluster_machine_setup[0].id
   network_id       = paperspace_network.network.handle
   live_forever     = true
   is_managed       = true

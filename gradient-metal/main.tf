@@ -82,8 +82,8 @@ provider "kubernetes" {
 }
 
 // Cluster
-module "gradient_processing" {
-  source  = "../modules/gradient-processing"
+module "cluster_processing" {
+  source  = "../modules/cluster-processing"
   enabled = module.kubernetes.k8s_host == "" ? false : true
 
   amqp_hostname                         = var.amqp_hostname
@@ -93,7 +93,7 @@ module "gradient_processing" {
   artifacts_object_storage_endpoint     = var.artifacts_object_storage_endpoint
   artifacts_path                        = var.artifacts_path
   artifacts_secret_access_key           = var.artifacts_secret_access_key
-  chart                                 = var.gradient_processing_chart
+  chart                                 = var.cluster_processing_chart
   cluster_apikey                        = var.cluster_apikey
   cluster_authorization_token           = var.cluster_authorization_token
   cluster_autoscaler_autoscaling_groups = var.cluster_autoscaler_autoscaling_groups
@@ -119,7 +119,7 @@ module "gradient_processing" {
   logs_host                          = var.logs_host
   paperspace_base_url                = var.api_host
   paperspace_api_next_url            = var.paperspace_api_next_url
-  gradient_processing_version        = var.gradient_processing_version
+  cluster_processing_version        = var.cluster_processing_version
   name                               = var.name
   sentry_dsn                         = var.sentry_dsn
   service_pool_name                  = local.service_pool_name
@@ -136,7 +136,7 @@ module "gradient_processing" {
   image_cache_list                   = var.image_cache_list
   metrics_server_enabled             = false
   metrics_port                       = 8429
-  metrics_service_name               = "vmsingle-gradient-processing-victoria-metrics"
+  metrics_service_name               = "vmsingle-cluster-processing-victoria-metrics"
   metrics_path                       = "/prometheus"
   victoria_metrics_vmcluster_enabled = false
   victoria_metrics_vmsingle_enabled  = true

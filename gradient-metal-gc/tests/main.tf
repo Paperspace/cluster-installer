@@ -1,4 +1,4 @@
-module "gradient_metal" {
+module "cluster_metal" {
   source = "../"
 
   name                        = "cluster-name"
@@ -9,7 +9,7 @@ module "gradient_metal" {
   cluster_apikey              = "cluster-apikey-from-paperspace-com"
   cluster_authorization_token = "cluster-authorization-token-from-paperspace.com"
   cluster_handle              = "cluster-handle-from-paperspace-com"
-  domain                      = "gradient.mycompany.com"
+  domain                      = "cluster.mycompany.com"
 
   k8s_workers = [
     {
@@ -26,9 +26,9 @@ module "gradient_metal" {
     }
   ]
 
-  shared_storage_path   = "/srv/gradient"
+  shared_storage_path   = "/srv/cluster"
   shared_storage_server = "shared-nfs-storage.com"
-  ssh_key_path          = "gradient_rsa"
+  ssh_key_path          = "cluster_rsa"
   ssh_user              = "ubuntu"
 
   is_tls_config_from_file = false

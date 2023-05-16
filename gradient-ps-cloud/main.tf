@@ -1,5 +1,5 @@
 locals {
-  asg_types = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_types, {
+  asg_types = var.cluster_machine_config == "paperspace-public" ? merge(local.base_asg_types, {
     "Free-CPU" = {
       type = "cpu"
     }
@@ -164,7 +164,7 @@ locals {
     "West Coast (CA1)" : "http://ca1-docker-registry-mirror.paperspace.io",
   }
 
-  asg_max_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_max_sizes, {
+  asg_max_sizes = var.cluster_machine_config == "paperspace-public" ? merge(local.base_asg_max_sizes, {
     "Free-CPU"      = 10,
     "Free-GPU"      = 10,
     "Free-RTX4000"  = 10,
@@ -220,7 +220,7 @@ locals {
     "A100-80Gx8" = 0,
   }, var.asg_min_sizes)
 
-  asg_min_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_min_sizes, {
+  asg_min_sizes = var.cluster_machine_config == "paperspace-public" ? merge(local.base_asg_min_sizes, {
     "Free-CPU"      = 0,
     "Free-GPU"      = 0,
     "Free-RTX4000"  = 0,
@@ -276,41 +276,41 @@ locals {
     "A100-80Gx8" = 0,
   }, var.asg_min_sizes)
 
-  is_public_cluster = var.gradient_machine_config == "paperspace-public"
+  is_public_cluster = var.cluster_machine_config == "paperspace-public"
 
   cluster_autoscaler_cloudprovider = "paperspace"
   cluster_autoscaler_enabled       = true
   dns_node_selector                = { "paperspace.com/pool-name" = var.service_pool_name }
-  enable_gradient_service          = var.kind == "multinode" ? 1 : 0
-  enable_gradient_lb               = var.kind == "multinode" ? 1 : 0
+  enable_cluster_service          = var.kind == "multinode" ? 1 : 0
+  enable_cluster_lb               = var.kind == "multinode" ? 1 : 0
   prometheus_pool_name             = "services-small"
-  gradient_lb_count                = var.kind == "multinode" ? 2 : 0
-  gradient_main_count              = local.is_public_cluster ? 5 : var.kind == "multinode" ? 3 : 1 # etcd or etcd + api-server. 1, 3, and 5 are the only valid configs
+  cluster_lb_count                = var.kind == "multinode" ? 2 : 0
+  cluster_main_count              = local.is_public_cluster ? 5 : var.kind == "multinode" ? 3 : 1 # etcd or etcd + api-server. 1, 3, and 5 are the only valid configs
 
-  gradient_controlplane_count = local.is_public_cluster ? 5 : 0 # kube api-server. scale horizontally
-  gradient_service_count      = var.machine_count_service       # generic worker pool for gradient servces, scale horizontally
+  cluster_controlplane_count = local.is_public_cluster ? 5 : 0 # kube api-server. scale horizontally
+  cluster_service_count      = var.machine_count_service       # generic worker pool for cluster servces, scale horizontally
   k8s_version                 = var.k8s_version == "" ? "1.20.15" : var.k8s_version
   kubeconfig                  = yamldecode(rancher2_cluster_sync.main.kube_config)
-  lb_ips                      = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
+  lb_ips                      = var.kind == "multinode" ? paperspace_machine.cluster_lb.*.public_ip_address : [paperspace_machine.cluster_main[0].public_ip_address]
   lb_pool_name                = var.kind == "multinode" ? "lb" : "services-small"
 
-  local_storage_path       = var.local_storage_path == "" ? "/srv/gradient" : var.local_storage_path
+  local_storage_path       = var.local_storage_path == "" ? "/srv/cluster" : var.local_storage_path
   local_storage_type       = var.local_storage_type == "" ? "nfs" : var.local_storage_type
   machine_type_main        = var.machine_type_main
-  shared_storage_path      = var.shared_storage_path == "/" ? "/srv/gradient" : var.shared_storage_path
+  shared_storage_path      = var.shared_storage_path == "/" ? "/srv/cluster" : var.shared_storage_path
   shared_storage_type      = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
-  legacy_datasets_pvc_name = var.gradient_machine_config == "paperspace-public" ? "gradient-processing-shared" : ""
-  legacy_datasets_sub_path = var.gradient_machine_config == "paperspace-public" ? "datasets" : ""
-  metrics_storage_class    = local.is_public_cluster ? "gradient-processing-rbd" : "gradient-processing-local"
-  nats_storage_class       = local.is_public_cluster ? "gradient-processing-rbd" : "gradient-processing-local"
-  gradient_main_kind = (
-    var.gradient_machine_config == "paperspace-public" ?
+  legacy_datasets_pvc_name = var.cluster_machine_config == "paperspace-public" ? "cluster-processing-shared" : ""
+  legacy_datasets_sub_path = var.cluster_machine_config == "paperspace-public" ? "datasets" : ""
+  metrics_storage_class    = local.is_public_cluster ? "cluster-processing-rbd" : "cluster-processing-local"
+  nats_storage_class       = local.is_public_cluster ? "cluster-processing-rbd" : "cluster-processing-local"
+  cluster_main_kind = (
+    var.cluster_machine_config == "paperspace-public" ?
     "etcd"
     : var.kind == "multinode" ? "main" : "main_single"
   )
 
   ssh_key_path   = "${path.module}/ssh_key"
-  storage_server = paperspace_machine.gradient_main[0].private_ip_address
+  storage_server = paperspace_machine.cluster_main[0].private_ip_address
 
   k8s_version_to_rke_version = {
     "1.20.15" = "v1.20.15-rancher1-1",
@@ -360,13 +360,13 @@ resource "paperspace_network" "network" {
   team_id = var.team_id_integer
 }
 
-resource "paperspace_script" "gradient_main" {
+resource "paperspace_script" "cluster_main" {
   name        = "etcd and optionally controlplane setup"
   description = "Add public SSH key on machine create"
   depends_on  = [rancher2_cluster.main]
 
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
-    kind                         = local.gradient_main_kind
+    kind                         = local.cluster_main_kind
     gpu_enabled                  = false
     pool_name                    = "main"
     pool_type                    = "cpu"
@@ -388,7 +388,7 @@ resource "paperspace_script" "gradient_main" {
   }
 }
 
-resource "paperspace_script" "gradient_controlplane" {
+resource "paperspace_script" "cluster_controlplane" {
   name        = "Controlplane setup"
   description = "Add public SSH key on machine create"
   depends_on  = [rancher2_cluster.main]
@@ -415,11 +415,11 @@ resource "paperspace_script" "gradient_controlplane" {
   }
 }
 
-resource "paperspace_machine" "gradient_main" {
-  count = local.gradient_main_count
+resource "paperspace_machine" "cluster_main" {
+  count = local.cluster_main_count
 
   depends_on = [
-    paperspace_script.gradient_main,
+    paperspace_script.cluster_main,
     tls_private_key.ssh_key,
   ]
 
@@ -432,7 +432,7 @@ resource "paperspace_machine" "gradient_main" {
   template_id      = var.machine_template_id_main
   user_id          = data.paperspace_user.admin.id
   team_id          = data.paperspace_user.admin.team_id
-  script_id        = paperspace_script.gradient_main.id
+  script_id        = paperspace_script.cluster_main.id
   network_id       = paperspace_network.network.handle
   live_forever     = true
   is_managed       = true
@@ -457,16 +457,16 @@ resource "paperspace_machine" "gradient_main" {
             -i '${self.public_ip_address},' \
             -e "install_nfs_server=true" \
             -e "nfs_subnet_host_with_netmask=${paperspace_network.network.network}/${paperspace_network.network.netmask}" \
-            ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
+            ${path.module}/ansible/playbook-cluster-metal-ps-cloud-node.yaml
         EOF
   }
 }
 
-resource "paperspace_machine" "gradient_controlplane" {
-  count = local.gradient_controlplane_count
+resource "paperspace_machine" "cluster_controlplane" {
+  count = local.cluster_controlplane_count
 
   depends_on = [
-    paperspace_script.gradient_controlplane,
+    paperspace_script.cluster_controlplane,
     tls_private_key.ssh_key,
   ]
 
@@ -479,7 +479,7 @@ resource "paperspace_machine" "gradient_controlplane" {
   template_id      = var.machine_template_id_main
   user_id          = data.paperspace_user.admin.id
   team_id          = data.paperspace_user.admin.team_id
-  script_id        = paperspace_script.gradient_controlplane.id
+  script_id        = paperspace_script.cluster_controlplane.id
   network_id       = paperspace_network.network.handle
   live_forever     = true
   is_managed       = true
@@ -503,7 +503,7 @@ resource "paperspace_machine" "gradient_controlplane" {
             -i '${self.public_ip_address},' \
             -e "install_nfs_server=false" \
             -e "nfs_subnet_host_with_netmask=${paperspace_network.network.network}/${paperspace_network.network.netmask}" \
-            ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
+            ${path.module}/ansible/playbook-cluster-metal-ps-cloud-node.yaml
         EOF
   }
 }
@@ -522,8 +522,8 @@ resource "null_resource" "check_cluster" {
 }
 
 // Cluster
-module "gradient_processing" {
-  source            = "../modules/gradient-processing"
+module "cluster_processing" {
+  source            = "../modules/cluster-processing"
   enabled           = null_resource.check_cluster.id == "" ? false : true
   is_public_cluster = local.is_public_cluster
 
@@ -534,7 +534,7 @@ module "gradient_processing" {
   artifacts_object_storage_endpoint  = var.artifacts_object_storage_endpoint
   artifacts_path                     = var.artifacts_path
   artifacts_secret_access_key        = var.artifacts_secret_access_key
-  chart                              = var.gradient_processing_chart
+  chart                              = var.cluster_processing_chart
   cluster_apikey                     = var.cluster_apikey
   cluster_authorization_token        = var.cluster_authorization_token
   cluster_autoscaler_cloudprovider   = "paperspace"
@@ -559,7 +559,7 @@ module "gradient_processing" {
   local_storage_path          = local.local_storage_path
   local_storage_type          = local.local_storage_type
   logs_host                   = var.logs_host
-  gradient_processing_version = var.gradient_processing_version
+  cluster_processing_version = var.cluster_processing_version
   name                        = var.name
   paperspace_base_url         = var.api_host
   paperspace_api_next_url     = var.paperspace_api_next_url
@@ -584,8 +584,8 @@ module "gradient_processing" {
 
   image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
     # Ordered by most used
-    "paperspace/gradient-base:pt112-tf29-jax0314-py39-20220803",
-    "paperspace/gradient-base:pt112-tf29-jax0317-py39-20230125",
+    "paperspace/cluster-base:pt112-tf29-jax0314-py39-20220803",
+    "paperspace/cluster-base:pt112-tf29-jax0317-py39-20230125",
     "paperspace/fastai:2.0-fastbook-2022-10-13",
 
     # note nvidia will tell you to use the `nvcr.io/rapidsai/rapidsai` releases
@@ -634,7 +634,7 @@ resource "rancher2_cluster" "main" {
 
     upgrade_strategy {
       drain                        = false
-      max_unavailable_controlplane = tostring(max(floor(local.gradient_controlplane_count / 2), 1))
+      max_unavailable_controlplane = tostring(max(floor(local.cluster_controlplane_count / 2), 1))
       max_unavailable_worker       = "10"
     }
 
@@ -652,7 +652,7 @@ resource "rancher2_cluster" "main" {
 }
 
 resource "rancher2_cluster_sync" "main" {
-  depends_on    = [paperspace_machine.gradient_main, paperspace_machine.gradient_lb, null_resource.gradient_service_check]
+  depends_on    = [paperspace_machine.cluster_main, paperspace_machine.cluster_lb, null_resource.cluster_service_check]
   cluster_id    = rancher2_cluster.main.id
   state_confirm = 1
 
@@ -703,11 +703,11 @@ resource "null_resource" "register_managed_cluster_network" {
 }
 
 resource "null_resource" "register_managed_cluster_machine_main" {
-  count = local.gradient_main_count
+  count = local.cluster_main_count
 
   provisioner "local-exec" {
     command = <<EOF
-            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_main[count.index].id}"}'
+            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.cluster_main[count.index].id}"}'
         EOF
   }
 }
@@ -733,7 +733,7 @@ resource "cloudflare_record" "subdomain_wildcard" {
 }
 
 output "main_node_public_ip_address" {
-  value = paperspace_machine.gradient_main[0].public_ip_address
+  value = paperspace_machine.cluster_main[0].public_ip_address
 }
 
 output "network_handle" {

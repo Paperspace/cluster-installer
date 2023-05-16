@@ -44,7 +44,7 @@ jobs:
     strategy:
       matrix:
         directory:
-          [gradient-aws, gradient-metal, gradient-metal-gc, gradient-ps-cloud]
+          [cluster-aws, cluster-metal, cluster-metal-gc, cluster-ps-cloud]
         workspace: [default]
     runs-on: ubuntu-latest
     defaults:

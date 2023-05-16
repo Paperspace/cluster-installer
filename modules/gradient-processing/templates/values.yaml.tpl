@@ -29,8 +29,8 @@ global:
   defaultStorageName: ${default_storage_name}
   sharedStorageName: ${shared_storage_name}
   storage:
-    gradient-processing-local:
-      class: gradient-processing-local
+    cluster-processing-local:
+      class: cluster-processing-local
       path: ${local_storage_path}
       server: ${local_storage_server}
       type: ${local_storage_type}
@@ -45,8 +45,8 @@ global:
       password: ${local_storage_config["password"]}
       fsName: ${local_storage_config["fsName"]}
       %{ endif }
-    gradient-processing-shared:
-      class: gradient-processing-shared
+    cluster-processing-shared:
+      class: cluster-processing-shared
       path: ${shared_storage_path}
       server: ${shared_storage_server}
       type: ${shared_storage_type}
@@ -70,12 +70,12 @@ global:
         - lookupcache=none
       # we hardcode this to point to our internal nfs share
       server: nfs-service.default.svc.cluster.local
-      share: /opt/gradient-team-data
+      share: /opt/cluster-team-data
       %{ endif }
 
     %{ if shared_storage_type == "csi-driver-nfs" }
-    gradient-processing-images:
-      class: gradient-processing-images
+    cluster-processing-images:
+      class: cluster-processing-images
       type: ${shared_storage_type}
       mountOptions:
         %{ for mountOption in split(",", lookup(shared_storage_config, "mount_options")) }
@@ -98,14 +98,14 @@ ceph-csi-cephfs:
   enabled: ${local_storage_type == "ceph-csi-fs" || shared_storage_type == "ceph-csi-fs" ? true : false }
   csiConfig:
     %{ if local_storage_type == "ceph-csi-fs" }
-    - clusterID: gradient-processing-local
+    - clusterID: cluster-processing-local
       monitors:
       %{ for monitor in split(",", lookup(local_storage_config, "monitors")) }
         - ${ monitor }
       %{ endfor }
     %{ endif }
     %{ if shared_storage_type == "ceph-csi-fs" }
-    - clusterID: gradient-processing-shared
+    - clusterID: cluster-processing-shared
       monitors:
       %{ for monitor in split(",", lookup(shared_storage_config, "monitors")) }
         - ${ monitor }
@@ -205,7 +205,7 @@ cluster-autoscaler:
     PAPERSPACE_CLUSTER_ID: ${cluster_handle}
   extraEnvSecrets:
     PAPERSPACE_APIKEY:
-      name: gradient-processing
+      name: cluster-processing
       key: PS_API_KEY
 
   %{ endif }
@@ -276,10 +276,10 @@ fluent-bit:
     - name: PS_CLUSTER_AUTHORIZATION_TOKEN
       valueFrom:
         secretKeyRef:
-          name: gradient-processing
+          name: cluster-processing
           key: PS_CLUSTER_AUTHORIZATION_TOKEN
 
-gradient-operator:
+cluster-operator:
   config:
     ingressHost: ${domain}
     workspaceUploadUseSSL: true
@@ -302,15 +302,15 @@ gradient-operator:
     %{ endif }
     adminTeamHandle: ${admin_team_handle}
 
-    %{ if try(resources["gradient-operator-controller"], null) != null }
+    %{ if try(resources["cluster-operator-controller"], null) != null }
     controller:
       resources:
         requests:
-          cpu: ${resources["gradient-operator-controller"]["requests"]["cpu"]}
-          memory: ${resources["gradient-operator-controller"]["requests"]["memory"]}
+          cpu: ${resources["cluster-operator-controller"]["requests"]["cpu"]}
+          memory: ${resources["cluster-operator-controller"]["requests"]["memory"]}
         limits:
-          cpu: ${resources["gradient-operator-controller"]["limits"]["cpu"]}
-          memory: ${resources["gradient-operator-controller"]["limits"]["memory"]}
+          cpu: ${resources["cluster-operator-controller"]["limits"]["cpu"]}
+          memory: ${resources["cluster-operator-controller"]["limits"]["memory"]}
     %{ endif }
 
     %{ if pod_assignment_label_name != "" }
@@ -326,29 +326,29 @@ gradient-operator:
     legacyDatasetsSubPath: ${legacy_datasets_sub_path}
     %{ endif }
 
-    %{ if try(resources["gradient-operator-state-watcher"], null) != null }
+    %{ if try(resources["cluster-operator-state-watcher"], null) != null }
     stateWatcher:
       resources:
         requests:
-          cpu: ${resources["gradient-operator-state-watcher"]["requests"]["cpu"]}
-          memory: ${resources["gradient-operator-state-watcher"]["requests"]["memory"]}
+          cpu: ${resources["cluster-operator-state-watcher"]["requests"]["cpu"]}
+          memory: ${resources["cluster-operator-state-watcher"]["requests"]["memory"]}
         limits:
-          cpu: ${resources["gradient-operator-state-watcher"]["limits"]["cpu"]}
-          memory: ${resources["gradient-operator-state-watcher"]["limits"]["memory"]}
+          cpu: ${resources["cluster-operator-state-watcher"]["limits"]["cpu"]}
+          memory: ${resources["cluster-operator-state-watcher"]["limits"]["memory"]}
     %{ endif }
 
     abuseWatcher:
       enabled: false
       antiCryptoMinerRegex: ${anti_crypto_miner_regex}
 
-      %{ if try(resources["gradient-operator-abuse-watcher"], null) != null }
+      %{ if try(resources["cluster-operator-abuse-watcher"], null) != null }
       resources:
         requests:
-          cpu: ${resources["gradient-operator-abuse-watcher"]["requests"]["cpu"]}
-          memory: ${resources["gradient-operator-abuse-watcher"]["requests"]["memory"]}
+          cpu: ${resources["cluster-operator-abuse-watcher"]["requests"]["cpu"]}
+          memory: ${resources["cluster-operator-abuse-watcher"]["requests"]["memory"]}
         limits:
-          cpu: ${resources["gradient-operator-abuse-watcher"]["limits"]["cpu"]}
-          memory: ${resources["gradient-operator-abuse-watcher"]["limits"]["memory"]}
+          cpu: ${resources["cluster-operator-abuse-watcher"]["limits"]["cpu"]}
+          memory: ${resources["cluster-operator-abuse-watcher"]["limits"]["memory"]}
       %{ endif }
 
     %{ if label_selector_cpu != "" && label_selector_gpu != "" }
@@ -376,24 +376,24 @@ gradient-operator:
             memory: 58Gi
     %{ endif }
 
-gradient-metrics:
+cluster-metrics:
   ingress:
     hostPath:
       ${domain}: /metrics
   config:
-    connectionString: ${gradient_metrics_conn_str}
+    connectionString: ${cluster_metrics_conn_str}
 
-  %{ if try(resources["gradient-metrics"], null) != null }
+  %{ if try(resources["cluster-metrics"], null) != null }
   resources:
     requests:
-      cpu: ${resources["gradient-metrics"]["requests"]["cpu"]}
-      memory: ${resources["gradient-metrics"]["requests"]["memory"]}
+      cpu: ${resources["cluster-metrics"]["requests"]["cpu"]}
+      memory: ${resources["cluster-metrics"]["requests"]["memory"]}
     limits:
-      cpu: ${resources["gradient-metrics"]["limits"]["cpu"]}
-      memory: ${resources["gradient-metrics"]["limits"]["memory"]}
+      cpu: ${resources["cluster-metrics"]["limits"]["cpu"]}
+      memory: ${resources["cluster-metrics"]["limits"]["memory"]}
   %{ endif }
 
-gradient-operator-dispatcher:
+cluster-operator-dispatcher:
   config:
     sentryEnvironment: ${name}
     sentryDSN: ${sentry_dsn}
@@ -583,7 +583,7 @@ victoria-metrics-k8s-stack:
       %{ endif }
 
     additionalRemoteWrites:
-      - url: http://gradient-nats-bridge:8085/prometheus
+      - url: http://cluster-nats-bridge:8085/prometheus
 
   kubelet:
     enabled: true
@@ -682,9 +682,9 @@ volumeController:
   enabled: true
   config:
     useSSL: true
-    sharedStorageClaim: gradient-processing-shared
-    prometheusUrl: ${gradient_metrics_conn_str}
-    gradientTeamsPersistentVolumeClaimName: ${shared_storage_name}
+    sharedStorageClaim: cluster-processing-shared
+    prometheusUrl: ${cluster_metrics_conn_str}
+    clusterTeamsPersistentVolumeClaimName: ${shared_storage_name}
     %{ if local_storage_type == "ceph-csi-fs" || shared_storage_type == "ceph-csi-fs" }
     volumeType: cephfs
     %{ endif }
@@ -693,7 +693,7 @@ volumeController:
     # example: /paperspace1 or /exports
     exportPath: ${shared_storage_config["share"]}
     volumeType: disk-image
-    imagesVolumeClaimName: gradient-processing-images
+    imagesVolumeClaimName: cluster-processing-images
     %{ endif }
 
   %{ if try(resources["volume-controller"], null) != null }
@@ -736,9 +736,9 @@ prometheus-adapter:
   enabled: true
 
   prometheus:
-    url: ${gradient_metrics_adapter_endpoint}
-    port: ${gradient_metrics_port}
-    path: ${gradient_metrics_path}
+    url: ${cluster_metrics_adapter_endpoint}
+    port: ${cluster_metrics_port}
+    path: ${cluster_metrics_path}
 
 nodeHealthChecks:
   enabled: ${ node_health_check_enabled }

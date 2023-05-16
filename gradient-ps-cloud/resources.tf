@@ -12,25 +12,25 @@ locals {
         "memory" = "2Gi"
       },
     },
-    "gradient-operator-controller" = {
+    "cluster-operator-controller" = {
       "limits" = {
         "cpu"    = "1000m"
         "memory" = "3Gi"
       },
     },
-    "gradient-operator-state-watcher" = {
+    "cluster-operator-state-watcher" = {
       "limits" = {
         "cpu"    = "250m"
         "memory" = "768Mi"
       }
     },
-    "gradient-operator-abuse-watcher" = {
+    "cluster-operator-abuse-watcher" = {
       "limits" = {
         "cpu"    = "250m"
         "memory" = "1Gi"
       }
     },
-    "gradient-metrics" = {
+    "cluster-metrics" = {
       "limits" = {
         "cpu"    = "1000m"
         "memory" = "512Mi"

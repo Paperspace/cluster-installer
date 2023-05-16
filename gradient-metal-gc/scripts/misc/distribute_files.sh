@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-LAUNCH_DIR=/opt/gradient
+LAUNCH_DIR=/opt/cluster
 INVENTORY_FILE=inventory.txt
 
 REMOTE_EXEC_SCRIPT=${1}

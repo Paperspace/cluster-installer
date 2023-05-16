@@ -1,5 +1,5 @@
-resource "paperspace_script" "gradient_lb" {
-  count = local.enable_gradient_lb
+resource "paperspace_script" "cluster_lb" {
+  count = local.enable_cluster_lb
 
   name        = "Cluster LB setup"
   description = "Cluster LB setup"
@@ -18,11 +18,11 @@ resource "paperspace_script" "gradient_lb" {
   run_once   = true
 }
 
-resource "paperspace_machine" "gradient_lb" {
-  count = local.gradient_lb_count
+resource "paperspace_machine" "cluster_lb" {
+  count = local.cluster_lb_count
 
   depends_on = [
-    paperspace_script.gradient_lb,
+    paperspace_script.cluster_lb,
     tls_private_key.ssh_key,
   ]
 
@@ -35,7 +35,7 @@ resource "paperspace_machine" "gradient_lb" {
   template_id      = var.machine_template_id_lb
   user_id          = data.paperspace_user.admin.id
   team_id          = data.paperspace_user.admin.team_id
-  script_id        = paperspace_script.gradient_lb[0].id
+  script_id        = paperspace_script.cluster_lb[0].id
   network_id       = paperspace_network.network.handle
   live_forever     = true
   is_managed       = true

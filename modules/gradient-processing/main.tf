@@ -3,11 +3,11 @@ locals {
   letsencrypt_enabled = (length(var.letsencrypt_dns_settings) != 0 && (var.tls_cert == "" && var.tls_key == ""))
 
   shared_storage_config = var.shared_storage_config == "" ? {} : jsondecode(var.shared_storage_config)
-  shared_storage_name   = "gradient-processing-shared"
+  shared_storage_name   = "cluster-processing-shared"
   shared_storage_secrets = {
     "ceph-csi-fs" = {
-      "global.storage.gradient-processing-shared.user"     = lookup(local.shared_storage_config, "user", "")
-      "global.storage.gradient-processing-shared.password" = lookup(local.shared_storage_config, "password", "")
+      "global.storage.cluster-processing-shared.user"     = lookup(local.shared_storage_config, "user", "")
+      "global.storage.cluster-processing-shared.password" = lookup(local.shared_storage_config, "password", "")
     }
   }
 
@@ -18,11 +18,11 @@ locals {
 
   rbd_storage_config = var.rbd_storage_config == "" ? {} : jsondecode(var.rbd_storage_config)
 
-  tls_secret_name      = "gradient-processing-tls"
+  tls_secret_name      = "cluster-processing-tls"
   prometheus_pool_name = var.prometheus_pool_name != "" ? var.prometheus_pool_name : var.service_pool_name
 
-  gradient_metrics_endpoint         = "${var.metrics_request_protocol}://${var.metrics_service_name}:${var.metrics_port}${var.metrics_path}"
-  gradient_metrics_adapter_endpoint = "${var.metrics_request_protocol}://${var.metrics_service_name}"
+  cluster_metrics_endpoint         = "${var.metrics_request_protocol}://${var.metrics_service_name}:${var.metrics_port}${var.metrics_path}"
+  cluster_metrics_adapter_endpoint = "${var.metrics_request_protocol}://${var.metrics_service_name}"
 
   nfs_subdir_external_provisioner_path   = var.nfs_subdir_external_provisioner_path != "" ? var.nfs_subdir_external_provisioner_path : var.shared_storage_path
   nfs_subdir_external_provisioner_server = var.nfs_subdir_external_provisioner_server != "" ? var.nfs_subdir_external_provisioner_server : var.shared_storage_server
@@ -90,13 +90,13 @@ resource "random_password" "nats_token" {
   special = true
 }
 
-resource "helm_release" "gradient_processing" {
-  name                = "gradient-processing"
+resource "helm_release" "cluster_processing" {
+  name                = "cluster-processing"
   repository          = local.helm_repo_url
   repository_username = var.helm_repo_username
   repository_password = var.helm_repo_password
   chart               = var.chart
-  version             = var.gradient_processing_version
+  version             = var.cluster_processing_version
   timeout             = "900"
 
   set_sensitive {
@@ -230,11 +230,11 @@ resource "helm_release" "gradient_processing" {
       rbd_storage_config                     = local.rbd_storage_config
       ceph_provisioner_replicas              = var.ceph_provisioner_replicas
 
-      gradient_metrics_conn_str         = local.gradient_metrics_endpoint
-      gradient_metrics_adapter_endpoint = local.gradient_metrics_adapter_endpoint
-      gradient_metrics_port             = var.metrics_port
-      gradient_metrics_path             = var.metrics_path
-      gradient_metrics_service_name     = var.metrics_service_name
+      cluster_metrics_conn_str         = local.cluster_metrics_endpoint
+      cluster_metrics_adapter_endpoint = local.cluster_metrics_adapter_endpoint
+      cluster_metrics_port             = var.metrics_port
+      cluster_metrics_path             = var.metrics_path
+      cluster_metrics_service_name     = var.metrics_service_name
 
       nats_storage_class = var.nats_storage_class
       nats_token         = random_password.nats_token.result
@@ -260,6 +260,6 @@ resource "helm_release" "gradient_processing" {
 data "kubernetes_service" "traefik" {
   metadata {
     // Needed to use replace to overcome constant refresh caused by depends_on
-    name = "traefik${replace(helm_release.gradient_processing.metadata[0].revision, "/.*/", "")}"
+    name = "traefik${replace(helm_release.cluster_processing.metadata[0].revision, "/.*/", "")}"
   }
 }

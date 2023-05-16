@@ -1,4 +1,4 @@
-- name: Configure PS Cloud node for cluster-installer as gradient-metal target
+- name: Configure PS Cloud node for cluster-installer as cluster-metal target
   hosts: all
   remote_user: paperspace
   become: yes
@@ -32,17 +32,17 @@
             name: nfs-kernel-server
             state: present
             update_cache: yes
-        - name: Create gradient nfs serve share
+        - name: Create cluster nfs serve share
           file:
-            path: /srv/gradient
+            path: /srv/cluster
             state: directory
         - name: Grant nfs share access to clients
           lineinfile:
             path: /etc/exports
-            line: /srv/gradient {{ nfs_subnet_host_with_netmask }}(rw,sync,no_subtree_check)
-        - name: Remove ownership of gradient nfs server directory
+            line: /srv/cluster {{ nfs_subnet_host_with_netmask }}(rw,sync,no_subtree_check)
+        - name: Remove ownership of cluster nfs server directory
           file:
-            path: /srv/gradient
+            path: /srv/cluster
             state: directory
             recurse: yes
             owner: nobody

@@ -35,7 +35,7 @@ func NewTerraform(platform paperspace.ClusterPlatformType) *Terraform {
 		terraformModules.AWS = NewAWS()
 		terraformOutputs = &TerraformOutputs{
 			DNSCName: &TerraformOutput{
-				Value: "${module.gradient_aws.elb_hostname}",
+				Value: "${module.cluster_aws.elb_hostname}",
 			},
 		}
 	case paperspace.ClusterPlatformMetal,

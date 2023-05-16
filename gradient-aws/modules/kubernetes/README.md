@@ -1,4 +1,4 @@
-# gradient-aws-kubernetes
+# cluster-aws-kubernetes
 
 
 ## AWS EC2 Instance Types
