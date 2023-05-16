@@ -36,7 +36,7 @@ func NewMetalPlatform(platform paperspace.ClusterPlatformType) *MetalPlatform {
 		SSHUser:     "ubuntu",
 	}
 
-	metalPlatform.TerraformSource = fmt.Sprintf("%s?ref=master/cluster-metal", SourcePrefix)
+	metalPlatform.TerraformSource = fmt.Sprintf("%s?ref=master/gradient-metal", SourcePrefix)
 	return &metalPlatform
 }
 

@@ -1,7 +1,7 @@
 ---
 - name: Include other_servers vars
   ansible.builtin.include_vars: other_servers.yml
-  when: inventory_hostname in groups['cluster_control_nodes'][1:]
+  when: inventory_hostname in groups['gradient_control_nodes'][1:]
 
 - name: Add hostname to rke2_server group
   ansible.builtin.add_host:
@@ -24,4 +24,4 @@
   ansible.builtin.include_role:
     name: rke2_server
     tasks_from: other_servers
-  when: inventory_hostname in groups['cluster_control_nodes'][1:]
+  when: inventory_hostname in groups['gradient_control_nodes'][1:]

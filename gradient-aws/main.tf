@@ -121,7 +121,7 @@ data "aws_eks_cluster_auth" "cluster" {
   name  = module.kubernetes.cluster_id
 }
 provider "helm" {
-  alias = "cluster"
+  alias = "gradient"
   debug = true
   kubernetes {
     host                   = element(concat(data.aws_eks_cluster.cluster[*].endpoint, tolist([])), 0)
@@ -130,7 +130,7 @@ provider "helm" {
   }
 }
 provider "kubernetes" {
-  alias = "cluster"
+  alias = "gradient"
 
   host                   = element(concat(data.aws_eks_cluster.cluster[*].endpoint, tolist([])), 0)
   cluster_ca_certificate = base64decode(element(concat(data.aws_eks_cluster.cluster[*].certificate_authority.0.data, tolist([])), 0))
@@ -138,8 +138,8 @@ provider "kubernetes" {
 }
 
 // Cluster
-module "cluster_processing" {
-  source  = "../modules/cluster-processing"
+module "gradient_processing" {
+  source  = "../modules/gradient-processing"
   enabled = module.kubernetes.cluster_status == "" ? false : true
 
   amqp_hostname                     = var.amqp_hostname
@@ -150,7 +150,7 @@ module "cluster_processing" {
   artifacts_object_storage_endpoint = var.artifacts_object_storage_endpoint
   artifacts_path                    = var.artifacts_path
   artifacts_secret_access_key       = var.artifacts_secret_access_key
-  chart                             = var.cluster_processing_chart
+  chart                             = var.gradient_processing_chart
   cluster_apikey                    = var.cluster_apikey
   cluster_authorization_token       = var.cluster_authorization_token
   cluster_autoscaler_enabled        = true
@@ -167,7 +167,7 @@ module "cluster_processing" {
   paperspace_base_url               = var.api_host
   paperspace_api_next_url           = var.paperspace_api_next_url
 
-  cluster_processing_version = var.cluster_processing_version
+  gradient_processing_version = var.gradient_processing_version
   name                        = var.name
   sentry_dsn                  = var.sentry_dsn
   local_storage_type          = "AWSEBS"
@@ -183,7 +183,7 @@ module "cluster_processing" {
 }
 
 output "elb_hostname" {
-  value = module.cluster_processing.traefik_service.status.0.load_balancer.0.ingress.0.hostname
+  value = module.gradient_processing.traefik_service.status.0.load_balancer.0.ingress.0.hostname
 }
 
 module "node_problem_detector" {

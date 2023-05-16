@@ -527,7 +527,7 @@ func NewClusterUpCommand() *cobra.Command {
 
 			// Check if terraform Provider values are valid
 			if terraformInstance.TerraformProvider.Backends.S3.Key == "" {
-				terraformInstance.TerraformProvider.Backends.S3.Key = fmt.Sprintf("cluster/%s.tfstate", id)
+				terraformInstance.TerraformProvider.Backends.S3.Key = fmt.Sprintf("gradient/%s.tfstate", id)
 			}
 
 			if reinstall || !terraformInstance.HasValidTerraformProvider() {
@@ -593,7 +593,7 @@ func NewClusterUpCommand() *cobra.Command {
 				return err
 			}
 
-			kubeconfigPath := filepath.Join(filepath.Dir(configPath), "cluster-kubeconfig")
+			kubeconfigPath := filepath.Join(filepath.Dir(configPath), "gradient-kubeconfig")
 			println(cli.TextSuccess(fmt.Sprintf("KUBECONFIG path: %s", kubeconfigPath)))
 			println(cli.TextSuccess(fmt.Sprintf("Cluster %s is up!", cluster.Name)))
 

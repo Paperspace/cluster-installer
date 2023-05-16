@@ -14,7 +14,7 @@ cat << EOF > ./backend.tf
 terraform {
     backend "s3" {
         bucket = "${AWS_BUCKET}"
-        key    = "cluster-processing-ps-cloud-managed"
+        key    = "gradient-processing-ps-cloud-managed"
         region = "${AWS_DEFAULT_REGION}"
     }
 }
@@ -29,7 +29,7 @@ export PAPERSPACE_API_HOST="$TF_VAR_api_host"
 export PAPERSPACE_REGION="$TF_VAR_region"
 
 if [ "$TERRAFORM_COMMAND" = "destroy" ]; then
-  terraform state rm module.cluster_processing || true
+  terraform state rm module.gradient_processing || true
   terraform state rm module.kubernetes || true
   terraform destroy -auto-approve
 elif [ "$TERRAFORM_COMMAND" = "plan" ]; then

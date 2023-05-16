@@ -3,4 +3,4 @@ collections:
   - kubernetes.core
 
 dependencies:
-  - cluster_common
+  - gradient_common

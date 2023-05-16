@@ -1,12 +1,12 @@
 ---
 - name: Cluster RKE2 Common Tasks
   ansible.builtin.include_role:
-    name: cluster_common
-    tasks_from: '{{ cluster_common_task }}'
+    name: gradient_common
+    tasks_from: '{{ gradient_common_task }}'
   loop:
     - main
     - install_containerd_configuration
     - install_kubelet_config
     - install_rke2_agent
   loop_control:
-    loop_var: cluster_common_task
+    loop_var: gradient_common_task

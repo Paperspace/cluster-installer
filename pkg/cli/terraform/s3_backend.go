@@ -24,5 +24,5 @@ func NewS3Backend() *S3Backend {
 }
 
 func (s *S3Backend) UpdatePath(prefix string) {
-	s.Key = path.Join(prefix, "cluster-processing")
+	s.Key = path.Join(prefix, "gradient-processing")
 }

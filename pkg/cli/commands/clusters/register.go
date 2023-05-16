@@ -92,7 +92,7 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 			UseMask:  true,
 		}
 		domainPrompt := cli.Prompt{
-			Label:    "Domain (cluster.mycompany.com)",
+			Label:    "Domain (gradient.mycompany.com)",
 			Required: true,
 		}
 		namePrompt := cli.Prompt{

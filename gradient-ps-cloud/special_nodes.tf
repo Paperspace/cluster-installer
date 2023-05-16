@@ -1,5 +1,5 @@
-resource "paperspace_script" "cluster_machine_workspace" {
-  count       = var.cluster_workspace_vm_enabled ? 1 : 0
+resource "paperspace_script" "gradient_machine_workspace" {
+  count       = var.gradient_workspace_vm_enabled ? 1 : 0
   name        = "Cluster Workspace Controller Node Setup"
   description = "Cluster Workspace Controller Node Script"
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
@@ -17,10 +17,10 @@ resource "paperspace_script" "cluster_machine_workspace" {
   run_once   = true
 }
 
-resource "paperspace_machine" "cluster_workspace_node" {
-  count = var.cluster_workspace_vm_enabled ? 1 : 0
+resource "paperspace_machine" "gradient_workspace_node" {
+  count = var.gradient_workspace_vm_enabled ? 1 : 0
   depends_on = [
-    paperspace_script.cluster_machine_workspace,
+    paperspace_script.gradient_machine_workspace,
     tls_private_key.ssh_key,
   ]
 
@@ -33,7 +33,7 @@ resource "paperspace_machine" "cluster_workspace_node" {
   template_id      = var.machine_template_id_admin
   user_id          = data.paperspace_user.admin.id
   team_id          = data.paperspace_user.admin.team_id
-  script_id        = paperspace_script.cluster_machine_workspace[0].id
+  script_id        = paperspace_script.gradient_machine_workspace[0].id
   network_id       = paperspace_network.network.handle
   live_forever     = true
   is_managed       = true

@@ -1,5 +1,5 @@
-resource "paperspace_script" "cluster_service" {
-  count = local.enable_cluster_service
+resource "paperspace_script" "gradient_service" {
+  count = local.enable_gradient_service
 
   name        = "Cluster service setup"
   description = "Cluster service setup"
@@ -18,11 +18,11 @@ resource "paperspace_script" "cluster_service" {
   run_once   = true
 }
 
-resource "paperspace_machine" "cluster_service" {
-  count = local.cluster_service_count
+resource "paperspace_machine" "gradient_service" {
+  count = local.gradient_service_count
 
   depends_on = [
-    paperspace_script.cluster_service,
+    paperspace_script.gradient_service,
     tls_private_key.ssh_key,
   ]
 
@@ -34,26 +34,26 @@ resource "paperspace_machine" "cluster_service" {
   template_id  = var.machine_template_id_service
   user_id      = data.paperspace_user.admin.id
   team_id      = data.paperspace_user.admin.team_id
-  script_id    = paperspace_script.cluster_service[0].id
+  script_id    = paperspace_script.gradient_service[0].id
   network_id   = paperspace_network.network.handle
   live_forever = true
   is_managed   = true
 }
 
-resource "null_resource" "cluster_service_check" {
-  count = local.cluster_service_count
+resource "null_resource" "gradient_service_check" {
+  count = local.gradient_service_count
 
   provisioner "remote-exec" {
     inline = ["/bin/true"]
     connection {
-      bastion_host        = paperspace_machine.cluster_main[0].public_ip_address
+      bastion_host        = paperspace_machine.gradient_main[0].public_ip_address
       bastion_user        = "paperspace"
       bastion_private_key = tls_private_key.ssh_key.private_key_pem
 
       timeout     = "10m"
       type        = "ssh"
       user        = "paperspace"
-      host        = paperspace_machine.cluster_service[count.index].private_ip_address
+      host        = paperspace_machine.gradient_service[count.index].private_ip_address
       private_key = tls_private_key.ssh_key.private_key_pem
     }
   }

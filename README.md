@@ -2,7 +2,7 @@
 
 ![combined](https://user-images.githubusercontent.com/585865/89805086-1c09a380-db03-11ea-975f-5c8aa65a26fa.png)
 
-Run the [Cluster MLOps Platform](https://cluster.paperspace.com) anywhere. The Cluster Installer is a CLI to setup and manage [Cluster private clusters](https://docs.paperspace.com/cluster/cluster-private-cloud/setup) on AWS, NVIDIA DGX-1, and any VM / Bare metal.
+Run the [Cluster MLOps Platform](https://gradient.paperspace.com) anywhere. The Cluster Installer is a CLI to setup and manage [Cluster private clusters](https://docs.paperspace.com/gradient/gradient-private-cloud/setup) on AWS, NVIDIA DGX-1, and any VM / Bare metal.
 
 Terraform is used under the hood to setup all the infrastructure. Terraform modules can also be used directly to integrate Cluster into an existing Terraform setup.
 
@@ -69,10 +69,10 @@ Terraform modules can be used directly to create clusters.
 
 List of available Terraform modules:
 
-- cluster-aws
-- cluster-metal
-- cluster-ps-cloud
+- gradient-aws
+- gradient-metal
+- gradient-ps-cloud
 
 ## Documentation
 
-Full docs: https://docs.paperspace.com/cluster/cluster-private-cloud/about
+Full docs: https://docs.paperspace.com/gradient/gradient-private-cloud/about

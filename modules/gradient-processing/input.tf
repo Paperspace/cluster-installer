@@ -37,8 +37,8 @@ variable "aws_region" {
 }
 
 variable "chart" {
-  description = "Helm chart for cluster-processing"
-  default     = "cluster-processing"
+  description = "Helm chart for gradient-processing"
+  default     = "gradient-processing"
 }
 
 variable "cluster_apikey" {
@@ -100,7 +100,7 @@ variable "global_selector" {
   default     = ""
 }
 
-variable "cluster_processing_version" {
+variable "gradient_processing_version" {
   description = "Cluster processing version"
 }
 
@@ -261,13 +261,13 @@ variable "is_public_cluster" {
 variable "metrics_storage_class" {
   description = "Name of the storage class for the metrics server"
   type        = string
-  default     = "cluster-processing-local"
+  default     = "gradient-processing-local"
 }
 
 variable "nats_storage_class" {
   description = "Name of the storage class for the nats server"
   type        = string
-  default     = "cluster-processing-local"
+  default     = "gradient-processing-local"
 }
 
 variable "cert_manager_enabled" {
@@ -335,7 +335,7 @@ variable "metrics_path" {
 # this defaults to clustered configuration
 variable "metrics_service_name" {
   type    = string
-  default = "vmselect-cluster-processing-victoria-metrics"
+  default = "vmselect-gradient-processing-victoria-metrics"
 }
 
 variable "victoria_metrics_vmcluster_enabled" {

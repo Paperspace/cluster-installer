@@ -1,4 +1,4 @@
-module "cluster" {
+module "gradient" {
   source = "../"
 
   name                        = "cluster-name"
@@ -9,7 +9,7 @@ module "cluster" {
   cluster_apikey              = "cluster-apikey-from-paperspace-com"
   cluster_authorization_token = "cluster-authorization-token-from-paperspace.com"
   cluster_handle              = "cluster-handle-from-paperspace-com"
-  domain                      = "cluster.mycompany.com"
+  domain                      = "gradient.mycompany.com"
 
   tls_cert = ""
   tls_key  = ""

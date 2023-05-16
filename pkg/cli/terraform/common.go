@@ -17,8 +17,8 @@ type Common struct {
 	ClusterSecret                  string            `json:"cluster_authorization_token"` // TODO: modify the terraform module to use the string cluster_secret
 	ClusterHandle                  string            `json:"cluster_handle"`
 	Domain                         string            `json:"domain"`
-	ClusterProcessingChart        string            `json:"cluster_processing_chart,omitempty"`
-	ClusterProcessingVersion      string            `json:"cluster_processing_version,omitempty"`
+	ClusterProcessingChart        string            `json:"gradient_processing_chart,omitempty"`
+	ClusterProcessingVersion      string            `json:"gradient_processing_version,omitempty"`
 	LetsEncryptDNSName             string            `json:"letsencrypt_dns_name,omitempty"`
 	LetsEncryptDNSSettings         map[string]string `json:"letsencrypt_dns_settings,omitempty"`
 	Name                           string            `json:"name"`
@@ -147,15 +147,15 @@ func (c *Common) UpdateSourcePrefix(prefix string, platform paperspace.ClusterPl
 	var suffix string
 	switch platform {
 	case paperspace.ClusterPlatformAWS:
-		suffix = "cluster-aws"
+		suffix = "gradient-aws"
 	case paperspace.ClusterPlatformMetal:
-		suffix = "cluster-metal"
+		suffix = "gradient-metal"
 	case paperspace.ClusterPlatformDGX:
-		suffix = "cluster-metal"
+		suffix = "gradient-metal"
 	case paperspace.ClusterPlatformGraphcore:
-		suffix = "cluster-metal"
+		suffix = "gradient-metal"
 	case paperspace.ClusterPlatformSambaNova:
-		suffix = "cluster-metal"
+		suffix = "gradient-metal"
 	}
 
 	c.TerraformSource = fmt.Sprintf("%s/%s", prefix, suffix)

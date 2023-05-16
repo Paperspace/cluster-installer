@@ -81,7 +81,7 @@ ${rancher_command} \
     --worker \
     --label paperspace.com/pool-name=${pool_name} \
     --label paperspace.com/pool-type=${pool_type} \
-    --label paperspace.com/cluster-worker=true \
+    --label paperspace.com/gradient-worker=true \
     --label provider.autoscaler/prefix=paperspace \
     --label provider.autoscaler/nodeName=$MACHINE_ID \
     --node-name $MACHINE_ID \
@@ -93,7 +93,7 @@ echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --worker \
     --label paperspace.com/pool-name=${pool_name} \
-    --label paperspace.com/cluster-worker=true \
+    --label paperspace.com/gradient-worker=true \
     --label paperspace.com/pool-type=${pool_type} \
     --node-name $MACHINE_ID \
     --address $MACHINE_PRIVATE_IP
@@ -104,7 +104,7 @@ echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --worker \
     --label paperspace.com/pool-name=${pool_name} \
-    --label paperspace.com/cluster-worker=true \
+    --label paperspace.com/gradient-worker=true \
     --label paperspace.com/pool-type=${pool_type} \
     --node-name $MACHINE_ID \
     --address $MACHINE_PUBLIC_IP \
@@ -117,7 +117,7 @@ echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --worker \
     --label paperspace.com/pool-name=${pool_name} \
-    --label paperspace.com/cluster-worker=true \
+    --label paperspace.com/gradient-worker=true \
     --label paperspace.com/pool-type=${pool_type} \
     --node-name $MACHINE_ID \
     --address $MACHINE_PUBLIC_IP \

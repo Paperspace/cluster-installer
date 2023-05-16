@@ -1,45 +1,45 @@
 ---
 - name: Setup Cluster Control Nodes
-  hosts: cluster_control_nodes
+  hosts: gradient_control_nodes
   any_errors_fatal: true
   become: true
   collections:
-    - paperspace.ansible_cluster_installer
+    - paperspace.ansible_gradient_installer
   tasks:
     - name: 'Import Cluster Control Node Role'
       ansible.builtin.import_role:
-        name: paperspace.ansible_cluster_installer.cluster_control_node
+        name: paperspace.ansible_gradient_installer.gradient_control_node
   vars:
-    containerd_cluster_domain: https://graphcore.paperspacecluster.com
+    containerd_cluster_domain: https://graphcore.paperspacegradient.com
     containerd_local_host_and_port: http://localhost:5000
   serial: 1
 
 - name: Setup Cluster Worker Nodes
-  hosts: cluster_worker_nodes
+  hosts: gradient_worker_nodes
   any_errors_fatal: true
   become: true
   collections:
-    - paperspace.ansible_cluster_installer
+    - paperspace.ansible_gradient_installer
   tasks:
     - name: 'Import Cluster Worker Node Role'
       ansible.builtin.import_role:
-        name: paperspace.ansible_cluster_installer.cluster_worker_node
+        name: paperspace.ansible_gradient_installer.gradient_worker_node
   vars:
-    containerd_cluster_domain: https://graphcore.paperspacecluster.com
+    containerd_cluster_domain: https://graphcore.paperspacegradient.com
     containerd_local_host_and_port: http://localhost:5000
   serial: 2
 
 - name: Setup Cluster Service Nodes
-  hosts: cluster_service_nodes
+  hosts: gradient_service_nodes
   any_errors_fatal: true
   become: true
   collections:
-    - paperspace.ansible_cluster_installer
+    - paperspace.ansible_gradient_installer
   tasks:
     - name: 'Import Cluster Service Node Role'
       ansible.builtin.import_role:
-        name: paperspace.ansible_cluster_installer.cluster_service_node
+        name: paperspace.ansible_gradient_installer.gradient_service_node
   vars:
-    containerd_cluster_domain: https://graphcore.paperspacecluster.com
+    containerd_cluster_domain: https://graphcore.paperspacegradient.com
     containerd_local_host_and_port: http://localhost:5000
   serial: 2

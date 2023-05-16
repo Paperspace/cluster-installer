@@ -1,4 +1,4 @@
-module "cluster_metal" {
+module "gradient_metal" {
     source = "../"
 
     name = "cluster-name"
@@ -9,7 +9,7 @@ module "cluster_metal" {
     cluster_apikey = "cluster-apikey-from-paperspace-com"
     cluster_authorization_token = "cluster-authorization-token-from-paperspace.com"
     cluster_handle = "cluster-handle-from-paperspace-com"
-    domain = "cluster.mycompany.com"
+    domain = "gradient.mycompany.com"
 
     k8s_master_node = {
         ip = "master_ip1"
@@ -33,9 +33,9 @@ module "cluster_metal" {
         }
     ]
 
-    shared_storage_path = "/srv/cluster"
+    shared_storage_path = "/srv/gradient"
     shared_storage_server = "shared-nfs-storage.com"
-    ssh_key_path = "cluster_rsa"
+    ssh_key_path = "gradient_rsa"
     ssh_user = "ubuntu"
 
     tls_cert = ""
