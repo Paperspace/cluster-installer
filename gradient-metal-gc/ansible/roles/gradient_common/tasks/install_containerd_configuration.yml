@@ -26,7 +26,7 @@
 
 - name: Create containerd cgroups
   ansible.builtin.file:
-    path: '/sys/fs/cgroup/{{ containerd_cgroup_path }}'
+    path: "/sys/fs/cgroup/{{ containerd_cgroup_path }}"
     state: directory
     mode: 0755
   loop:
@@ -41,40 +41,67 @@
 
 - name: Create dirs for containerd mount
   ansible.builtin.file:
-    path: '{{ containerd_mount_dir }}'
+    path: "{{ containerd_mount_dir }}"
     state: directory
     mode: 0755
   loop:
+    - /run/k3s
     - /var/lib/docker/containerd
-    - /var/lib/rancher/rke2/agent/containerd
+    - /var/lib/rancher/rke2/agent
+    - /mnt/poddata/{{ inventory_hostname }}/containerd-root/containerd
+    - /mnt/poddata/{{ inventory_hostname }}/containerd-state/containerd
   loop_control:
     loop_var: containerd_mount_dir
+  when: '"poplar" in inventory_hostname'
 
-- name: Create mounts for containerd
+- name: Create mounts for containerd-root for agent
   ansible.posix.mount:
-    src: /var/lib/docker/containerd
-    path: /var/lib/rancher/rke2/agent/containerd
+    src: /mnt/poddata/{{ inventory_hostname }}/containerd-root
+    path: /var/lib/rancher/rke2/agent
     state: mounted
     fstype: none
     opts: defaults,bind
     backup: 0
     passno: 2
+  when: '"poplar" in inventory_hostname'
+
+- name: Create mounts for containerd-root
+  ansible.posix.mount:
+    src: /mnt/poddata/{{ inventory_hostname }}/containerd-root/containerd
+    path: /var/lib/docker/containerd
+    state: mounted
+    fstype: none
+    opts: defaults,bind
+    backup: 0
+    passno: 2
+  when: '"poplar" in inventory_hostname'
+
+- name: Create mounts for containerd-state
+  ansible.posix.mount:
+    src: /mnt/poddata/{{ inventory_hostname }}/containerd-state/containerd
+    path: /run/k3s
+    state: present
+    fstype: xfs
+    opts: rw,relatime,attr2,inode64,logbufs=8,logbsize=32k,noquota
+    backup: 0
+    passno: 2
+  when: '"poplar" in inventory_hostname'
 
 - name: Create /etc/rancher/rke2 dir
   ansible.builtin.file:
-    path: '/etc/rancher/rke2'
+    path: "/etc/rancher/rke2"
     state: directory
     mode: 0755
 
 - name: Create /etc/containerd/certs.d dir
   ansible.builtin.file:
-    path: '/etc/containerd/certs.d'
+    path: "/etc/containerd/certs.d"
     state: directory
     mode: 0755
 
 - name: Create /etc/containerd/certs.d/_default dir
   ansible.builtin.file:
-    path: '/etc/containerd/certs.d/_default'
+    path: "/etc/containerd/certs.d/_default"
     state: directory
     mode: 0755
 
