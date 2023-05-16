@@ -24,6 +24,6 @@ plugins:
     - "@semantic-release/github"
     - assets:
       - label: Gradient Installer MacOS
-        path: build/gradient-installer-darwin
+        path: build/cluster-installer-darwin
       - label: Gradient Installer Linux
-        path: build/gradient-installer-linux
+        path: build/cluster-installer-linux

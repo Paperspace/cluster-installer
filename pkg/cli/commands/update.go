@@ -11,7 +11,7 @@ import (
 	"regexp"
 	"runtime"
 
-	"github.com/Paperspace/gradient-installer/pkg/cli"
+	"github.com/Paperspace/cluster-installer/pkg/cli"
 	"github.com/google/go-github/v32/github"
 	"github.com/spf13/cobra"
 )
@@ -28,7 +28,7 @@ func NewUpdateCommand() *cobra.Command {
 			ctx := context.TODO()
 
 			// Get releases
-			releases, _, err := githubClient.Repositories.ListReleases(ctx, "paperspace", "gradient-installer", nil)
+			releases, _, err := githubClient.Repositories.ListReleases(ctx, "paperspace", "cluster-installer", nil)
 			if err != nil {
 				return err
 			}
