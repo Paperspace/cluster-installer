@@ -134,7 +134,7 @@ locals {
       },
       "dispatcher-notifier" = {
         "limits" = {
-          "cpu"    = "200m"
+          "cpu"    = "1000m"
           "memory" = "256Mi"
         }
       },
@@ -221,7 +221,7 @@ locals {
       },
       "dispatcher-notifier" = {
         "limits" = {
-          "cpu"    = "200m"
+          "cpu"    = "1000m"
           "memory" = "256Mi"
         }
       },
