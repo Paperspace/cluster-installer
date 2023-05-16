@@ -45,7 +45,7 @@ locals {
   nats_storage_class = "gradient-processing-shared"
 }
 
-// Cluster
+// Gradient
 module "gradient_processing" {
   source  = "../modules/gradient-processing"
   enabled = var.gradient_processing_enabled == 0 ? false : true

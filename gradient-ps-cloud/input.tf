@@ -49,7 +49,7 @@ variable "kind" {
 }
 
 variable "gradient_machine_config" {
-  description = "Cluster machine config"
+  description = "Gradient machine config"
   default     = ""
 }
 variable "machine_storage_main" {

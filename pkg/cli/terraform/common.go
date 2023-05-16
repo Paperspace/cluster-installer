@@ -17,8 +17,8 @@ type Common struct {
 	ClusterSecret                  string            `json:"cluster_authorization_token"` // TODO: modify the terraform module to use the string cluster_secret
 	ClusterHandle                  string            `json:"cluster_handle"`
 	Domain                         string            `json:"domain"`
-	ClusterProcessingChart        string            `json:"gradient_processing_chart,omitempty"`
-	ClusterProcessingVersion      string            `json:"gradient_processing_version,omitempty"`
+	GradientProcessingChart        string            `json:"gradient_processing_chart,omitempty"`
+	GradientProcessingVersion      string            `json:"gradient_processing_version,omitempty"`
 	LetsEncryptDNSName             string            `json:"letsencrypt_dns_name,omitempty"`
 	LetsEncryptDNSSettings         map[string]string `json:"letsencrypt_dns_settings,omitempty"`
 	Name                           string            `json:"name"`

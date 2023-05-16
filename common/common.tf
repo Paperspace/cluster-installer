@@ -17,16 +17,16 @@ variable "artifacts_access_key_id" {
 }
 
 variable "artifacts_object_storage_endpoint" {
-  description = "Object storage endpoint to be used for Cluster"
+  description = "Object storage endpoint to be used for Gradient"
   default     = ""
 }
 
 variable "artifacts_path" {
-  description = "Object storage path used for Cluster"
+  description = "Object storage path used for Gradient"
 }
 
 variable "artifacts_region" {
-  description = "Object storage region used for Cluster"
+  description = "Object storage region used for Gradient"
   default     = "us-east-1"
 }
 
@@ -35,7 +35,7 @@ variable "artifacts_secret_access_key" {
 }
 
 variable "cluster_apikey" {
-  description = "Cluster cluster API key"
+  description = "Gradient cluster API key"
 }
 
 variable "cluster_authorization_token" {
@@ -43,7 +43,7 @@ variable "cluster_authorization_token" {
 }
 
 variable "cluster_handle" {
-  description = "Cluster cluster API handle"
+  description = "Gradient cluster API handle"
 }
 
 variable "dispatcher_host" {
@@ -61,12 +61,12 @@ variable "domain" {
 }
 
 variable "gradient_processing_chart" {
-  description = "Cluster processing chart"
+  description = "Gradient processing chart"
   default     = "gradient-processing"
 }
 
 variable "gradient_processing_version" {
-  description = "Cluster processing version"
+  description = "Gradient processing version"
   default     = "*"
 }
 
@@ -154,11 +154,11 @@ variable "shared_storage_config" {
 }
 
 variable "shared_storage_server" {
-  description = "Shared storage server to be used for Cluster"
+  description = "Shared storage server to be used for Gradient"
   default     = ""
 }
 variable "shared_storage_path" {
-  description = "Shared storage path to be used for Cluster"
+  description = "Shared storage path to be used for Gradient"
   default     = "/"
 }
 variable "shared_storage_type" {

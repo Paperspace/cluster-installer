@@ -1,12 +1,12 @@
 ---
-- name: Setup Cluster Control Nodes
+- name: Setup Gradient Control Nodes
   hosts: gradient_control_nodes
   any_errors_fatal: true
   become: true
   collections:
     - paperspace.ansible_gradient_installer
   tasks:
-    - name: 'Import Cluster Control Node Role'
+    - name: 'Import Gradient Control Node Role'
       ansible.builtin.import_role:
         name: paperspace.ansible_gradient_installer.gradient_control_node
   vars:
@@ -14,14 +14,14 @@
     containerd_local_host_and_port: http://localhost:5000
   serial: 1
 
-- name: Setup Cluster Worker Nodes
+- name: Setup Gradient Worker Nodes
   hosts: gradient_worker_nodes
   any_errors_fatal: true
   become: true
   collections:
     - paperspace.ansible_gradient_installer
   tasks:
-    - name: 'Import Cluster Worker Node Role'
+    - name: 'Import Gradient Worker Node Role'
       ansible.builtin.import_role:
         name: paperspace.ansible_gradient_installer.gradient_worker_node
   vars:
@@ -29,14 +29,14 @@
     containerd_local_host_and_port: http://localhost:5000
   serial: 2
 
-- name: Setup Cluster Service Nodes
+- name: Setup Gradient Service Nodes
   hosts: gradient_service_nodes
   any_errors_fatal: true
   become: true
   collections:
     - paperspace.ansible_gradient_installer
   tasks:
-    - name: 'Import Cluster Service Node Role'
+    - name: 'Import Gradient Service Node Role'
       ansible.builtin.import_role:
         name: paperspace.ansible_gradient_installer.gradient_service_node
   vars:

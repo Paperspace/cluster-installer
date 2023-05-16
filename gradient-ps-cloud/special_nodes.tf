@@ -1,7 +1,7 @@
 resource "paperspace_script" "gradient_machine_workspace" {
   count       = var.gradient_workspace_vm_enabled ? 1 : 0
-  name        = "Cluster Workspace Controller Node Setup"
-  description = "Cluster Workspace Controller Node Script"
+  name        = "Gradient Workspace Controller Node Setup"
+  description = "Gradient Workspace Controller Node Script"
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
     kind                         = "worker"
     gpu_enabled                  = false

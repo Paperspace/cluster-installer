@@ -1,8 +1,8 @@
 resource "paperspace_script" "gradient_lb" {
   count = local.enable_gradient_lb
 
-  name        = "Cluster LB setup"
-  description = "Cluster LB setup"
+  name        = "Gradient LB setup"
+  description = "Gradient LB setup"
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
     kind                         = "worker_public"
     gpu_enabled                  = false

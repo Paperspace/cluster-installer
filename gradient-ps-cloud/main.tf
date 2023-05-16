@@ -521,7 +521,7 @@ resource "null_resource" "check_cluster" {
   }
 }
 
-// Cluster
+// Gradient
 module "gradient_processing" {
   source            = "../modules/gradient-processing"
   enabled           = null_resource.check_cluster.id == "" ? false : true

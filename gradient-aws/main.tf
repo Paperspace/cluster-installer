@@ -137,7 +137,7 @@ provider "kubernetes" {
   token                  = element(concat(data.aws_eks_cluster_auth.cluster[*].token, tolist([])), 0)
 }
 
-// Cluster
+// Gradient
 module "gradient_processing" {
   source  = "../modules/gradient-processing"
   enabled = module.kubernetes.cluster_status == "" ? false : true

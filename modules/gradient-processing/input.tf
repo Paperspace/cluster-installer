@@ -20,11 +20,11 @@ variable "artifacts_access_key_id" {
 }
 
 variable "artifacts_object_storage_endpoint" {
-  description = "Object storage endpoint to be used for Cluster"
+  description = "Object storage endpoint to be used for Gradient"
 }
 
 variable "artifacts_path" {
-  description = "Object storage path used for Cluster"
+  description = "Object storage path used for Gradient"
 }
 
 variable "artifacts_secret_access_key" {
@@ -42,7 +42,7 @@ variable "chart" {
 }
 
 variable "cluster_apikey" {
-  description = "Cluster cluster apikey"
+  description = "Gradient cluster apikey"
 }
 
 variable "cluster_authorization_token" {
@@ -73,7 +73,7 @@ variable "cluster_autoscaler_unneeded_time" {
 }
 
 variable "cluster_handle" {
-  description = "Cluster cluster handle"
+  description = "Gradient cluster handle"
 }
 
 
@@ -101,7 +101,7 @@ variable "global_selector" {
 }
 
 variable "gradient_processing_version" {
-  description = "Cluster processing version"
+  description = "Gradient processing version"
 }
 
 variable "label_selector_cpu" {
