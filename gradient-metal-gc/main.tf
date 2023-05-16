@@ -110,7 +110,6 @@ module "gradient_processing" {
     "graphcore/tensorflow-jupyter:ogb-competition-2022-11-21"
   ]
   metrics_server_enabled                              = false
-  vmsingle_resources                                  = var.vmsingle_resources
   victoria_metrics_vmcluster_enabled                  = false
   victoria_metrics_vmcluster_vmstorage_replicacount   = var.victoria_metrics_vmcluster_vmstorage_replicacount
   metrics_port                                        = 8429
