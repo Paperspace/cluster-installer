@@ -1,4 +1,4 @@
-- name: Configure PS Cloud node for gradient-installer as gradient-metal target
+- name: Configure PS Cloud node for cluster-installer as gradient-metal target
   hosts: all
   remote_user: paperspace
   become: yes

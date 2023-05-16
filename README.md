@@ -24,25 +24,25 @@ Terraform is used under the hood to setup all the infrastructure. Terraform modu
 ### Install
 
 ```sh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Paperspace/gradient-installer/master/bin/install)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Paperspace/cluster-installer/master/bin/install)"
 ```
 
 ### Updating
 
 ```sh
-gradient-installer update
+cluster-installer update
 ```
 
 ## Usage
 
-### `gradient-installer`
+### `cluster-installer`
 
 <img width="633" alt="clusterInstaller-help" src="https://user-images.githubusercontent.com/585865/89807443-a0115a80-db06-11ea-8226-c68c884b03ae.png">
 
 ### Setting up a Gradient private cluster
 
 ```sh
-gradient-installer clusters up
+cluster-installer clusters up
 ```
 
 <img width="633" alt="GradientInstallerCLI-up" src="https://user-images.githubusercontent.com/585865/88327177-cb1d4100-ccf4-11ea-8ea8-2c4966c5dd88.png">
@@ -50,7 +50,7 @@ gradient-installer clusters up
 ### Updating existing clusters
 
 ```sh
-gradient-installer clusters up CLUSTER_HANDLE
+cluster-installer clusters up CLUSTER_HANDLE
 ```
 
 ### Profiles
@@ -59,7 +59,7 @@ The CLI supports multiple profiles, which can be used for different teams. You c
 
 ```sh
 export PAPERSPACE_PROFILE=favorite-team
-gradient-installer setup
+cluster-installer setup
 ```
 
 ## Terraform

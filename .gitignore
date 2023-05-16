@@ -3,5 +3,5 @@
 gradient-kubeconfig
 plugins
 terraform.tfstate
-gradient-installer
+cluster-installer
 *.sw*

@@ -16,7 +16,7 @@ function upload {
         -H "Authorization: token ${GH_TOKEN}" \
         -H "Content-Type: $(file -b --mime-type ${FILE})" \
         --data-binary @${FILE} \
-        "https://uploads.github.com/repos/paperspace/gradient-installer/releases/${RELEASE_NUMBER}/assets?name=$(basename ${FILE})"
+        "https://uploads.github.com/repos/paperspace/cluster-installer/releases/${RELEASE_NUMBER}/assets?name=$(basename ${FILE})"
 }
 
 if [ -z "${TAG}" ];then
@@ -26,7 +26,7 @@ fi
 
 RELEASE_NUMBER=$(curl \
     -H "Authorization: token ${GH_TOKEN}" \
-    "https://api.github.com/repos/paperspace/gradient-installer/releases/tags/${TAG}" | jq '.id')
+    "https://api.github.com/repos/paperspace/cluster-installer/releases/tags/${TAG}" | jq '.id')
 
-upload ${DIR}/../build/gradient-installer-darwin ${RELEASE_NUMBER}
-upload ${DIR}/../build/gradient-installer-linux ${RELEASE_NUMBER}
+upload ${DIR}/../build/cluster-installer-darwin ${RELEASE_NUMBER}
+upload ${DIR}/../build/cluster-installer-linux ${RELEASE_NUMBER}

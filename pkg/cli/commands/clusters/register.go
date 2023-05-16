@@ -3,8 +3,8 @@ package clusters
 import (
 	"errors"
 	"fmt"
-	"github.com/Paperspace/gradient-installer/pkg/cli"
-	"github.com/Paperspace/gradient-installer/pkg/cli/terraform"
+	"github.com/Paperspace/cluster-installer/pkg/cli"
+	"github.com/Paperspace/cluster-installer/pkg/cli/terraform"
 	"github.com/Paperspace/paperspace-go"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"

@@ -12,11 +12,11 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/Paperspace/gradient-installer/pkg/cli"
-	"github.com/Paperspace/gradient-installer/pkg/cli/config"
+	"github.com/Paperspace/cluster-installer/pkg/cli"
+	"github.com/Paperspace/cluster-installer/pkg/cli/config"
 )
 
-var setupURL = "https://raw.githubusercontent.com/Paperspace/gradient-installer/master/bin/setup"
+var setupURL = "https://raw.githubusercontent.com/Paperspace/cluster-installer/master/bin/setup"
 var terraformURLPrefix = "https://releases.hashicorp.com/terraform"
 var terraformVersion = "1.0.10"
 

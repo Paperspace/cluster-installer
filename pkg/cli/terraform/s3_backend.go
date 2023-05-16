@@ -19,7 +19,7 @@ type S3Backend struct {
 func NewS3Backend() *S3Backend {
 	return &S3Backend{
 		Region:      "us-east-1",
-		SessionName: "gradient-installer",
+		SessionName: "cluster-installer",
 	}
 }
 
