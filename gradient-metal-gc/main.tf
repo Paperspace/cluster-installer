@@ -110,6 +110,7 @@ module "gradient_processing" {
     "graphcore/tensorflow-jupyter:ogb-competition-2022-11-21"
   ]
   metrics_server_enabled                              = false
+  vmsingle_resources                                  = var.vmsingle_resources
   victoria_metrics_vmcluster_enabled                  = false
   victoria_metrics_vmcluster_vmstorage_replicacount   = var.victoria_metrics_vmcluster_vmstorage_replicacount
   metrics_port                                        = 8429
@@ -126,8 +127,8 @@ module "gradient_processing" {
   victoria_metrics_prometheus_node_exporter_host_port = var.victoria_metrics_prometheus_node_exporter_host_port
   prometheus_pool_name                                = var.prometheus_pool_name
   node_health_check_enabled                           = false // only needed on ps clouds
-  nfs_subdir_external_provisioner_path                = var.local_storage_path
-  nfs_subdir_external_provisioner_server              = var.local_storage_server
+  nfs_subdir_external_provisioner_path                = ""
+  nfs_subdir_external_provisioner_server              = var.shared_storage_server
   rbd_storage_config                                  = var.rbd_storage_config
   notebook_volume_type                                = var.notebook_volume_type
   ceph_provisioner_replicas                           = var.ceph_provisioner_replicas
@@ -165,7 +166,7 @@ module "s3_external_ingress" {
   http_port      = var.external_s3_port
   custom_repsonse_headers = [
     "Access-Control-Allow-Origin:https://${var.console_host}",
-    "Access-Control-Allow-Methods:GET,PUT,POST,OPTIONS",
+    "Access-Control-Allow-Methods:HEAD,GET,PUT,POST,OPTIONS",
     "Access-Control-Allow-Headers:*",
     "Access-Control-Expose-Headers:Content-Length,Content-Range",
     "Access-Control-Allow-Credentials:true",
