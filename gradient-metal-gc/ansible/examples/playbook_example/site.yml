@@ -10,7 +10,7 @@
       ansible.builtin.import_role:
         name: paperspace.ansible_cluster_installer.cluster_control_node
   vars:
-    containerd_cluster_domain: https://graphcore.paperspacegradient.com
+    containerd_cluster_domain: https://graphcore.paperspacecluster.com
     containerd_local_host_and_port: http://localhost:5000
   serial: 1
 
@@ -25,7 +25,7 @@
       ansible.builtin.import_role:
         name: paperspace.ansible_cluster_installer.cluster_worker_node
   vars:
-    containerd_cluster_domain: https://graphcore.paperspacegradient.com
+    containerd_cluster_domain: https://graphcore.paperspacecluster.com
     containerd_local_host_and_port: http://localhost:5000
   serial: 2
 
@@ -40,6 +40,6 @@
       ansible.builtin.import_role:
         name: paperspace.ansible_cluster_installer.cluster_service_node
   vars:
-    containerd_cluster_domain: https://graphcore.paperspacegradient.com
+    containerd_cluster_domain: https://graphcore.paperspacecluster.com
     containerd_local_host_and_port: http://localhost:5000
   serial: 2
