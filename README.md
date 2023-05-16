@@ -39,7 +39,7 @@ cluster-installer update
 
 <img width="633" alt="clusterInstaller-help" src="https://user-images.githubusercontent.com/585865/89807443-a0115a80-db06-11ea-8226-c68c884b03ae.png">
 
-### Setting up a Gradient private cluster
+### Setting up a Paperspace private cluster
 
 ```sh
 cluster-installer clusters up
