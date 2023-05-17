@@ -753,6 +753,15 @@ nats:
     enabled: true
     token: "${nats_token}"
 
+  %{ if is_public_cluster }
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          topologyKey: kubernetes.io/hostname
+        weight: 100
+  %{ endif }
+
   cluster:
     enabled: true
     replicas: 3
