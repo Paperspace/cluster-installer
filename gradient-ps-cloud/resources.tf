@@ -129,7 +129,7 @@ locals {
       "vmagent" = {
         "limits" = {
           "cpu"    = "4"
-          "memory" = "6Gi"
+          "memory" = "12Gi"
         }
       },
       "dispatcher-notifier" = {
