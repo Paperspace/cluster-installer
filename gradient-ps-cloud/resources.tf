@@ -108,6 +108,12 @@ locals {
           "memory" = "16Gi"
         }
       },
+      "gradient-metrics" = {
+        "limits" = {
+          "cpu"    = "2"
+          "memory" = "1Gi"
+        }
+      },
       "kube-state-metrics" = {
         "limits" = {
           "cpu"    = "2"
