@@ -158,8 +158,8 @@ locals {
       },
       "nats" = {
         "limits" = {
-          "cpu"    = "4"
-          "memory" = "16Gi"
+          "cpu"    = "12"
+          "memory" = "50Gi"
         }
       }
     },
