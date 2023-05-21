@@ -285,10 +285,10 @@ locals {
   enable_gradient_lb               = var.kind == "multinode" ? 1 : 0
   prometheus_pool_name             = "services-small"
   gradient_lb_count                = var.kind == "multinode" ? 2 : 0
-  gradient_main_count              = local.is_public_cluster ? 5 : var.kind == "multinode" ? 3 : 1 # etcd or etcd + api-server. 1, 3, and 5 are the only valid configs
+  gradient_main_count              = var.machine_count_main
 
-  gradient_controlplane_count = local.is_public_cluster ? 5 : 0 # kube api-server. scale horizontally
-  gradient_service_count      = var.machine_count_service       # generic worker pool for gradient servces, scale horizontally
+  gradient_controlplane_count = var.machine_count_controlplane
+  gradient_service_count      = var.machine_count_service # generic worker pool for gradient servces, scale horizontally
   k8s_version                 = var.k8s_version == "" ? "1.20.15" : var.k8s_version
   kubeconfig                  = yamldecode(rancher2_cluster_sync.main.kube_config)
   lb_ips                      = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
@@ -605,6 +605,18 @@ module "gradient_processing" {
   service_resources      = local.resources
 }
 
+locals {
+  etcd_extra_args = var.use_dedicated_etcd_volume ? {
+    "data-dir" = "/var/lib/rancher/etcd/data/"
+    "wal-dir"  = "/var/lib/rancher/etcd/wal/wal_dir"
+  } : {}
+
+  etcd_extra_binds = var.use_dedicated_etcd_volume ? [
+    "/var/lib/etcd/data:/var/lib/etcd/rancher/data",
+    "/var/lib/etcd/wal:/var/lib/rancher/etcd/wal"
+  ] : []
+}
+
 resource "rancher2_cluster" "main" {
   name        = var.cluster_handle
   description = var.name
@@ -623,7 +635,7 @@ resource "rancher2_cluster" "main" {
         min               = 2
         # A single 100MB memory instance can support 50k total pods+services
         # https://github.com/coredns/deployment/blob/master/kubernetes/Scaling_CoreDNS.md
-        max                          = 3
+        max                          = 12
         prevent_single_point_failure = true
       }
     }
@@ -646,6 +658,11 @@ resource "rancher2_cluster" "main" {
           "kube-reserved"        = "cpu=500m,memory=256Mi,ephemeral-storage=10Gi"
           "cloud-provider"       = "external"
         }
+      }
+
+      etcd {
+        extra_args  = local.etcd_extra_args
+        extra_binds = local.etcd_extra_binds
       }
     }
   }
