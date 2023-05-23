@@ -228,7 +228,8 @@ cluster-autoscaler:
     paperspace.com/pool-name: ${service_pool_name}
 
 dispatcher:
-  config: {}
+  config:
+    badNodesInterval: ${bad_nodes_interval}
   %{ if try(resources["dispatcher"], null) != null }
   resources:
     requests:
@@ -418,10 +419,10 @@ victoria-metrics-k8s-stack:
     spec:
       storage:
         storageClassName: ${metrics_storage_class}
-      %{ if is_public_cluster }
+      %{ if try(resources["vmsingle"]["storage"], null) != null }
         resources:
           requests:
-            storage: 400Gi
+            storage: ${resources["vmsingle"]["storage"]
       %{ endif }
       nodeSelector:
         paperspace.com/pool-name: ${prometheus_pool_name}
@@ -519,10 +520,10 @@ victoria-metrics-k8s-stack:
           volumeClaimTemplate:
             spec:
               storageClassName: "${metrics_storage_class}"
-            %{ if is_public_cluster }
+            %{ if try(resources["vmstorage"]["storage"], null) != null }
               resources:
                 requests:
-                  storage: 500Gi
+                  storage: resources["vmstorage"]["storage"]
             %{ endif }
         resources:
         %{ if try(resources["vmstorage"], null) != null }

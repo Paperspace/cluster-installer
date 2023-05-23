@@ -138,8 +138,10 @@ module "gradient_processing" {
         "cpu"    = "1400m"
         "memory" = "30Gi"
       }
+      "storage" : "400Gi"
     }
   })
+  bad_nodes_interval = 0
 }
 
 

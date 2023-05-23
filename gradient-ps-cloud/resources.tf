@@ -127,6 +127,7 @@ locals {
         }
       },
       "vmstorage" = {
+        "storage" : "500Gi"
         "limits" = {
           "cpu"    = "12"
           "memory" = "50Gi"
@@ -208,6 +209,7 @@ locals {
         }
       },
       "vmstorage" = {
+        "storage" : "500Gi"
         "limits" = {
           "cpu"    = "3"
           "memory" = "12Gi"
