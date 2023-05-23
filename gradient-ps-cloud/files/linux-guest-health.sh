@@ -11,7 +11,7 @@ readonly CHECK="$2"
 
 if [ ! -f "$GUEST_OUTPUT" ]; then
   echo "No guest health output found"
-  exit $UNKNOWN
+  exit $NONOK
 fi
 
 error=$(jq -r "try .errors.\"$CHECK\" | join(\",\")" "$GUEST_OUTPUT")
