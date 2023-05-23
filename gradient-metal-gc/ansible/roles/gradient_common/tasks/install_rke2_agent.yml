@@ -24,8 +24,6 @@
         - "config=/etc/rancher/rke2/kubelet-config.yaml"
       node-label:
         - "paperspace.com/pool-name={{ pool_name }}"
-        - "node.kubernetes.io/instance-type={{ pool_name }}"
-        - "node-role.kubernetes.io/worker=true"
 
 - name: Add limitMemLock=infinity on rke2-agent.service
   ansible.builtin.lineinfile:
