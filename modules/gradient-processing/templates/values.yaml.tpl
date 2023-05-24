@@ -422,7 +422,7 @@ victoria-metrics-k8s-stack:
       %{ if try(resources["vmsingle"], null) != null and try(resources["vmsingle"]["storage"], null) != null }
         resources:
           requests:
-            storage: ${resources["vmsingle"]["storage"]
+            storage: ${resources["vmsingle"]["storage"]}
       %{ endif }
       nodeSelector:
         paperspace.com/pool-name: ${prometheus_pool_name}
@@ -500,7 +500,7 @@ victoria-metrics-k8s-stack:
               %{ if try(resources["vmselect"], null) != null and try(resources["vmselect"]["storage"], null) != null }
               resources:
                 requests:
-                  storage: resources["vmselect"]["storage"]
+                  storage: ${resources["vmselect"]["storage"]}
               %{ endif }
       vmstorage:
         extraArgs:
@@ -525,7 +525,7 @@ victoria-metrics-k8s-stack:
             %{ if try(resources["vmstorage"], null) != null and try(resources["vmstorage"]["storage"], null) != null }
               resources:
                 requests:
-                  storage: resources["vmstorage"]["storage"]
+                  storage: ${resources["vmstorage"]["storage"]}
             %{ endif }
         %{ if try(resources["vmstorage"], null) != null }
         resources:
