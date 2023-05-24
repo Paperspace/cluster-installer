@@ -497,9 +497,11 @@ victoria-metrics-k8s-stack:
           volumeClaimTemplate:
             spec:
               storageClassName: ${metrics_storage_class}
+              %{ if try(resources["vmselect"]["storage"], null) != null }
               resources:
                 requests:
-                  storage: 20Gi
+                  storage: resources["vmselect"]["storage"]
+              %{ endif }
       vmstorage:
         extraArgs:
           search.maxUniqueTimeseries: "6000000"

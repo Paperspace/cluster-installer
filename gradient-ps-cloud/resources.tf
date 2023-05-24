@@ -121,6 +121,7 @@ locals {
         }
       },
       "vmselect" = {
+        "storage" = "100Gi"
         "limits" = {
           "cpu"    = "6"
           "memory" = "15Gi"
@@ -203,6 +204,7 @@ locals {
         }
       },
       "vmselect" = {
+        "storage" = "30Gi"
         "limits" = {
           "cpu"    = "4"
           "memory" = "10Gi"
