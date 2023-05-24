@@ -419,7 +419,7 @@ victoria-metrics-k8s-stack:
     spec:
       storage:
         storageClassName: ${metrics_storage_class}
-      %{ if can(resources["vmsingle"]["storage"], null) != null }
+      %{ if lookup(resources["vmsingle"], "storage", null) != null }
         resources:
           requests:
             storage: ${resources["vmsingle"]["storage"]
@@ -497,7 +497,7 @@ victoria-metrics-k8s-stack:
           volumeClaimTemplate:
             spec:
               storageClassName: ${metrics_storage_class}
-              %{ if can(resources["vmselect"]["storage"], null) != null }
+              %{ if lookup(resources["vmselect"], "storage", null) != null }
               resources:
                 requests:
                   storage: resources["vmselect"]["storage"]
@@ -522,13 +522,13 @@ victoria-metrics-k8s-stack:
           volumeClaimTemplate:
             spec:
               storageClassName: "${metrics_storage_class}"
-            %{ if can(resources["vmstorage"]["storage"], null) != null }
+            %{ if lookup(resources["vmstorage"], "storage", null) != null }
               resources:
                 requests:
                   storage: resources["vmstorage"]["storage"]
             %{ endif }
-        resources:
         %{ if try(resources["vmstorage"], null) != null }
+        resources:
           requests:
             cpu: ${resources["vmstorage"]["requests"]["cpu"]}
             memory: ${resources["vmstorage"]["requests"]["memory"]}
