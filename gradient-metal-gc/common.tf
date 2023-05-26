@@ -234,6 +234,7 @@ variable "service_resources" {
       cpu    = string
       memory = string
     })
+    storage = optional(string, null)
   }))
   // note that defaults are set in the locals block below so that we can merge
   default = {}

@@ -253,6 +253,7 @@ resource "helm_release" "gradient_processing" {
       notebook_volume_type                                = var.notebook_volume_type
       admin_team_handle                                   = var.admin_team_handle
       resources                                           = local.resources
+      bad_nodes_interval                                  = var.bad_nodes_interval
     })
   ]
 }

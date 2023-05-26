@@ -459,5 +459,12 @@ variable "service_resources" {
       cpu    = string
       memory = string
     }), null)
+    storage = optional(string, null)
   }))
+}
+
+variable "bad_nodes_interval" {
+  description = "Interval to check for and cordon bad nodes in ms. Set to <= 0 to disable this feature."
+  type        = number
+  default     = 300000
 }
