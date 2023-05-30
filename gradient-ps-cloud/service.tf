@@ -46,7 +46,7 @@ resource "null_resource" "gradient_service_check" {
   provisioner "remote-exec" {
     inline = ["/bin/true"]
     connection {
-      bastion_host        = local.enable_gradient_lb > 0 : paperspace_machine.gradient_lb[0] : paperspace_machine.gradient_main[0].public_ip_address
+      bastion_host        = local.enable_gradient_lb > 0 : paperspace_machine.gradient_lb[0].public_ip_address : paperspace_machine.gradient_main[0].public_ip_address
       bastion_user        = "paperspace"
       bastion_private_key = tls_private_key.ssh_key.private_key_pem
 
