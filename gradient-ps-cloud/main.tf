@@ -310,7 +310,7 @@ locals {
   )
 
   ssh_key_path   = "${path.module}/ssh_key"
-  storage_server = local.gradient_main_count > 0 ? paperspace_machine.gradient_main[0].private_ip_address : null
+  storage_server = local.gradient_main_count > 0 ? paperspace_machine.gradient_main[0].private_ip_address : ""
 
   k8s_version_to_rke_version = {
     "1.20.15" = "v1.20.15-rancher1-1",
