@@ -605,18 +605,6 @@ module "gradient_processing" {
   service_resources      = local.resources
 }
 
-locals {
-  etcd_extra_args = var.use_dedicated_etcd_volume ? {
-    "data-dir" = "/var/lib/rancher/etcd/data/"
-    "wal-dir"  = "/var/lib/rancher/etcd/wal/wal_dir"
-  } : {}
-
-  etcd_extra_binds = var.use_dedicated_etcd_volume ? [
-    "/var/lib/etcd/data:/var/lib/etcd/rancher/data",
-    "/var/lib/etcd/wal:/var/lib/rancher/etcd/wal"
-  ] : []
-}
-
 resource "rancher2_cluster" "main" {
   name        = var.cluster_handle
   description = var.name
@@ -658,11 +646,6 @@ resource "rancher2_cluster" "main" {
           "kube-reserved"        = "cpu=500m,memory=256Mi,ephemeral-storage=10Gi"
           "cloud-provider"       = "external"
         }
-      }
-
-      etcd {
-        extra_args  = local.etcd_extra_args
-        extra_binds = local.etcd_extra_binds
       }
     }
   }
