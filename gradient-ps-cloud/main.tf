@@ -310,7 +310,7 @@ locals {
   )
 
   ssh_key_path   = "${path.module}/ssh_key"
-  storage_server = paperspace_machine.gradient_main[0].private_ip_address
+  storage_server = local.gradient_main_count > 0 ? paperspace_machine.gradient_main[0].private_ip_address : null
 
   k8s_version_to_rke_version = {
     "1.20.15" = "v1.20.15-rancher1-1",
@@ -733,7 +733,7 @@ resource "cloudflare_record" "subdomain_wildcard" {
 }
 
 output "main_node_public_ip_address" {
-  value = paperspace_machine.gradient_main[0].public_ip_address
+  value = local.gradient_main_count > 0 ? paperspace_machine.gradient_main[0].private_ip_address : null
 }
 
 output "network_handle" {
