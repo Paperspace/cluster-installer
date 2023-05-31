@@ -645,6 +645,12 @@ resource "rancher2_cluster" "main" {
           "kube-reserved-cgroup" = "/podruntime.slice"
           "kube-reserved"        = "cpu=500m,memory=256Mi,ephemeral-storage=10Gi"
           "cloud-provider"       = "external"
+          "max-pods"             = "61"
+        }
+      }
+      kube_controller = {
+        extra_args = {
+          "node-cidr-mask-size": "26"
         }
       }
     }
