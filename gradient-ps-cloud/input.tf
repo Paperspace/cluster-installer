@@ -66,9 +66,21 @@ variable "machine_type_main" {
   type        = string
   default     = "C7"
 }
+
+variable "machine_count_main" {
+  description = "Main machine count"
+  type        = number
+  default     = 1
+}
 variable "machine_type_controlplane" {
   description = "Controlplane machine type"
   default     = "C8"
+}
+
+variable "machine_count_controlplane" {
+  description = "Main machine count"
+  type        = number
+  default     = 0
 }
 
 variable "machine_storage_lb" {
@@ -220,4 +232,10 @@ variable "pop_chart_version" {
 variable "paperspace_api_next_url" {
   description = "Paperspace API next URL"
   default     = "https://api.paperspace.com"
+}
+
+
+variable "use_dedicated_etcd_volume" {
+  description = "Use dedicated etcd volume. Set to true this will assume /var/lib/etcd is a dedicated volume on the host"
+  default     = false
 }

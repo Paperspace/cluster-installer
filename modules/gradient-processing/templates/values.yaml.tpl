@@ -141,6 +141,7 @@ ceph-csi-cephfs:
 %{ if length(rbd_storage_config) != 0 }
 ceph-csi-rbd:
   enabled: true
+  cephConfConfigMapName: gradient-processing-rbd-ceph-config
   storageClass:
     clusterID: ${cluster_handle}
     pool: ${rbd_storage_config["rbdPool"]}
