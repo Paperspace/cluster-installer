@@ -648,7 +648,7 @@ resource "rancher2_cluster" "main" {
           "max-pods"             = "61"
         }
       }
-      kube_controller = {
+      kube_controller {
         extra_args = {
           "node-cidr-mask-size": "26"
         }
