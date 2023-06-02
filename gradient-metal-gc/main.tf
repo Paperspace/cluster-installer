@@ -107,7 +107,9 @@ module "gradient_processing" {
     "graphcore/pytorch-jupyter:3.1.0-ubuntu-20.04-20230224",
     "graphcore/pytorch-jupyter:3.1.0-ubuntu-20.04-20230224",
     "graphcore/tensorflow-jupyter:2-amd-3.1.0-ubuntu-20.04-20230224",
-    "graphcore/tensorflow-jupyter:ogb-competition-2022-11-21"
+    "graphcore/tensorflow-jupyter:ogb-competition-2022-11-21",
+    "graphcore/pytorch-geometric-jupyter:3.2.1-ubuntu-20.04-20230531",
+    "graphcore/pytorch-jupyter:3.2.1-ubuntu-20.04-20230531",
   ]
   metrics_server_enabled                              = false
   victoria_metrics_vmcluster_enabled                  = false
