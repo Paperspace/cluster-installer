@@ -30,6 +30,12 @@ locals {
         "memory" = "1Gi"
       }
     },
+    "gradient-dispatcher-notifier" = {
+      "limits" = {
+        "cpu"    = "1"
+        "memory" = "512Mi"
+      }
+    },
     "gradient-metrics" = {
       "limits" = {
         "cpu"    = "1000m"
