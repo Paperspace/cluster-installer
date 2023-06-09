@@ -33,7 +33,7 @@ locals {
     "gradient-dispatcher-notifier" = {
       "limits" = {
         "cpu"    = "1"
-        "memory" = "512Mi"
+        "memory" = "768Mi"
       }
     },
     "gradient-metrics" = {
