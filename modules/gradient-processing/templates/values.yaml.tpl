@@ -597,8 +597,6 @@ victoria-metrics-k8s-stack:
           memory: ${resources["vmagent"]["limits"]["memory"]}
       %{ endif }
 
-    additionalRemoteWrites:
-      - url: http://gradient-nats-bridge:8085/prometheus
 
   kubelet:
     enabled: true
