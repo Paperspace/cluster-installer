@@ -395,6 +395,17 @@ gradient-metrics:
       memory: ${resources["gradient-metrics"]["limits"]["memory"]}
   %{ endif }
 
+gradient-dispatcher-notifier:
+  %{ if try(resources["gradient-dispatcher-notifier"], null) != null }
+  resources:
+    requests:
+      cpu: ${resources["gradient-dispatcher-notifier"]["requests"]["cpu"]}
+      memory: ${resources["gradient-dispatcher-notifier"]["requests"]["memory"]}
+    limits:
+      cpu: ${resources["gradient-dispatcher-notifier"]["limits"]["cpu"]}
+      memory: ${resources["gradient-dispatcher-notifier"]["limits"]["memory"]}
+  %{ endif }
+
 gradient-operator-dispatcher:
   config:
     sentryEnvironment: ${name}
@@ -586,8 +597,6 @@ victoria-metrics-k8s-stack:
           memory: ${resources["vmagent"]["limits"]["memory"]}
       %{ endif }
 
-    additionalRemoteWrites:
-      - url: http://gradient-nats-bridge:8085/prometheus
 
   kubelet:
     enabled: true
