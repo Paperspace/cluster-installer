@@ -35,7 +35,7 @@ if [ "$TERRAFORM_COMMAND" = "destroy" ]; then
 elif [ "$TERRAFORM_COMMAND" = "plan" ]; then
   terraform plan
 else
-  sleep infinity
+  # sleep infinity
   terraform apply -auto-approve
 fi
 
