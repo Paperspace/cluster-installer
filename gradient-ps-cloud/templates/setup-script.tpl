@@ -50,7 +50,7 @@ export MACHINE_PRIVATE_IP=$(echo "$MACHINE_JSON" | grep privateIpAddress | sed '
 export MACHINE_PUBLIC_IP=$(echo "$MACHINE_JSON" | grep publicIpAddress | sed 's/^.*: "\(.*\)".*/\1/')
 export MACHINE_POOL=$(echo "$MACHINE_JSON" | grep machineType| sed 's/^.*: "\(.*\)".*/\1/')
 GPU_TYPE=$(echo "$MACHINE_JSON"| grep gpu\" | sed 's/^.*: "\(.*\)".*/\1/')
-[ "${GPU_TYPE}" = 'None' ] && MACHINE_POOL_TYPE=cpu || MACHINE_POOL_TYPE=gpu
+[ "$GPU_TYPE" = 'None' ] && MACHINE_POOL_TYPE=cpu || MACHINE_POOL_TYPE=gpu
 
 %{ if kind == "main" ~}
 ${rancher_command} \
