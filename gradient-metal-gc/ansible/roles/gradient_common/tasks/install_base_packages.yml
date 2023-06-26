@@ -9,3 +9,4 @@
       - nfs-common
       - nfs-kernel-server
       - python3-pip
+      - containerd
