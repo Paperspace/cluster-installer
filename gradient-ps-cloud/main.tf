@@ -59,6 +59,7 @@ locals {
     },
     "V100" = {
       type = "gpu"
+      template_id = "tqiovg80"
     },
     "RTX4000" = {
       type = "gpu"
