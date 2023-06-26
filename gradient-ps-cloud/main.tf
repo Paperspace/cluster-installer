@@ -129,6 +129,7 @@ locals {
     },
     "A100x2" = {
       type = "gpu"
+      template_id = "tqiovg80"
     },
     "A100x4" = {
       type = "gpu"
