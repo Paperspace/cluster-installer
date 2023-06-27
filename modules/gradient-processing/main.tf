@@ -32,6 +32,7 @@ locals {
     service => {
       "requests" = try(resource["requests"], null) != null ? resource["requests"] : resource["limits"]
       "limits"   = resource["limits"]
+      "storage"  = lookup(resource, "storage", null)
     }
   }
 }
