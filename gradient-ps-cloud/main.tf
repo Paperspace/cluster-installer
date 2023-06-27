@@ -47,7 +47,6 @@ locals {
     },
     "C7" = {
       type = "cpu"
-      template_id = "tbq5i99e"
     },
     "P4000" = {
       type = "gpu"
@@ -60,7 +59,6 @@ locals {
     },
     "V100" = {
       type = "gpu"
-      template_id = "tqiovg80"
     },
     "RTX4000" = {
       type = "gpu"
@@ -130,7 +128,6 @@ locals {
     },
     "A100x2" = {
       type = "gpu"
-      template_id = "tqiovg80"
     },
     "A100x4" = {
       type = "gpu"
