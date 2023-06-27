@@ -47,6 +47,7 @@ locals {
     },
     "C7" = {
       type = "cpu"
+      template_id = "tbq5i99e"
     },
     "P4000" = {
       type = "gpu"
