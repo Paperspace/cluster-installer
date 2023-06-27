@@ -30,8 +30,9 @@ locals {
   resources = {
     for service, resource in var.service_resources :
     service => {
-      "requests" = try(resource["requests"], null) != null ? resource["requests"] : resource["limits"]
+      "requests" = lookup(resource, "requests", resources["limits"])
       "limits"   = resource["limits"]
+      "storage"  = lookup(resource, "storage", null)
     }
   }
 }
