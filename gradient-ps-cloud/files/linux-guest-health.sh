@@ -9,7 +9,7 @@ readonly UNKNOWN=2
 readonly GUEST_OUTPUT="$1"
 readonly CHECK="$2"
 
-uptime_seconds=$(uptime | awk -F' ' '{print $3}' | awk -F':' '{print $1*3600 + $2*60}')
+uptime_seconds=$(cut -d'.' -f1 < /proc/uptime)
 
 if [ ! -f "$GUEST_OUTPUT" ]; then
   if [ "$uptime_seconds" -gt 300 ]; then
