@@ -44,9 +44,13 @@ service docker reload
 
 echo "${ssh_public_key}" >> /home/paperspace/.ssh/authorized_keys
 
-export MACHINE_ID=`curl -s https://metadata.paperspace.com/meta-data/machine | grep id | sed 's/^.*: "\(.*\)".*/\1/'`
-export MACHINE_PRIVATE_IP=`curl -s https://metadata.paperspace.com/meta-data/machine | grep privateIpAddress | sed 's/^.*: "\(.*\)".*/\1/'`
-export MACHINE_PUBLIC_IP=`curl -s https://metadata.paperspace.com/meta-data/machine | grep publicIpAddress | sed 's/^.*: "\(.*\)".*/\1/'`
+MACHINE_JSON=$(curl -s https://metadata.paperspace.com/meta-data/machine)
+export MACHINE_ID=$(echo "$MACHINE_JSON" | grep id | sed 's/^.*: "\(.*\)".*/\1/')
+export MACHINE_PRIVATE_IP=$(echo "$MACHINE_JSON" | grep privateIpAddress | sed 's/^.*: "\(.*\)".*/\1/')
+export MACHINE_PUBLIC_IP=$(echo "$MACHINE_JSON" | grep publicIpAddress | sed 's/^.*: "\(.*\)".*/\1/')
+export MACHINE_POOL=$(echo "$MACHINE_JSON" | grep machineType| sed 's/^.*: "\(.*\)".*/\1/')
+GPU_TYPE=$(echo "$MACHINE_JSON"| grep gpu\" | sed 's/^.*: "\(.*\)".*/\1/')
+[ "$GPU_TYPE" = 'None' ] && MACHINE_POOL_TYPE=cpu || MACHINE_POOL_TYPE=gpu
 
 %{ if kind == "main" ~}
 ${rancher_command} \
@@ -80,8 +84,8 @@ ${rancher_command} \
 echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --worker \
-    --label paperspace.com/pool-name=${pool_name} \
-    --label paperspace.com/pool-type=${pool_type} \
+    --label paperspace.com/pool-name=$MACHINE_POOL \
+    --label paperspace.com/pool-type=$MACHINE_POOL_TYPE \
     --label paperspace.com/gradient-worker=true \
     --label provider.autoscaler/prefix=paperspace \
     --label provider.autoscaler/nodeName=$MACHINE_ID \
@@ -93,9 +97,9 @@ ${rancher_command} \
 echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --worker \
-    --label paperspace.com/pool-name=${pool_name} \
+    --label paperspace.com/pool-name=$MACHINE_POOL \
     --label paperspace.com/gradient-worker=true \
-    --label paperspace.com/pool-type=${pool_type} \
+    --label paperspace.com/pool-type=$MACHINE_POOL_TYPE \
     --node-name $MACHINE_ID \
     --address $MACHINE_PRIVATE_IP
 %{ endif ~}
@@ -104,9 +108,9 @@ ${rancher_command} \
 echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --worker \
-    --label paperspace.com/pool-name=${pool_name} \
+    --label paperspace.com/pool-name=$MACHINE_POOL \
     --label paperspace.com/gradient-worker=true \
-    --label paperspace.com/pool-type=${pool_type} \
+    --label paperspace.com/pool-type=$MACHINE_POOL_TYPE \
     --node-name $MACHINE_ID \
     --address $MACHINE_PUBLIC_IP \
     --internal-address $MACHINE_PRIVATE_IP
@@ -117,9 +121,9 @@ echo "${admin_management_private_key}" > /home/paperspace/.ssh/mgmt_admin.pem
 echo "${admin_management_public_key}" >> /home/paperspace/.ssh/authorized_keys
 ${rancher_command} \
     --worker \
-    --label paperspace.com/pool-name=${pool_name} \
+    --label paperspace.com/pool-name=$MACHINE_POOL \
     --label paperspace.com/gradient-worker=true \
-    --label paperspace.com/pool-type=${pool_type} \
+    --label paperspace.com/pool-type=$MACHINE_POOL_TYPE \
     --node-name $MACHINE_ID \
     --address $MACHINE_PUBLIC_IP \
     --internal-address $MACHINE_PRIVATE_IP

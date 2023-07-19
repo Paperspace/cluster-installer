@@ -104,7 +104,9 @@ module "gradient_processing" {
     "paperspace/gradient-integrations-sidecar:latest",
 
     # Ordered by most used
-    "graphcore/pytorch-jupyter:3.1.0-ubuntu-20.04-20230224",
+    "graphcore/pytorch-paperspace:3.3.0-ubuntu-20.04-20230703",
+    "graphcore/pytorch-geometric-paperspace:3.3.0-ubuntu-20.04-20230703",
+    "graphcore/tensorflow-paperspace:3.3.0-ubuntu-20.04-20230703",
     "graphcore/pytorch-jupyter:3.1.0-ubuntu-20.04-20230224",
     "graphcore/tensorflow-jupyter:2-amd-3.1.0-ubuntu-20.04-20230224",
     "graphcore/tensorflow-jupyter:ogb-competition-2022-11-21",

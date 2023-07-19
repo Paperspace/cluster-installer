@@ -114,6 +114,12 @@ locals {
           "memory" = "16Gi"
         }
       },
+      "volume-fs" = {
+        "limits" = {
+          "cpu"    = "1"
+          "memory" = "1Gi"
+        }
+      },
       "gradient-metrics" = {
         "limits" = {
           "cpu"    = "2"

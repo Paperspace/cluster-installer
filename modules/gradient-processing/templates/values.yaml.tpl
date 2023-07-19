@@ -744,6 +744,15 @@ volumeFs:
   %{ else }
   replicaCount: 1
   %{ endif }
+  %{ if try(resources["volume-fs"], null) != null }
+  resources:
+    requests:
+      cpu: ${resources["volume-fs"]["requests"]["cpu"]}
+      memory: ${resources["volume-fs"]["requests"]["memory"]}
+    limits:
+      cpu: ${resources["volume-fs"]["limits"]["cpu"]}
+      memory: ${resources["volume-fs"]["limits"]["memory"]}
+  %{ endif }
 
 prometheus-adapter:
   enabled: true
