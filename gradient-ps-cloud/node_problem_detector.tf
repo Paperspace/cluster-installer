@@ -9,6 +9,7 @@ module "node_problem_detector" {
 
   draino_flags = {
     skip_drain = true
+    node_label_expr = "metadata.labels['node-role.kubernetes.io/worker'] == 'true'"
   }
 
   draino_node_selector = {
