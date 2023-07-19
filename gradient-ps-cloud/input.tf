@@ -59,7 +59,7 @@ variable "machine_storage_main" {
 }
 variable "machine_template_id_main" {
   description = "Main template id"
-  default     = "tpws4rna"
+  default     = "tpi7gqht"
 }
 variable "machine_type_main" {
   description = "Main machine type"
@@ -91,7 +91,7 @@ variable "machine_storage_lb" {
 
 variable "machine_template_id_lb" {
   description = "LB template id"
-  default     = "tpws4rna"
+  default     = "tpi7gqht"
 }
 
 variable "machine_type_lb" {
@@ -101,7 +101,7 @@ variable "machine_type_lb" {
 
 variable "machine_template_id_admin" {
   description = "admin template id"
-  default     = "tpws4rna"
+  default     = "tpi7gqht"
 }
 
 variable "machine_type_admin" {
@@ -137,7 +137,7 @@ variable "machine_storage_service" {
 
 variable "machine_template_id_service" {
   description = "Service template id"
-  default     = "tpws4rna"
+  default     = "tpi7gqht"
 }
 
 variable "machine_type_service" {
@@ -157,7 +157,7 @@ variable "machine_storage_worker_cpu" {
 }
 variable "machine_template_id_cpu" {
   description = "CPU template id"
-  default     = "tpws4rna"
+  default     = "tpi7gqht"
 }
 
 variable "machine_storage_worker_gpu" {
@@ -167,7 +167,7 @@ variable "machine_storage_worker_gpu" {
 }
 variable "machine_template_id_gpu" {
   description = "GPU template id"
-  default     = "t0fpkbzk"
+  default     = "tmun4o2g"
 }
 
 variable "rancher_api_url" {
