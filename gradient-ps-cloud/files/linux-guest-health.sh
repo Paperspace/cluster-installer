@@ -22,7 +22,7 @@ if [ ! -f "$GUEST_OUTPUT" ]; then
 fi
 
 # update interval is 60 minutes on the health reporter
-if find "$GUEST_OUTPUT" -mmin -61 | read -r; then
+if [ -z "$(find "$GUEST_OUTPUT" -mmin -61)" ]; then
   echo "Guest health output too old"
   exit $NONOK
 fi
