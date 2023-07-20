@@ -192,6 +192,7 @@ resource "helm_release" "gradient_processing" {
       efs_provisioner_enabled                = var.shared_storage_type == "efs" || var.local_storage_type == "efs"
       is_public_cluster                      = var.is_public_cluster
       domain                                 = var.domain
+      secondary_domain                       = var.secondary_domain
       global_selector                        = var.global_selector
       label_selector_cpu                     = var.label_selector_cpu
       label_selector_gpu                     = var.label_selector_gpu
