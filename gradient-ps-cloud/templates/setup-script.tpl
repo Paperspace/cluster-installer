@@ -9,6 +9,9 @@ sed -i 's/APT::Periodic::Update-Package-Lists "1"/APT::Periodic::Update-Package-
 sed -i 's/APT::Periodic::Unattended-Upgrade "1"/APT::Periodic::Unattended-Upgrade "0"/' /etc/apt/apt.conf.d/20auto-upgrades
 systemctl disable --now apt-daily{,-upgrade}.{timer,service}
 
+# disable unprviledge ebpf
+sysctl kernel.unprivileged_bpf_disabled=1
+
 until docker ps -a || (( count++ >= 30 )); do echo "Check if docker is up..."; sleep 2; done
 
 usermod -G docker paperspace
