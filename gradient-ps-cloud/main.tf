@@ -727,6 +727,7 @@ resource "cloudflare_record" "subdomain" {
   type    = "A"
   ttl     = 3600
   proxied = false
+  allow_overwrite = true
 }
 
 resource "cloudflare_record" "subdomain_wildcard" {
@@ -737,6 +738,7 @@ resource "cloudflare_record" "subdomain_wildcard" {
   type    = "A"
   ttl     = 3600
   proxied = false
+  allow_overwrite = true
 }
 
 output "main_node_public_ip_address" {
