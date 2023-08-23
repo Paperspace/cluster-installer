@@ -86,7 +86,7 @@ variable "machine_count_controlplane" {
 variable "machine_storage_lb" {
   type        = number
   description = "LB storage"
-  default     = 100
+  default     = 250
 }
 
 variable "machine_template_id_lb" {
