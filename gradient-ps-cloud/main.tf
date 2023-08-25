@@ -447,19 +447,6 @@ resource "paperspace_machine" "gradient_main" {
       private_key = tls_private_key.ssh_key.private_key_pem
     }
   }
-
-  provisioner "local-exec" {
-    command = <<EOF
-            sleep 30
-            echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
-            ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
-            --key-file ${local.ssh_key_path} \
-            -i '${self.public_ip_address},' \
-            -e "install_nfs_server=true" \
-            -e "nfs_subnet_host_with_netmask=${paperspace_network.network.network}/${paperspace_network.network.netmask}" \
-            ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
-        EOF
-  }
 }
 
 resource "paperspace_machine" "gradient_controlplane" {
@@ -493,18 +480,6 @@ resource "paperspace_machine" "gradient_controlplane" {
       host        = self.public_ip_address
       private_key = tls_private_key.ssh_key.private_key_pem
     }
-  }
-
-  provisioner "local-exec" {
-    command = <<EOF
-            echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
-            ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
-            --key-file ${local.ssh_key_path} \
-            -i '${self.public_ip_address},' \
-            -e "install_nfs_server=false" \
-            -e "nfs_subnet_host_with_netmask=${paperspace_network.network.network}/${paperspace_network.network.netmask}" \
-            ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
-        EOF
   }
 }
 
