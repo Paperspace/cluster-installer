@@ -43,7 +43,7 @@ cat <<EOL > /etc/docker/daemon.json
 }
 EOL
 
-service docker reload
+service docker restart
 
 echo "${ssh_public_key}" >> /home/paperspace/.ssh/authorized_keys
 
