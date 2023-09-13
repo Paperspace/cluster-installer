@@ -146,7 +146,7 @@ module "gradient_processing" {
       "storage" : "400Gi"
     }
   })
-  bad_nodes_interval = 0
+  bad_nodes_interval = -1
 }
 
 
