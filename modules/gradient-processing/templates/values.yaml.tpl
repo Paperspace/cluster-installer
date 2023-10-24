@@ -230,7 +230,7 @@ cluster-autoscaler:
 
 dispatcher:
   config:
-    badNodesInterval: ${bad_nodes_interval}
+    badNodesInterval: "${bad_nodes_interval}"
   %{ if try(resources["dispatcher"], null) != null }
   resources:
     requests:
