@@ -8,7 +8,7 @@ module "node_problem_detector" {
   source = "../modules/node-problem-detector"
 
   draino_flags = {
-    skip_drain = true
+    skip_drain = false
     node_label_expr = "metadata.labels['node-role.kubernetes.io/worker'] == 'true' && metadata.labels['paperspace.com/pool-name'] != 'lb' && metadata.labels['paperspace.com/pool-name'] != 'services-small'"
   }
 
