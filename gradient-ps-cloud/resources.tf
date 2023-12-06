@@ -8,8 +8,8 @@ locals {
     }
     "dispatcher" = {
       "limits" = {
-        "cpu"    = "1000m"
-        "memory" = "2Gi"
+        "cpu"    = "2000m"
+        "memory" = "4Gi"
       },
     },
     "gradient-operator-controller" = {
@@ -30,7 +30,7 @@ locals {
         "memory" = "1Gi"
       }
     },
-    "gradient-dispatcher-notifier" = {
+    "dispatcher-notifier" = {
       "limits" = {
         "cpu"    = "1"
         "memory" = "768Mi"
