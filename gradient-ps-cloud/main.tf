@@ -625,7 +625,7 @@ resource "rancher2_cluster" "main" {
 
             s3_backup_config {
               bucket_name = var.etcd_backup_config.bucket_name
-              folder      = "etcd-backups/${var.cluster_handle}"
+              folder      = var.etcd_backup_config.folder
               endpoint    = var.etcd_backup_config.endpoint
               region      = var.etcd_backup_config.bucket_name
               access_key  = var.etcd_backup_config.access_key

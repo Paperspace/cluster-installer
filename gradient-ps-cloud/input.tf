@@ -248,6 +248,7 @@ variable "etcd_backup_config" {
     region      = string
     access_key  = string
     secret_key  = string
+    folder      = string
   })
   default = null
 }
