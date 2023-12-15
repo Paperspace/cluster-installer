@@ -242,13 +242,13 @@ variable "use_dedicated_etcd_volume" {
 
 variable "etcd_backup_config" {
   description = "etcd backup config"
-  type = optional(object({
+  type = object({
     bucket_name = string
     endpoint    = string
     region      = string
     access_key  = string
     secret_key  = string
-  }), null)
+  })
   default = null
 }
 
