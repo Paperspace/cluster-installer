@@ -588,7 +588,6 @@ resource "rancher2_cluster" "main" {
     kubernetes_version = local.k8s_version_to_rke_version[local.k8s_version]
 
     dns {
-      node_selector = local.dns_node_selector
       update_strategy {
         strategy = "RollingUpdate"
       }
