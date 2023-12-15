@@ -583,6 +583,7 @@ module "gradient_processing" {
 resource "rancher2_cluster" "main" {
   name        = var.cluster_handle
   description = var.name
+
   rke_config {
     kubernetes_version = local.k8s_version_to_rke_version[local.k8s_version]
 
@@ -614,6 +615,23 @@ resource "rancher2_cluster" "main" {
     }
 
     services {
+      etcd {
+        backup_config {
+          enabled        = true
+          interval_hours = 6
+          retention      = 28
+
+          s3_backup_config {
+            bucket_name = var.etcd_backup_config.bucket_name
+            folder      = "etcd-backups/${var.cluster_handle}"
+            endpoint    = var.etcd_backup_config.endpoint
+            region      = var.etcd_backup_config.bucket_name
+            access_key  = var.etcd_backup_config.access_key
+            secret_key  = var.etcd_backup_config.secret_key
+          }
+        }
+      }
+
       kubelet {
         extra_args = {
           "system-reserved"      = "cpu=500m,memory=256Mi,ephemeral-storage=5Gi"
@@ -626,7 +644,7 @@ resource "rancher2_cluster" "main" {
       kube_controller {
         cluster_cidr = "10.36.0.0/14"
         extra_args = {
-          "node-cidr-mask-size": "25"
+          "node-cidr-mask-size" : "25"
         }
       }
     }
@@ -695,24 +713,24 @@ resource "null_resource" "register_managed_cluster_machine_main" {
 }
 
 resource "cloudflare_record" "subdomain" {
-  count   = var.cloudflare_api_key == "" || var.cloudflare_email == "" || var.cloudflare_zone_id == "" ? 0 : length(local.lb_ips)
-  zone_id = var.cloudflare_zone_id
-  name    = var.domain
-  value   = local.lb_ips[count.index]
-  type    = "A"
-  ttl     = 3600
-  proxied = false
+  count           = var.cloudflare_api_key == "" || var.cloudflare_email == "" || var.cloudflare_zone_id == "" ? 0 : length(local.lb_ips)
+  zone_id         = var.cloudflare_zone_id
+  name            = var.domain
+  value           = local.lb_ips[count.index]
+  type            = "A"
+  ttl             = 3600
+  proxied         = false
   allow_overwrite = true
 }
 
 resource "cloudflare_record" "subdomain_wildcard" {
-  count   = var.cloudflare_api_key == "" || var.cloudflare_email == "" || var.cloudflare_zone_id == "" ? 0 : length(local.lb_ips)
-  zone_id = var.cloudflare_zone_id
-  name    = "*.${var.domain}"
-  value   = local.lb_ips[count.index]
-  type    = "A"
-  ttl     = 3600
-  proxied = false
+  count           = var.cloudflare_api_key == "" || var.cloudflare_email == "" || var.cloudflare_zone_id == "" ? 0 : length(local.lb_ips)
+  zone_id         = var.cloudflare_zone_id
+  name            = "*.${var.domain}"
+  value           = local.lb_ips[count.index]
+  type            = "A"
+  ttl             = 3600
+  proxied         = false
   allow_overwrite = true
 }
 

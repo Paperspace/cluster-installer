@@ -239,3 +239,20 @@ variable "use_dedicated_etcd_volume" {
   description = "Use dedicated etcd volume. Set to true this will assume /var/lib/etcd is a dedicated volume on the host"
   default     = false
 }
+
+variable "etcd_backup_config" {
+  description = "etcd backup config"
+  type = object({
+    bucket_name = string
+    endpoint    = string
+    region      = string
+    access_key  = string
+    secret_key  = string
+  })
+}
+
+variable "environment" {
+  description = "paperspace environment"
+  default     = "production"
+  type        = string
+}
