@@ -615,19 +615,22 @@ resource "rancher2_cluster" "main" {
     }
 
     services {
-      etcd {
-        backup_config {
-          enabled        = true
-          interval_hours = 6
-          retention      = 28
+      dynamic "etcd" {
+        for_each = var.etcd_backup_config != null ? [1] : []
+        content {
+          backup_config {
+            enabled        = true
+            interval_hours = 6
+            retention      = 28
 
-          s3_backup_config {
-            bucket_name = var.etcd_backup_config.bucket_name
-            folder      = "etcd-backups/${var.cluster_handle}"
-            endpoint    = var.etcd_backup_config.endpoint
-            region      = var.etcd_backup_config.bucket_name
-            access_key  = var.etcd_backup_config.access_key
-            secret_key  = var.etcd_backup_config.secret_key
+            s3_backup_config {
+              bucket_name = var.etcd_backup_config.bucket_name
+              folder      = "etcd-backups/${var.cluster_handle}"
+              endpoint    = var.etcd_backup_config.endpoint
+              region      = var.etcd_backup_config.bucket_name
+              access_key  = var.etcd_backup_config.access_key
+              secret_key  = var.etcd_backup_config.secret_key
+            }
           }
         }
       }
