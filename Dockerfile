@@ -1,6 +1,6 @@
-FROM hashicorp/terraform:1.3.7
+FROM hashicorp/terraform:1
 
-RUN apk add ansible curl bash
+RUN apk add --upgrade ansible curl bash libcurl
 
 RUN mkdir /home/paperspace
 
