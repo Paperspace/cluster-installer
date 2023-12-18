@@ -626,7 +626,7 @@ resource "rancher2_cluster" "main" {
               bucket_name = var.etcd_backup_config.bucket_name
               folder      = "${var.etcd_backup_config.prefix}/etcd/${var.cluster_handle}"
               endpoint    = var.etcd_backup_config.endpoint
-              region      = var.etcd_backup_config.bucket_name
+              region      = var.etcd_backup_config.region
               access_key  = var.etcd_backup_config.access_key
               secret_key  = var.etcd_backup_config.secret_key
             }
