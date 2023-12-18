@@ -1,4 +1,4 @@
-FROM hashicorp/terraform:1
+FROM hashicorp/terraform:1.6
 
 RUN apk add --upgrade ansible curl bash libcurl
 
