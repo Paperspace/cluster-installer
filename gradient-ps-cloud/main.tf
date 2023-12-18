@@ -664,7 +664,7 @@ resource "paperspace_script" "autoscale" {
   script_text = templatefile("${path.module}/templates/setup-script.tpl", {
     kind                         = "autoscale_worker"
     gpu_enabled                  = each.value.type == "gpu"
-    pool_name                    = each.key
+    pool_name                    = ""
     pool_type                    = each.value.type
     rancher_command              = rancher2_cluster.main.cluster_registration_token[0].node_command
     ssh_public_key               = tls_private_key.ssh_key.public_key_openssh
