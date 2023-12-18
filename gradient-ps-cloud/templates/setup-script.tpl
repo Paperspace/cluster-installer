@@ -51,7 +51,10 @@ MACHINE_JSON=$(curl -s https://metadata.paperspace.com/meta-data/machine)
 export MACHINE_ID=$(echo "$MACHINE_JSON" | grep id | sed 's/^.*: "\(.*\)".*/\1/')
 export MACHINE_PRIVATE_IP=$(echo "$MACHINE_JSON" | grep privateIpAddress | sed 's/^.*: "\(.*\)".*/\1/')
 export MACHINE_PUBLIC_IP=$(echo "$MACHINE_JSON" | grep publicIpAddress | sed 's/^.*: "\(.*\)".*/\1/')
-export MACHINE_POOL=$(echo "$MACHINE_JSON" | grep machineType| sed 's/^.*: "\(.*\)".*/\1/')
+export MACHINE_POOL="${pool_name}"
+if [ -z "${MACHINE_POOL:-} ]; then
+    export MACHINE_POOL=$(echo "$MACHINE_JSON" | grep machineType| sed 's/^.*: "\(.*\)".*/\1/')
+fi
 GPU_TYPE=$(echo "$MACHINE_JSON"| grep gpu\" | sed 's/^.*: "\(.*\)".*/\1/')
 [ "$GPU_TYPE" = 'None' ] && MACHINE_POOL_TYPE=cpu || MACHINE_POOL_TYPE=gpu
 
