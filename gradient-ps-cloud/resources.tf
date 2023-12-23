@@ -8,8 +8,8 @@ locals {
     }
     "dispatcher" = {
       "limits" = {
-        "cpu"    = "2000m"
-        "memory" = "4Gi"
+        "cpu"    = "3000m"
+        "memory" = "6Gi"
       },
     },
     "gradient-operator-controller" = {
