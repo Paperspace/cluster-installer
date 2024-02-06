@@ -487,11 +487,11 @@ victoria-metrics-k8s-stack:
             memory: ${resources["vmselect"]["requests"]["memory"]}
         %{ endif }
         extraArgs:
-          search.maxConcurrentRequests: "200"
+          search.maxConcurrentRequests: "300"
           search.maxFederateSeries: "6000000"
           search.maxPointsPerTimeseries: "6000000"
           search.maxPointsSubqueryPerTimeseries: "6000000"
-          search.maxQueryDuration: 60s
+          search.maxQueryDuration: 120s
           search.maxSeries: "6000000"
           search.maxUniqueTimeseries: "6000000"
         replicaCount: ${vm_select_replica_count}
