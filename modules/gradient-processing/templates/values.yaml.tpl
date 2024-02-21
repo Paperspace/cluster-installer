@@ -663,7 +663,7 @@ traefik:
       memory: ${resources["traefik"]["limits"]["memory"]}
   %{ endif }
 
-argo:
+argo-workflows:
   controller:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
