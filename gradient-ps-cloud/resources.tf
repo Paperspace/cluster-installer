@@ -136,7 +136,7 @@ locals {
         "storage" = "100Gi"
         "limits" = {
           "cpu"    = "6"
-          "memory" = "15Gi"
+          "memory" = "20Gi"
         }
       },
       "vmstorage" = {
